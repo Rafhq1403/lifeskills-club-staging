@@ -492,6 +492,9 @@ html[dir="rtl"] .cm-drawer{--cm-out:-100%}
       <h4>3 · <span data-lang-only="ar">المستوى</span><span data-lang-only="en">Level</span></h4>
       <div class="cm-levels" id="cmObsLevel"></div>
     </div>
+    <button class="btn btn-primary btn-block mt-4" id="cmObsSave" hidden></button>
+    <p class="caption text-muted mt-2" data-lang-only="ar">تُحفظ في ملف الطالب، ويظهر أثرها في صفحة النمو.</p>
+    <p class="caption text-muted mt-2" data-lang-only="en">Saved to the student's record; the effect shows on the growth page.</p>
     <div class="cm-obs-log" id="cmObsLog"></div>
   </div>
 </aside>
@@ -674,13 +677,31 @@ const DEMO_ROSTER=[
  'جواهر','تركي','دانة','سلمان','هيا','ماجد','شهد','بدر','رغد','ناصر'
 ].map((n,k)=>({student_id:'demo-'+k,full_name:n,username:'demo'+k,demo:true}));
 
-let CLASS_ID=null;
-const BEHAVIOURS=[
-  {k:'attention',ar:'يحافظ على الانتباه',en:'Maintains attention'},
-  {k:'no_interrupt',ar:'لا يقاطع',en:'Does not interrupt'},
-  {k:'summarise',ar:'يلخّص بدقة',en:'Summarises accurately'},
-  {k:'follow_up',ar:'يسأل سؤال متابعة',en:'Asks a follow-up question'}
-];
+let CLASS_ID=null,SKILL_ID=null;
+/* The behaviours to observe are THIS session's — the evidence card's checks,
+   which are seeded as rubric_criteria (code S<order>.<k>). loadCriteria()
+   fills in the real criterion ids so a level can be saved; with no backend
+   the labels alone still drive the three-tap flow (demo, not persisted). */
+let BEHAVIOURS=[];
+function setupBehaviours(criteria){
+  if(Array.isArray(criteria)&&criteria.length){
+    BEHAVIOURS=criteria.map(c=>({k:c.code,ar:c.label_ar,en:c.label_en,criterion_id:c.id}));
+    return;
+  }
+  const ev=SESSION.cards.find(c=>c.stage==='evidence'&&(c.checks_ar||c.checks_en))
+          ||SESSION.cards.find(c=>c.checks_ar||c.checks_en);
+  const ar=(ev&&ev.checks_ar)||[],en=(ev&&ev.checks_en)||[];
+  BEHAVIOURS=ar.map((a,k)=>({k:'b'+k,ar:a,en:en[k]||a,criterion_id:null}));
+}
+async function loadCriteria(){
+  setupBehaviours();          // baseline from the session's own checks, always
+  const id=SESSION.id||SESSION_PARAM;
+  if(!id||localStorage.getItem('dev_fixtures')==='1') return;
+  try{                        // upgrade to real criterion ids so a level can be saved
+    const r=await fetch(`http://${location.hostname}:8090/teacher/sessions/${id}/criteria`,{credentials:'include'});
+    if(r.ok){const c=await r.json();if(Array.isArray(c)&&c.length)setupBehaviours(c);}
+  }catch(e){/* keep the baseline behaviours */}
+}
 const LEVELS=[['مبتدئ','Beginning'],['متطوّر','Developing'],['مطبِّق','Applying'],['ناقل للأثر','Transferring']];
 
 async function loadRoster(){
@@ -736,6 +757,7 @@ function drawRoster(){
 }
 
 function drawObserve(){
+  if(!BEHAVIOURS.length)setupBehaviours();   // never show an empty behaviour list
   $('cmObsWho').innerHTML=present().map(p=>
     `<button data-id="${p.student_id}" class="${obsWho===p.student_id?'is-sel':''}">${esc(p.full_name)}</button>`).join('');
   $('cmObsWhat').innerHTML=BEHAVIOURS.map(b=>
@@ -749,19 +771,45 @@ function drawObserve(){
   $('cmObsLevel').querySelectorAll('button').forEach(b=>b.onclick=()=>{
     if(!obsWho||!obsWhat)return;
     const who=roster.find(p=>p.student_id===obsWho);
+    const beh=BEHAVIOURS.find(x=>x.k===obsWhat);
     observations.push({student_id:obsWho,name:who?who.full_name:'',behaviour:obsWhat,
-                       level:+b.dataset.l,card:i,at:new Date().toISOString()});
+                       criterion_id:beh?beh.criterion_id:null,
+                       level:+b.dataset.l,card:i,at:new Date().toISOString(),saved:false});
     spoke.add(obsWho);          // observing someone means they participated
     obsWho=obsWhat=null;
     $('cmObsCount').textContent=observations.length;
     drawObserve();
   });
 
+  const unsaved=observations.filter(o=>!o.saved).length;
+  const canSave=CLASS_ID&&!(roster[0]&&roster[0].demo)&&observations.some(o=>o.criterion_id&&!o.saved);
+  $('cmObsSave').hidden=!observations.length;
+  $('cmObsSave').disabled=!canSave;
+  $('cmObsSave').textContent=canSave?L(`احفظ ${unsaved} ملاحظة`,`Save ${unsaved}`)
+    :(roster[0]&&roster[0].demo)?L('قائمة تجريبية — لا تُحفظ','Demo roster — not saved')
+    :unsaved?L('لا اتصال — محفوظة محلياً','Offline — kept locally'):L('كل الملاحظات محفوظة','All saved');
+
   $('cmObsLog').innerHTML=observations.slice(-6).reverse().map(o=>{
     const b=BEHAVIOURS.find(x=>x.k===o.behaviour);
-    return `<div class="cm-obs-row"><span class="badge badge-primary">${o.level}</span>
-      <strong>${esc(o.name)}</strong><span class="text-muted">${esc(L(b.ar,b.en))}</span></div>`;
+    return `<div class="cm-obs-row"><span class="badge ${o.saved?'badge-success':'badge-primary'}">${o.level}</span>
+      <strong>${esc(o.name)}</strong><span class="text-muted">${esc(b?L(b.ar,b.en):o.behaviour)}</span>
+      ${o.saved?'<span class="badge badge-success">✓</span>':''}</div>`;
   }).join('');
+}
+
+async function saveObservations(){
+  const pending=observations.filter(o=>o.criterion_id&&!o.saved);
+  if(!CLASS_ID||!pending.length)return;
+  const btn=$('cmObsSave');btn.disabled=true;btn.textContent=L('يحفظ…','Saving…');
+  try{
+    const res=await fetch(`http://${location.hostname}:8090/teacher/observations`,
+      {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
+       body:JSON.stringify({class_id:CLASS_ID,session_id:SESSION.id||SESSION_PARAM,skill_id:SKILL_ID,
+         records:pending.map(o=>({student_id:o.student_id,criterion_id:o.criterion_id,level:o.level}))})});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    pending.forEach(o=>o.saved=true);
+  }catch(e){/* stay unsaved; the button will offer to retry */}
+  drawObserve();
 }
 
 function openDrawer(el){
@@ -777,6 +825,7 @@ $('cmScrim').onclick=closeDrawers;
 document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeDrawers);
 $('cmRosterBtn').onclick=()=>{drawRoster();openDrawer($('cmRoster'))};
 $('cmObsBtn').onclick=()=>{drawObserve();openDrawer($('cmObserve'))};
+$('cmObsSave').onclick=saveObservations;
 $('cmPairBtn').onclick=()=>makeGroups(2);
 $('cmTeamBtn').onclick=()=>makeGroups(4);
 
@@ -805,7 +854,9 @@ async function loadSession(){
   try{
     const res=await fetch(`http://${location.hostname}:8090/teacher/sessions/${id}`,{credentials:'include'});
     if(!res.ok) throw new Error('HTTP '+res.status);
-    Object.assign(SESSION, CM.fromSession(await res.json()));   // SESSION is a const binding; its contents are replaced
+    const payload=await res.json();
+    SKILL_ID=payload.skill&&payload.skill.id||null;
+    Object.assign(SESSION, CM.fromSession(payload));   // SESSION is a const binding; its contents are replaced
     TOTAL=SESSION.cards.reduce((a,c)=>a+(c.dur||0),0);
     lastSentCard=-1;
     document.querySelectorAll('[data-proto-note]').forEach(n=>n.hidden=true);
@@ -813,7 +864,7 @@ async function loadSession(){
 }
 
 document.addEventListener('langchange',draw);
-document.addEventListener('DOMContentLoaded',async()=>{await loadSession();reset();draw();await loadRoster();drawRoster();drawObserve()});
+document.addEventListener('DOMContentLoaded',async()=>{await loadSession();reset();draw();await loadRoster();await loadCriteria();drawRoster();drawObserve()});
 </script>
 </body>
 </html>

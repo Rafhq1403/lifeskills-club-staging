@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | نمو الطالب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* Growth reads as change over time, not a score. The signature is the
+     ladder: four levels as a track, and each behaviour a first→latest move
+     along it. Movement is the message, so the arrow and the gap carry it. */
+  .gr-wrap{max-width:64rem;margin-inline:auto}
+  .gr-head{display:flex;flex-wrap:wrap;gap:var(--space-4);align-items:flex-start;justify-content:space-between}
+  .gr-people{display:flex;gap:var(--space-2);flex-wrap:wrap;margin-top:var(--space-4)}
+  .gr-chip{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-full);
+    padding:.4rem .9rem;font-weight:600;font-size:.9rem;cursor:pointer;display:flex;gap:.4em;align-items:center;transition:var(--transition-fast)}
+  .gr-chip:hover{border-color:var(--color-primary-light)}
+  .gr-chip.is-sel{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+  .gr-chip .av{width:1.5em;height:1.5em;border-radius:50%;background:var(--color-primary-50);color:var(--color-primary-dark);
+    display:grid;place-items:center;font-size:.75rem;font-weight:700}
+  .gr-chip.is-sel .av{background:rgba(255,255,255,.25);color:#fff}
+
+  .gr-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:var(--space-3);margin-top:var(--space-6)}
+  .gr-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:var(--space-5);text-align:center}
+  .gr-stat .n{font-family:var(--font-display-ar);font-size:2.2rem;font-weight:900;line-height:1}
+  html[lang="en"] .gr-stat .n{font-family:var(--font-display-en)}
+  .gr-stat .lab{color:var(--text-muted);font-size:var(--caption-size);margin-top:var(--space-2)}
+  .gr-stat .up{color:var(--color-success-dark)}
+
+  /* legend / ladder scale */
+  .gr-scale{display:flex;gap:var(--space-2);flex-wrap:wrap;margin:var(--space-6) 0 var(--space-2)}
+  .gr-scale span{display:flex;align-items:center;gap:.4em;font-size:.8rem;color:var(--text-muted)}
+  .gr-scale .dot{width:.9em;height:.9em;border-radius:50%}
+  .lv1{background:var(--color-neutral-400)} .lv2{background:var(--color-warning)}
+  .lv3{background:var(--color-primary)} .lv4{background:var(--color-success)}
+  .lv1-t{color:var(--color-neutral-600)} .lv2-t{color:var(--color-warning-dark)}
+  .lv3-t{color:var(--color-primary-dark)} .lv4-t{color:var(--color-success-dark)}
+
+  .gr-group{margin-top:var(--space-8)}
+  .gr-group h3{margin-bottom:var(--space-3)}
+  .gr-beh{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:var(--space-4) var(--space-5);margin-bottom:var(--space-3)}
+  .gr-beh-top{display:flex;justify-content:space-between;align-items:baseline;gap:var(--space-3);flex-wrap:wrap}
+  .gr-beh-name{font-weight:700}
+  .gr-move{font-size:.82rem;color:var(--text-muted);font-family:var(--font-mono);white-space:nowrap}
+  /* the ladder track */
+  .gr-track{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:var(--space-3);position:relative}
+  .gr-seg{height:10px;border-radius:999px;background:var(--color-neutral-100)}
+  .gr-seg.filled{opacity:1}
+  .gr-seg.f1{background:var(--color-neutral-400)} .gr-seg.f2{background:var(--color-warning)}
+  .gr-seg.f3{background:var(--color-primary)} .gr-seg.f4{background:var(--color-success)}
+  .gr-marks{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:5px;font-size:.68rem;color:var(--text-muted);text-align:center}
+  .gr-marks span.first::before{content:"البداية";}
+  html[lang="en"] .gr-marks span.first::before{content:"first";}
+  .gr-marks span.now{font-weight:700}
+  .gr-marks span.now::before{content:"الآن";color:var(--color-primary-dark)}
+  html[lang="en"] .gr-marks span.now::before{content:"now";}
+  .gr-note{margin-top:var(--space-2);font-size:.82rem;color:var(--text-muted);border-inline-start:3px solid var(--color-neutral-300);padding-inline-start:.6rem}
+
+  .gr-empty{text-align:center;padding:var(--space-12);color:var(--text-muted)}
+  .gr-banner{background:var(--color-warning-50);border:1px solid var(--color-warning-light);border-radius:var(--radius-md);
+    padding:var(--space-3) var(--space-4);font-size:.85rem;color:var(--color-warning-dark);margin-bottom:var(--space-4)}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="teacher-dashboard.html" class="brand"><span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">مهارات الحياة</span><span data-lang-only="en">Life Skills</span></span></a>
+    <div class="nav-links">
+      <a href="teacher-dashboard.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="#" class="active"><span data-lang-only="ar">نمو الطلاب</span><span data-lang-only="en">Student growth</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+    </div>
+  </div>
+</nav>
+
+<div class="container gr-wrap" style="padding-block:var(--space-8);" data-main>
+  <div class="gr-banner" id="grDemo" hidden>
+    <span data-lang-only="ar">بيانات تجريبية — تظهر النتائج الحقيقية بمجرد أن يرصد الميسّر ملاحظات في وضع العرض.</span>
+    <span data-lang-only="en">Demo data — real results appear once a facilitator records observations in Classroom Mode.</span>
+  </div>
+
+  <div class="gr-head">
+    <div>
+      <span class="hero-eyebrow">📈 <span data-lang-only="ar">تقرير النمو</span><span data-lang-only="en">Growth report</span></span>
+      <h1 class="mt-2" id="grName">—</h1>
+      <p class="text-muted mt-1" id="grSub">—</p>
+    </div>
+  </div>
+
+  <div class="gr-people" id="grPeople"></div>
+
+  <div id="grBody">
+    <div class="gr-empty" id="grEmpty" hidden></div>
+
+    <div id="grReport" hidden>
+      <div class="gr-summary" id="grSummary"></div>
+      <div class="gr-scale">
+        <span><i class="dot lv1"></i><span data-lang-only="ar">مبتدئ</span><span data-lang-only="en">Beginning</span></span>
+        <span><i class="dot lv2"></i><span data-lang-only="ar">متطوّر</span><span data-lang-only="en">Developing</span></span>
+        <span><i class="dot lv3"></i><span data-lang-only="ar">مطبِّق</span><span data-lang-only="en">Applying</span></span>
+        <span><i class="dot lv4"></i><span data-lang-only="ar">ناقل للأثر</span><span data-lang-only="en">Transferring</span></span>
+      </div>
+      <div id="grGroups"></div>
+    </div>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script>
+window.PAGE_TITLES={ar:'نادي مهارات الحياة | نمو الطالب',en:'Life Skills Club | Student growth'};
+const L=(a,e)=>getLang()==='ar'?a:e;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const API=`http://${location.hostname}:8090`;
+const LV=[['','—'],['مبتدئ','Beginning'],['متطوّر','Developing'],['مطبِّق','Applying'],['ناقل للأثر','Transferring']];
+const STRAND_OF={1:['الوعي بالذات','Self-awareness'],2:['إدارة الذات','Self-management'],3:['المبادرة','Initiative'],
+  4:['التواصل','Communication'],5:['التواصل','Communication'],6:['العلاقات','Relationships'],
+  7:['العلاقات','Relationships'],8:['اتخاذ القرار','Decision-making']};
+
+/* Demo growth — one believable student, upward movement, so staging shows the
+   page working with no backend. Real data replaces it whenever the API answers. */
+const DEMO_ROSTER=[
+  {student_id:'demo-0',full_name:'نورة الس'},
+  {student_id:'demo-1',full_name:'فهد الق'},
+  {student_id:'demo-2',full_name:'سارة الد'}
+];
+const DEMO_GROWTH={
+  'demo-0':{behaviours:[
+    {code:'S01.2',label_ar:'تسمّي قوّتها بدليل',label_en:'Names her strength with evidence',first:2,latest:3,
+     points:[{level:2,session_order:1},{level:3,session_order:1}]},
+    {code:'S04.1',label_ar:'تحافظ على الانتباه',label_en:'Maintains attention',first:1,latest:3,
+     points:[{level:1,session_order:4},{level:2,session_order:4},{level:3,session_order:5}]},
+    {code:'S04.3',label_ar:'تلخّص بدقة',label_en:'Summarises accurately',first:2,latest:4,
+     points:[{level:2,session_order:4},{level:3,session_order:5},{level:4,session_order:6}]},
+    {code:'S07.1',label_ar:'تؤدّي دورها',label_en:'Carries out her role',first:2,latest:3,
+     points:[{level:2,session_order:7},{level:3,session_order:7}]}
+  ],total_observations:9,average_level:2.9},
+  'demo-1':{behaviours:[
+    {code:'S02.2',label_ar:'يتوقّف قبل الردّ',label_en:'Pauses before responding',first:1,latest:2,
+     points:[{level:1,session_order:2},{level:2,session_order:2}]},
+    {code:'S05.1',label_ar:'يقول فكرته في جملة',label_en:'States the idea in one sentence',first:2,latest:3,
+     points:[{level:2,session_order:5},{level:3,session_order:5}]}
+  ],total_observations:4,average_level:2.0},
+  'demo-2':{behaviours:[],total_observations:0,average_level:null}
+};
+
+let roster=[],growth=null,selected=null,demo=false;
+
+async function boot(){
+  // Try the real roster; fall back to demo when there's no teacher session.
+  try{
+    const cls=await (await fetch(`${API}/teacher/classes`,{credentials:'include'})).json();
+    if(Array.isArray(cls)&&cls.length){
+      const r=await (await fetch(`${API}/teacher/classes/${cls[0].id}/roster`,{credentials:'include'})).json();
+      if(Array.isArray(r)&&r.length){roster=r;}
+    }
+  }catch(e){/* not signed in */}
+  if(!roster.length||localStorage.getItem('dev_fixtures')==='1'){roster=DEMO_ROSTER;demo=true;}
+  $('grDemo').hidden=!demo;
+  const wanted=new URLSearchParams(location.search).get('student');
+  selected=(roster.find(p=>p.student_id===wanted)||roster[0]||{}).student_id||null;
+  renderPeople();
+  if(selected)await load(selected);
+}
+
+function renderPeople(){
+  $('grPeople').innerHTML=roster.map(p=>{
+    const nm=(p.full_name||'?').trim();
+    return `<button class="gr-chip ${p.student_id===selected?'is-sel':''}" data-id="${p.student_id}">
+      <span class="av">${esc(nm[0]||'?')}</span>${esc(nm)}</button>`;
+  }).join('');
+  $('grPeople').querySelectorAll('.gr-chip').forEach(b=>b.onclick=()=>{selected=b.dataset.id;renderPeople();load(selected)});
+}
+
+async function load(id){
+  const who=roster.find(p=>p.student_id===id)||{};
+  $('grName').textContent=who.full_name||'—';
+  $('grSub').textContent=L('نمو مرصود سلوكاً بسلوك عبر الجلسات','Growth observed behaviour by behaviour across sessions');
+  if(demo){growth=DEMO_GROWTH[id]||{behaviours:[],total_observations:0,average_level:null};render();return;}
+  try{
+    const res=await fetch(`${API}/teacher/students/${id}/growth`,{credentials:'include'});
+    growth=res.ok?await res.json():{behaviours:[],total_observations:0};
+  }catch(e){growth={behaviours:[],total_observations:0};}
+  render();
+}
+
+function render(){
+  const b=growth.behaviours||[];
+  $('grReport').hidden=!b.length;
+  $('grEmpty').hidden=!!b.length;
+  if(!b.length){
+    $('grEmpty').innerHTML=L(
+      'لا ملاحظات مرصودة لهذا الطالب بعد.<br>ستظهر هنا بمجرد أن يرصد الميسّر مستوى في وضع العرض.',
+      'No observations recorded for this student yet.<br>They appear here once a facilitator records a level in Classroom Mode.');
+    return;
+  }
+  const rising=b.filter(x=>x.latest>x.first).length;
+  $('grSummary').innerHTML=`
+    <div class="gr-stat"><div class="n">${growth.total_observations}</div><div class="lab">${L('ملاحظة مرصودة','observations')}</div></div>
+    <div class="gr-stat"><div class="n">${b.length}</div><div class="lab">${L('سلوك متابَع','behaviours tracked')}</div></div>
+    <div class="gr-stat"><div class="n up">${rising}<span style="font-size:1rem">↑</span></div><div class="lab">${L('سلوك في تقدّم','behaviours rising')}</div></div>
+    <div class="gr-stat"><div class="n">${growth.average_level!=null?growth.average_level.toFixed(1):'—'}</div><div class="lab">${L('متوسط المستوى','average level')}</div></div>`;
+
+  // Group by strand (derived from the code's session number).
+  const groups={};
+  b.forEach(x=>{
+    const s=+((x.code||'S0').slice(1).split('.')[0])||0;
+    (groups[s]=groups[s]||[]).push(x);
+  });
+  $('grGroups').innerHTML=Object.keys(groups).sort((a,c)=>a-c).map(s=>{
+    const st=STRAND_OF[s]||['',''];
+    return `<div class="gr-group"><h3>${L(st[0],st[1])} <span class="caption text-muted">· ${L('الجلسة','Session')} ${s}</span></h3>
+      ${groups[s].map(behRow).join('')}</div>`;
+  }).join('');
+}
+
+function behRow(x){
+  const first=x.first,latest=x.latest;
+  const seg=n=>`<div class="gr-seg ${n<=latest?'filled f'+latest:''}"></div>`;
+  const mark=n=>{
+    const cls=n===first&&n===latest?'now':n===first?'first':n===latest?'now':'';
+    return `<span class="${cls}"></span>`;
+  };
+  const moved=latest>first;
+  const move=moved
+    ? L(`${LV[first][0]} ← ${LV[latest][0]}`,`${LV[first][1]} → ${LV[latest][1]}`)
+    : L(`ثابت عند ${LV[latest][0]}`,`Steady at ${LV[latest][1]}`);
+  return `<div class="gr-beh">
+    <div class="gr-beh-top">
+      <span class="gr-beh-name">${esc(L(x.label_ar,x.label_en))}</span>
+      <span class="gr-move ${moved?'lv'+latest+'-t':''}">${moved?'▲ ':''}${esc(move)}</span>
+    </div>
+    <div class="gr-track">${[1,2,3,4].map(seg).join('')}</div>
+    <div class="gr-marks">${[1,2,3,4].map(mark).join('')}</div>
+    ${x.points&&x.points.length>1?`<div class="gr-note">${L('عبر',' across ')} ${x.points.length} ${L('ملاحظات','observations')}</div>`:''}
+  </div>`;
+}
+
+document.addEventListener('langchange',()=>{if(growth)render();});
+document.addEventListener('DOMContentLoaded',boot);
+</script>
+</body>
+</html>
