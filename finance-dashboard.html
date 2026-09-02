@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | لوحة المالية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">لوحة المدرسة</span><span data-lang-only="en">School Admin</span></div>
+      <a href="admin-dashboard.html"><span class="ic">🏠</span><span data-lang-only="ar">نظرة عامة</span><span data-lang-only="en">Overview</span></a>
+      <a href="admin-dashboard.html#schools" data-requires-permission="schools.view"><span class="ic">🏢</span><span data-lang-only="ar">المدارس</span><span data-lang-only="en">Schools</span></a>
+      <a href="admin-dashboard.html#materials" data-requires-permission="content.view"><span class="ic">📎</span><span data-lang-only="ar">المواد التعليمية</span><span data-lang-only="en">Materials</span></a>
+      <a href="skills.html" data-requires-permission="content.view"><span class="ic">📚</span><span data-lang-only="ar">محتوى البرامج</span><span data-lang-only="en">Programs Content</span></a>
+      <a href="finance-dashboard.html" class="active" data-requires-permission="finance.view,billing.view"><span class="ic">📊</span><span data-lang-only="ar">لوحة المالية</span><span data-lang-only="en">Finance Dashboard</span></a>
+      <a href="employees.html" data-requires-permission="users.view"><span class="ic">👥</span><span data-lang-only="ar">الموظفون والأدوار</span><span data-lang-only="en">Team & Roles</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <strong><span data-lang-only="ar">لوحة المالية</span><span data-lang-only="en">Finance Dashboard</span></strong>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="admin-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <p class="caption text-muted"><span data-lang-only="ar">عرض فقط — لا يمكن تعديل أي سجل مالي من هذه اللوحة.</span><span data-lang-only="en">Read-only — no financial record can be edited from this dashboard.</span></p>
+
+      <div class="grid grid-3 mt-4">
+        <div class="card stat-tile"><span class="value num" id="stat-total-revenue">—</span><span class="label"><span data-lang-only="ar">إجمالي الإيراد هذا الشهر</span><span data-lang-only="en">Total revenue this month</span></span></div>
+        <div class="card stat-tile"><span class="value" id="stat-schools-count">—</span><span class="label"><span data-lang-only="ar">عدد المدارس</span><span data-lang-only="en">Schools</span></span></div>
+        <div class="card stat-tile"><span class="value" id="stat-next-invoice">—</span><span class="label"><span data-lang-only="ar">الفاتورة القادمة</span><span data-lang-only="en">Next invoice</span></span></div>
+      </div>
+
+      <div class="section-head mt-8">
+        <h2><span data-lang-only="ar">الإيراد حسب المدرسة</span><span data-lang-only="en">Revenue by School</span></h2>
+      </div>
+      <div class="field mt-2" style="max-width:320px;">
+        <input class="input" type="text" id="finance-schools-search" data-ph-ar="🔍 ابحث بالاسم أو الرمز" data-ph-en="🔍 Search by name or code">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">المدرسة</span><span data-lang-only="en">School</span></th>
+            <th><span data-lang-only="ar">الرمز</span><span data-lang-only="en">Code</span></th>
+            <th><span data-lang-only="ar">الإيراد هذا الشهر</span><span data-lang-only="en">Revenue this month</span></th>
+            <th><span data-lang-only="ar">حصة المدرسة</span><span data-lang-only="en">School share</span></th>
+            <th><span data-lang-only="ar">حصة المنصة</span><span data-lang-only="en">Platform share</span></th>
+          </tr></thead>
+          <tbody id="finance-schools-body">
+            <tr><td colspan="5" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/permissions.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  function schoolNameHTML(s) {
+    return `<span data-lang-only="ar">${s.name_ar}</span><span data-lang-only="en">${s.name_en || s.name_ar}</span>`;
+  }
+
+  let allFinanceSchools = [];
+
+  function renderFinanceSchools(schools) {
+    const body = document.getElementById('finance-schools-body');
+    body.innerHTML = '';
+    if (!schools.length) {
+      body.innerHTML = '<tr><td colspan="5" class="text-muted"><span data-lang-only="ar">لا توجد مدارس تطابق البحث.</span><span data-lang-only="en">No schools match your search.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    schools.forEach((s) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${schoolNameHTML(s)}</td>
+        <td class="num" style="font-weight:700;">${s.code}</td>
+        <td class="num">${formatNumber(s.revenue_this_month)} <span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></td>
+        <td class="num">${formatNumber(s.school_share_amount)} <span class="text-muted">· ${s.school_share_percent}%</span></td>
+        <td class="num">${formatNumber(s.platform_share_amount)} <span class="text-muted">· ${s.platform_share_percent}%</span></td>
+      `;
+      body.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('finance-schools-search').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { renderFinanceSchools(allFinanceSchools); return; }
+    renderFinanceSchools(allFinanceSchools.filter((s) => [s.name_ar, s.name_en, s.code]
+      .some((v) => (v || '').toLowerCase().includes(q))));
+  });
+
+  function renderFinance(data) {
+    document.getElementById('stat-total-revenue').innerHTML =
+      `${formatNumber(data.total_revenue_this_month)} <span style="font-size:1rem;"><span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></span>`;
+    document.getElementById('stat-schools-count').textContent = formatNumber(data.schools_count);
+    document.getElementById('stat-next-invoice').textContent =
+      formatDate(data.next_invoice_date, { year: 'numeric', month: 'short', day: 'numeric' });
+    allFinanceSchools = data.schools;
+    renderFinanceSchools(allFinanceSchools);
+  }
+
+  (async () => {
+    const me = await requireAuth('admin');
+    if (!me) return;
+    if (!requirePermission(me, 'finance.view,billing.view')) return;
+    gateNav(me);
+    document.getElementById('admin-avatar').textContent = (me.full_name || me.email || '?').trim().charAt(0).toUpperCase();
+    try {
+      renderFinance(await apiFetch('/admin/finance/overview'));
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+  })();
+</script>
+</body>
+</html>

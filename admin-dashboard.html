@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | لوحة المدرسة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">لوحة المدرسة</span><span data-lang-only="en">School Admin</span></div>
+      <a href="admin-dashboard.html" class="active"><span class="ic">🏠</span><span data-lang-only="ar">نظرة عامة</span><span data-lang-only="en">Overview</span></a>
+      <a href="#schools" data-requires-permission="schools.view"><span class="ic">🏢</span><span data-lang-only="ar">المدارس</span><span data-lang-only="en">Schools</span></a>
+      <a href="#leads" data-requires-permission="schools.view"><span class="ic">📥</span><span data-lang-only="ar">طلبات المدارس</span><span data-lang-only="en">School requests</span></a>
+      <a href="#materials" data-requires-permission="content.view"><span class="ic">📎</span><span data-lang-only="ar">المواد التعليمية</span><span data-lang-only="en">Materials</span></a>
+      <a href="skills.html" data-requires-permission="content.view"><span class="ic">📚</span><span data-lang-only="ar">محتوى البرامج</span><span data-lang-only="en">Programs Content</span></a>
+      <a href="finance-dashboard.html" data-requires-permission="finance.view,billing.view"><span class="ic">📊</span><span data-lang-only="ar">لوحة المالية</span><span data-lang-only="en">Finance Dashboard</span></a>
+      <a href="employees.html" data-requires-permission="users.view"><span class="ic">👥</span><span data-lang-only="ar">الموظفون والأدوار</span><span data-lang-only="en">Team & Roles</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <div>
+          <strong id="school-name"><span data-lang-only="ar">لوحة الإدارة</span><span data-lang-only="en">Admin Dashboard</span></strong>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="admin-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- OVERVIEW: each tile is keyed by data-stat and only shown if the
+           /admin/overview response includes that key — the backend omits
+           fields the caller lacks permission for rather than zeroing them,
+           so this stays correct without any permission check here. -->
+      <div class="grid grid-4" id="overview-grid">
+        <div class="card stat-tile hidden" data-stat="students_enrolled"><span class="value">—</span><span class="label"><span data-lang-only="ar">إجمالي الطلاب المسجّلين</span><span data-lang-only="en">Total students enrolled</span></span></div>
+        <div class="card stat-tile hidden" data-stat="active_classrooms"><span class="value">—</span><span class="label"><span data-lang-only="ar">برنامج نشط</span><span data-lang-only="en">Active programs</span></span></div>
+        <div class="card stat-tile hidden" data-stat="overall_completion"><span class="value">—</span><span class="label"><span data-lang-only="ar">نسبة الإنجاز الكلية</span><span data-lang-only="en">Overall completion rate</span></span></div>
+        <div class="card stat-tile hidden" data-stat="revenue_this_month"><span class="value num">—</span><span class="label"><span data-lang-only="ar">إيراد هذا الشهر</span><span data-lang-only="en">Revenue this month</span></span></div>
+      </div>
+
+      <!-- SCHOOLS -->
+      <div data-requires-permission="schools.view">
+        <div class="section-head mt-8" id="schools">
+          <h2><span data-lang-only="ar">المدارس</span><span data-lang-only="en">Schools</span></h2>
+          <button class="btn btn-primary btn-sm" id="signup-school-btn" data-requires-permission="schools.create">+ <span data-lang-only="ar">تسجيل مدرسة</span><span data-lang-only="en">Sign up School</span></button>
+        </div>
+        <div class="field mt-2" style="max-width:320px;">
+          <input class="input" type="text" id="schools-search" data-ph-ar="🔍 ابحث بالاسم، المدينة، أو الرمز" data-ph-en="🔍 Search by name, city, or code">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th><span data-lang-only="ar">الاسم</span><span data-lang-only="en">Name</span></th>
+              <th><span data-lang-only="ar">المدينة</span><span data-lang-only="en">City</span></th>
+              <th><span data-lang-only="ar">المراحل الدراسية</span><span data-lang-only="en">Grade Bands</span></th>
+              <th><span data-lang-only="ar">الرمز</span><span data-lang-only="en">Code</span></th>
+              <th><span data-lang-only="ar">الإيراد هذا الشهر</span><span data-lang-only="en">Revenue this month</span></th>
+              <th><span data-lang-only="ar">الحالة</span><span data-lang-only="en">Status</span></th>
+              <th></th>
+            </tr></thead>
+            <tbody id="schools-body">
+              <tr><td colspan="7" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SCHOOL REQUESTS — the partnership funnel's inbox (school_leads, 0007) -->
+        <div class="section-head mt-8" id="leads">
+          <h2>
+            <span data-lang-only="ar">طلبات المدارس</span><span data-lang-only="en">School requests</span>
+            <span class="badge badge-primary hidden" id="leads-new-badge"></span>
+          </h2>
+          <select class="select" id="leads-filter" style="max-width:220px;" data-aria-ar="تصفية حسب الحالة" data-aria-en="Filter by status" aria-label="تصفية حسب الحالة"></select>
+        </div>
+        <p class="caption text-muted mt-1">
+          <span data-lang-only="ar">طلبات العرض الواردة من صفحة «للمدارس». غيّر الحالة أثناء المتابعة، وأنشئ المدرسة من الطلب نفسه عند الاتفاق — يُسجَّل الطلب حينها كمُحوَّل.</span>
+          <span data-lang-only="en">Demo requests from the "For schools" page. Change the status as you follow up, and create the school straight from the request once agreed — the request is then marked converted.</span>
+        </p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th><span data-lang-only="ar">المدرسة</span><span data-lang-only="en">School</span></th>
+              <th><span data-lang-only="ar">جهة الاتصال</span><span data-lang-only="en">Contact</span></th>
+              <th><span data-lang-only="ar">المراحل</span><span data-lang-only="en">Stages</span></th>
+              <th><span data-lang-only="ar">الطلاب</span><span data-lang-only="en">Students</span></th>
+              <th><span data-lang-only="ar">تاريخ الطلب</span><span data-lang-only="en">Received</span></th>
+              <th><span data-lang-only="ar">الحالة</span><span data-lang-only="en">Status</span></th>
+              <th></th>
+            </tr></thead>
+            <tbody id="leads-body">
+              <tr><td colspan="7" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- REPORTS -->
+        <div class="section-head mt-8" id="reports">
+          <h2><span data-lang-only="ar">التقارير والتحليلات</span><span data-lang-only="en">Reports & Analytics</span></h2>
+        </div>
+        <div class="grid grid-3">
+          <div class="card card-hover"><div style="font-size:1.5rem;">📈</div><h3 class="mt-2"><span data-lang-only="ar">الإنجاز حسب البرنامج</span><span data-lang-only="en">Completion by Program</span></h3><button class="btn btn-secondary btn-sm mt-4 btn-block" disabled><span data-lang-only="ar">قريباً</span><span data-lang-only="en">Coming soon</span></button></div>
+          <div class="card card-hover"><div style="font-size:1.5rem;">👥</div><h3 class="mt-2"><span data-lang-only="ar">تفاصيل تقدّم الطلاب</span><span data-lang-only="en">Student Progress Details</span></h3><button class="btn btn-secondary btn-sm mt-4 btn-block" disabled><span data-lang-only="ar">قريباً</span><span data-lang-only="en">Coming soon</span></button></div>
+          <div class="card card-hover"><div style="font-size:1.5rem;">🧑‍🏫</div><h3 class="mt-2"><span data-lang-only="ar">نشاط المعلمين</span><span data-lang-only="en">Teacher Activity</span></h3><button class="btn btn-secondary btn-sm mt-4 btn-block" disabled><span data-lang-only="ar">قريباً</span><span data-lang-only="en">Coming soon</span></button></div>
+        </div>
+      </div>
+
+      <!-- MATERIALS -->
+      <div data-requires-permission="content.view">
+        <div class="section-head mt-8" id="materials">
+          <h2><span data-lang-only="ar">المواد التعليمية</span><span data-lang-only="en">Materials</span></h2>
+          <button class="btn btn-primary btn-sm" id="upload-material-btn" data-requires-permission="content.create">+ <span data-lang-only="ar">رفع ملف</span><span data-lang-only="en">Upload File</span></button>
+        </div>
+        <div class="field mt-2" style="max-width:320px;">
+          <input class="input" type="text" id="materials-search" data-ph-ar="🔍 ابحث بالعنوان أو الوصف أو المرحلة" data-ph-en="🔍 Search by title, description, or grade band">
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr>
+              <th><span data-lang-only="ar">العنوان</span><span data-lang-only="en">Title</span></th>
+              <th><span data-lang-only="ar">الوصف</span><span data-lang-only="en">Description</span></th>
+              <th><span data-lang-only="ar">المرحلة</span><span data-lang-only="en">Grade Band</span></th>
+              <th></th>
+            </tr></thead>
+            <tbody id="materials-body">
+              <tr><td colspan="4" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SIGN UP SCHOOL MODAL -->
+<div class="modal-backdrop" id="signup-school-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">تسجيل مدرسة جديدة</span><span data-lang-only="en">Sign up a new school</span></h3>
+    <form id="signup-school-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">اسم المدرسة</span><span data-lang-only="en">School name</span></label>
+        <input class="input" type="text" id="signup-school-name" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">المدينة</span><span data-lang-only="en">City</span></label>
+        <input class="input" type="text" id="signup-school-city" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">المراحل الدراسية التي تدرّسها</span><span data-lang-only="en">Grade bands they teach</span></label>
+        <div id="signup-school-grade-bands" class="flex-col gap-2 mt-1"></div>
+      </div>
+      <p id="signup-school-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="signup-school-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="signup-school-submit-btn">
+          <span data-lang-only="ar">تسجيل المدرسة</span><span data-lang-only="en">Sign up school</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- UPLOAD MATERIAL MODAL -->
+<div class="modal-backdrop" id="upload-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">رفع مادة تعليمية</span><span data-lang-only="en">Upload a material</span></h3>
+    <form id="upload-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">العنوان</span><span data-lang-only="en">Title</span></label>
+        <input class="input" type="text" id="upload-title" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">الوصف</span><span data-lang-only="en">Description</span></label>
+        <input class="input" type="text" id="upload-description" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">المرحلة الدراسية</span><span data-lang-only="en">Grade band</span></label>
+        <select class="select" id="upload-grade-band" required>
+          <option value="" disabled selected><span data-lang-only="ar">اختر المرحلة</span><span data-lang-only="en">Select a grade band</span></option>
+        </select>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">الملف (حتى 25 ميجابايت)</span><span data-lang-only="en">File (up to 25MB)</span></label>
+        <input class="input" type="file" id="upload-file" required>
+      </div>
+      <p id="upload-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="upload-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="upload-submit"><span data-lang-only="ar">رفع</span><span data-lang-only="en">Upload</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/permissions.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  const STAT_FORMATTERS = {
+    students_enrolled: (v) => v,
+    active_classrooms: (v) => v,
+    overall_completion: (v) => `${v}%`,
+    revenue_this_month: (v) => `${formatNumber(v)} <span style="font-size:1rem;"><span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></span>`,
+  };
+
+  function renderOverview(me, o) {
+    document.querySelectorAll('#overview-grid [data-stat]').forEach((tile) => {
+      const key = tile.dataset.stat;
+      const present = Object.prototype.hasOwnProperty.call(o, key);
+      tile.classList.toggle('hidden', !present);
+      if (present) tile.querySelector('.value').innerHTML = STAT_FORMATTERS[key](o[key]);
+    });
+    document.getElementById('admin-avatar').textContent = (o.school_name_ar || o.school_name_en || me.full_name || '?').trim().charAt(0);
+  }
+
+  function schoolNameHTML(s) {
+    // English falls back to the Arabic name — schools are signed up with an
+    // Arabic name only, no separate English name is collected.
+    return `<span data-lang-only="ar">${s.name_ar}</span><span data-lang-only="en">${s.name_en || s.name_ar}</span>`;
+  }
+
+  let allSchools = [];
+
+  function renderSchools(schools) {
+    const body = document.getElementById('schools-body');
+    body.innerHTML = '';
+    if (!schools.length) {
+      body.innerHTML = '<tr><td colspan="7" class="text-muted"><span data-lang-only="ar">لا توجد مدارس تطابق البحث.</span><span data-lang-only="en">No schools match your search.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    schools.forEach((s) => {
+      const bandLabels = (s.grade_bands || [])
+        .map((b) => `<span data-lang-only="ar">${b.label_ar}</span><span data-lang-only="en">${b.label_en}</span>`)
+        .join(', ');
+      const statusBadge = s.status === 'active'
+        ? '<span class="badge badge-success"><span data-lang-only="ar">نشطة</span><span data-lang-only="en">Active</span></span>'
+        : s.status === 'pending'
+          ? '<span class="badge badge-warning"><span data-lang-only="ar">قيد الانتظار</span><span data-lang-only="en">Pending</span></span>'
+          : '<span class="badge badge-error"><span data-lang-only="ar">غير نشطة</span><span data-lang-only="en">Inactive</span></span>';
+      // revenue_this_month is omitted entirely by the backend for a caller
+      // without finance.view — show "—" rather than a misleading 0.
+      const revenueCell = Object.prototype.hasOwnProperty.call(s, 'revenue_this_month')
+        ? `${formatNumber(s.revenue_this_month)} <span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span>`
+        : '—';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${schoolNameHTML(s)}</td>
+        <td>${s.city || '—'}</td>
+        <td>${bandLabels || '—'}</td>
+        <td class="num" style="font-weight:700;">${s.code}</td>
+        <td class="num">${revenueCell}</td>
+        <td>${statusBadge}</td>
+        <td><button class="btn btn-secondary btn-sm view-school-btn" data-id="${s.id}"><span data-lang-only="ar">عرض التفاصيل</span><span data-lang-only="en">View details</span></button></td>
+      `;
+      body.appendChild(tr);
+    });
+    document.querySelectorAll('.view-school-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        window.location.href = `school-details.html?id=${btn.dataset.id}`;
+      });
+    });
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('schools-search').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { renderSchools(allSchools); return; }
+    renderSchools(allSchools.filter((s) => [s.name_ar, s.name_en, s.city, s.code]
+      .some((v) => (v || '').toLowerCase().includes(q))));
+  });
+
+  // When the modal is opened from a school request, remember which lead it
+  // came from so a successful sign-up can mark that lead converted.
+  let convertingLeadId = null;
+
+  async function openSignupSchoolModal(prefill = {}) {
+    convertingLeadId = prefill.leadId || null;
+    document.getElementById('signup-school-name').value = prefill.name || '';
+    document.getElementById('signup-school-city').value = prefill.city || '';
+    document.getElementById('signup-school-error').classList.add('hidden');
+    const container = document.getElementById('signup-school-grade-bands');
+    container.innerHTML = '';
+    try {
+      const bands = await apiFetch('/catalog/grade-bands');
+      bands.forEach((b) => {
+        const label = document.createElement('label');
+        label.className = 'flex items-center gap-2';
+        label.innerHTML = `
+          <input type="checkbox" value="${b.id}">
+          <span data-lang-only="ar">${b.label_ar}</span><span data-lang-only="en">${b.label_en}</span>
+        `;
+        container.appendChild(label);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    applyLanguage(getLang());
+    document.getElementById('signup-school-modal-backdrop').classList.add('open');
+  }
+  function closeSignupSchoolModal() {
+    document.getElementById('signup-school-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('signup-school-btn').addEventListener('click', openSignupSchoolModal);
+  document.getElementById('signup-school-cancel').addEventListener('click', closeSignupSchoolModal);
+
+  document.getElementById('signup-school-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name_ar = document.getElementById('signup-school-name').value.trim();
+    const city = document.getElementById('signup-school-city').value.trim();
+    const grade_band_ids = Array.from(
+      document.querySelectorAll('#signup-school-grade-bands input:checked')
+    ).map((cb) => cb.value);
+    const submitBtn = document.getElementById('signup-school-submit-btn');
+    const errorEl = document.getElementById('signup-school-error');
+    if (!grade_band_ids.length) {
+      errorEl.textContent = getLang() === 'ar' ? 'اختر مرحلة دراسية واحدة على الأقل.' : 'Select at least one grade band.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    submitBtn.disabled = true;
+    try {
+      const result = await apiFetch('/admin/schools', { method: 'POST', body: JSON.stringify({ name_ar, city, grade_band_ids }) });
+      closeSignupSchoolModal();
+      announce('تم تسجيل المدرسة', 'School registered');
+      allSchools = await apiFetch('/admin/schools');
+      renderSchools(allSchools);
+      if (convertingLeadId) {
+        // The school was created from a request — close the loop on the lead.
+        // A failure here must never undo the school that was just created.
+        try {
+          await apiFetch(`/admin/leads/${convertingLeadId}`, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'converted', converted_school_id: result.id || null }),
+          });
+          allLeads = await apiFetch('/admin/leads');
+          renderLeads(filteredLeads());
+        } catch (leadErr) {
+          console.error('School created, but the request could not be marked converted:', leadErr);
+        } finally {
+          convertingLeadId = null;
+        }
+      }
+      const notice = getLang() === 'ar'
+        ? `تم تسجيل المدرسة. رمز المدرسة: ${result.code}\nشارك هذا الرمز مع المدرسة لتسجيل المعلمين والطلاب.`
+        : `School signed up. School code: ${result.code}\nShare this code with the school for teacher and student sign-ups.`;
+      alert(notice);
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---- School requests — the partnership funnel's inbox (school_leads) -----
+  const LEAD_STATUSES = ['new', 'contacted', 'qualified', 'converted', 'closed'];
+  const LEAD_STATUS_LABELS = {
+    new:       { ar: 'جديد',             en: 'New',       badge: 'badge-primary' },
+    contacted: { ar: 'تم التواصل',       en: 'Contacted', badge: 'badge-warning' },
+    qualified: { ar: 'مؤهَّل',            en: 'Qualified', badge: 'badge-warning' },
+    converted: { ar: 'تحوّل إلى مدرسة',  en: 'Converted', badge: 'badge-success' },
+    closed:    { ar: 'مغلق',             en: 'Closed',    badge: 'badge-neutral' },
+  };
+  let allLeads = [];
+  let currentAdmin = null;
+  const bandLabelById = {};
+
+  function escapeHtml(s) {
+    return String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function leadStatusLabel(status) {
+    const l = LEAD_STATUS_LABELS[status] || { ar: status, en: status };
+    return `<span data-lang-only="ar">${l.ar}</span><span data-lang-only="en">${l.en}</span>`;
+  }
+
+  // <option> can't carry the two-language spans, so the filter is rendered
+  // in the current language and re-rendered on langchange.
+  function renderLeadsFilter() {
+    const select = document.getElementById('leads-filter');
+    const current = select.value;
+    const ar = getLang() === 'ar';
+    select.innerHTML = `<option value="">${ar ? 'كل الحالات' : 'All statuses'}</option>`
+      + LEAD_STATUSES.map((s) => `<option value="${s}">${ar ? LEAD_STATUS_LABELS[s].ar : LEAD_STATUS_LABELS[s].en}</option>`).join('');
+    select.value = current;
+  }
+
+  function filteredLeads() {
+    const status = document.getElementById('leads-filter').value;
+    return status ? allLeads.filter((l) => l.status === status) : allLeads;
+  }
+
+  function leadBandsHTML(l) {
+    return (l.grade_bands || []).map((id) => {
+      const b = bandLabelById[id];
+      return b ? `<span data-lang-only="ar">${b.label_ar}</span><span data-lang-only="en">${b.label_en}</span>` : escapeHtml(id);
+    }).join('<span class="text-muted"> · </span>');
+  }
+
+  function renderLeads(leads) {
+    const body = document.getElementById('leads-body');
+    const badge = document.getElementById('leads-new-badge');
+    const newCount = allLeads.filter((l) => l.status === 'new').length;
+    badge.classList.toggle('hidden', newCount === 0);
+    badge.innerHTML = `<span class="num">${newCount}</span> <span data-lang-only="ar">جديد</span><span data-lang-only="en">new</span>`;
+
+    body.innerHTML = '';
+    if (!leads.length) {
+      body.innerHTML = '<tr><td colspan="7" class="text-muted"><span data-lang-only="ar">لا توجد طلبات بهذه الحالة.</span><span data-lang-only="en">No requests with this status.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    const canEdit = hasPermission(currentAdmin, 'schools.edit');
+    const canCreate = hasPermission(currentAdmin, 'schools.create');
+    const ar = getLang() === 'ar';
+    const locale = ar ? 'ar-SA' : 'en-GB';
+    leads.forEach((l) => {
+      const received = new Date(l.created_at).toLocaleDateString(locale, { day: 'numeric', month: 'short' });
+      const statusCell = canEdit
+        ? `<select class="select lead-status" data-id="${l.id}">${LEAD_STATUSES.map((s) => `<option value="${s}"${s === l.status ? ' selected' : ''}>${ar ? LEAD_STATUS_LABELS[s].ar : LEAD_STATUS_LABELS[s].en}</option>`).join('')}</select>`
+        : `<span class="badge ${(LEAD_STATUS_LABELS[l.status] || {}).badge || 'badge-neutral'}">${leadStatusLabel(l.status)}</span>`;
+      const convertible = canCreate && l.status !== 'converted' && l.status !== 'closed';
+      const actionCell = convertible
+        ? `<button class="btn btn-secondary btn-sm convert-lead-btn" data-id="${l.id}"><span data-lang-only="ar">إنشاء المدرسة</span><span data-lang-only="en">Create school</span></button>`
+        : (l.status === 'converted' ? '<span class="caption text-muted"><span data-lang-only="ar">تم إنشاؤها</span><span data-lang-only="en">Created</span></span>' : '');
+      const message = l.message
+        ? `<div class="caption text-muted" title="${escapeHtml(l.message)}">💬 ${escapeHtml(l.message.slice(0, 60))}${l.message.length > 60 ? '…' : ''}</div>`
+        : '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><strong>${escapeHtml(l.school_name)}</strong><div class="caption text-muted">${escapeHtml(l.city || '')}</div></td>
+        <td>${escapeHtml(l.contact_name)}${l.job_title ? ` <span class="caption text-muted">· ${escapeHtml(l.job_title)}</span>` : ''}<div class="caption"><a href="mailto:${escapeHtml(l.email)}">${escapeHtml(l.email)}</a>${l.phone ? ` · <span class="num">${escapeHtml(l.phone)}</span>` : ''}</div>${message}</td>
+        <td>${leadBandsHTML(l) || '—'}</td>
+        <td class="num">${l.estimated_students ?? '—'}</td>
+        <td class="num" title="${escapeHtml(l.created_at)}">${received}</td>
+        <td>${statusCell}</td>
+        <td>${actionCell}</td>
+      `;
+      body.appendChild(tr);
+    });
+    document.querySelectorAll('.lead-status').forEach((sel) => {
+      sel.addEventListener('change', async () => {
+        sel.disabled = true;
+        try {
+          const updated = await apiFetch(`/admin/leads/${sel.dataset.id}`, { method: 'PATCH', body: JSON.stringify({ status: sel.value }) });
+          const i = allLeads.findIndex((l) => l.id === sel.dataset.id);
+          if (i >= 0) allLeads[i] = { ...allLeads[i], ...updated };
+          announce('تم تحديث حالة الطلب', 'Request status updated');
+        } catch (err) {
+          alert(err.message);
+        }
+        renderLeads(filteredLeads());
+      });
+    });
+    document.querySelectorAll('.convert-lead-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const l = allLeads.find((x) => x.id === btn.dataset.id);
+        if (l) openSignupSchoolModal({ leadId: l.id, name: l.school_name, city: l.city });
+      });
+    });
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('leads-filter').addEventListener('change', () => renderLeads(filteredLeads()));
+  const rerenderLeadsForLanguage = () => { if (currentAdmin) { renderLeadsFilter(); renderLeads(filteredLeads()); } };
+  window.addEventListener('langchange', rerenderLeadsForLanguage);
+  document.addEventListener('langchange', rerenderLeadsForLanguage);
+
+  let allMaterials = [];
+
+  function renderMaterials(materials) {
+    const body = document.getElementById('materials-body');
+    body.innerHTML = '';
+    if (!materials.length) {
+      body.innerHTML = '<tr><td colspan="4" class="text-muted"><span data-lang-only="ar">لا توجد مواد تطابق البحث.</span><span data-lang-only="en">No materials match your search.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    materials.forEach((m) => {
+      const bandLabel = m.grade_bands
+        ? `<span data-lang-only="ar">${m.grade_bands.label_ar}</span><span data-lang-only="en">${m.grade_bands.label_en}</span>`
+        : `<span data-lang-only="ar">كل المراحل</span><span data-lang-only="en">All grade bands</span>`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><a href="${m.file_url}" target="_blank">${m.title}</a></td>
+        <td class="text-muted">${m.description || ''}</td>
+        <td>${bandLabel}</td>
+        <td><button class="btn btn-tertiary btn-sm delete-material-btn" data-id="${m.id}">🗑️</button></td>
+      `;
+      body.appendChild(tr);
+    });
+    document.querySelectorAll('.delete-material-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (!confirm(getLang() === 'ar' ? 'حذف هذه المادة؟' : 'Delete this material?')) return;
+        await apiFetch(`/admin/materials/${btn.dataset.id}`, { method: 'DELETE' });
+        allMaterials = await apiFetch('/admin/materials');
+        renderMaterials(allMaterials);
+      });
+    });
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('materials-search').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    if (!q) { renderMaterials(allMaterials); return; }
+    renderMaterials(allMaterials.filter((m) => [m.title, m.description, m.grade_bands && m.grade_bands.label_ar, m.grade_bands && m.grade_bands.label_en]
+      .some((v) => (v || '').toLowerCase().includes(q))));
+  });
+
+  async function openUploadModal() {
+    document.getElementById('upload-title').value = '';
+    document.getElementById('upload-description').value = '';
+    document.getElementById('upload-file').value = '';
+    document.getElementById('upload-error').classList.add('hidden');
+    const select = document.getElementById('upload-grade-band');
+    select.innerHTML = '<option value="" disabled selected><span data-lang-only="ar">اختر المرحلة</span><span data-lang-only="en">Select a grade band</span></option>';
+    try {
+      const bands = await apiFetch('/catalog/grade-bands');
+      bands.forEach((b) => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = getLang() === 'ar' ? b.label_ar : b.label_en;
+        select.appendChild(opt);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    document.getElementById('upload-modal-backdrop').classList.add('open');
+  }
+  function closeUploadModal() {
+    document.getElementById('upload-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('upload-material-btn').addEventListener('click', openUploadModal);
+  document.getElementById('upload-cancel').addEventListener('click', closeUploadModal);
+
+  document.getElementById('upload-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const submitBtn = document.getElementById('upload-submit');
+    submitBtn.disabled = true;
+    try {
+      const formData = new FormData();
+      formData.append('title', document.getElementById('upload-title').value.trim());
+      formData.append('description', document.getElementById('upload-description').value.trim());
+      const gradeBand = document.getElementById('upload-grade-band').value;
+      if (gradeBand) formData.append('grade_band_id', gradeBand);
+      formData.append('file', document.getElementById('upload-file').files[0]);
+      await apiFetch('/admin/materials', { method: 'POST', body: formData, headers: {} });
+      closeUploadModal();
+      announce('تم رفع المادة', 'Material uploaded');
+      allMaterials = await apiFetch('/admin/materials');
+      renderMaterials(allMaterials);
+    } catch (err) {
+      const el = document.getElementById('upload-error');
+      el.textContent = err.message;
+      el.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  async function loadAll(me) {
+    currentAdmin = me;
+    const overview = await apiFetch('/admin/overview');
+    renderOverview(me, overview);
+
+    const tasks = [];
+    if (hasPermission(me, 'schools.view')) {
+      tasks.push(apiFetch('/admin/schools').then((schools) => { allSchools = schools; renderSchools(schools); }));
+      // The requests inbox shares the schools permission; band labels come
+      // from the catalogue so the table never hardcodes the band structure.
+      tasks.push(Promise.all([apiFetch('/admin/leads'), apiFetch('/catalog/grade-bands')]).then(([leads, bands]) => {
+        allLeads = leads;
+        bands.forEach((b) => { bandLabelById[b.id] = b; });
+        renderLeadsFilter();
+        renderLeads(filteredLeads());
+      }));
+    }
+    if (hasPermission(me, 'content.view')) {
+      tasks.push(apiFetch('/admin/materials').then((materials) => { allMaterials = materials; renderMaterials(materials); }));
+    }
+    await Promise.all(tasks);
+  }
+
+  (async () => {
+    const me = await requireAuth('admin');
+    if (!me) return;
+    gateNav(me);
+    try {
+      await loadAll(me);
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+  })();
+</script>
+</body>
+</html>

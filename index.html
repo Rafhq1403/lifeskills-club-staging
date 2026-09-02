@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | Life Skills Club</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* Page-local: the hero's visual is the real shape of one session. */
+  .session-path { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-2); margin-top: var(--space-4); }
+  .session-path .stage { background: var(--surface-alt); border: 1px solid var(--border); border-radius: var(--radius-md); padding: var(--space-3) var(--space-2); text-align: center; }
+  .session-path .stage strong { display: block; font-size: 0.875rem; color: var(--text); }
+  .session-path .stage .num { display: block; font-size: 0.75rem; color: var(--color-primary); font-weight: 600; margin-top: 2px; }
+  .session-path .stage.core { background: var(--color-primary-50); border-color: var(--color-primary-light); }
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6); }
+  .path-card ul { display: grid; gap: var(--space-2); margin-top: var(--space-4); }
+  .path-card li { display: flex; gap: var(--space-2); align-items: flex-start; font-size: 0.9375rem; }
+  .path-card li::before { content: "✓"; color: var(--color-success); font-weight: 700; flex: none; }
+  .domain-card p { min-height: 2.5rem; }
+  @media (max-width: 720px) { .path-grid { grid-template-columns: 1fr; } .session-path { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="active"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Home</span></a>
+      <a href="index.html#programs"><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></a>
+      <a href="index.html#schools"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></a>
+      <a href="pricing.html"><span data-lang-only="ar">الاشتراكات</span><span data-lang-only="en">Subscriptions</span></a>
+      <a href="login.html"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Login</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-lang="ar">AR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="enroll.html" class="btn btn-primary btn-sm"><span data-lang-only="ar">سجّل ابنك</span><span data-lang-only="en">Enrol your child</span></a>
+      <button class="nav-burger icon-btn" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+    </div>
+  </div>
+  <div class="mobile-menu">
+    <a href="index.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Home</span></a>
+    <a href="index.html#programs"><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></a>
+    <a href="index.html#schools"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></a>
+    <a href="pricing.html"><span data-lang-only="ar">الاشتراكات</span><span data-lang-only="en">Subscriptions</span></a>
+    <a href="login.html"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Login</span></a>
+    <a href="enroll.html" class="btn btn-primary btn-block mt-4"><span data-lang-only="ar">سجّل ابنك</span><span data-lang-only="en">Enrol your child</span></a>
+  </div>
+</nav>
+
+<main data-main>
+
+<!-- HERO — the thesis. The visual is the product's own artefact: a projector
+     card as the class sees it, the 90-minute spine with the live stage
+     filling, and the two things a facilitator touches during a card. -->
+<header class="hero">
+  <div class="container">
+    <div class="hero-grid" data-observe>
+      <div>
+        <span class="hero-eyebrow">✨ <span data-lang-only="ar">مختبر مهارات الحياة</span><span data-lang-only="en">Life Skills Lab</span> · <span data-lang-only="ar">الصفوف 3–12</span><span data-lang-only="en">Grades 3–12</span></span>
+        <h1>
+          <span data-lang-only="ar">مهارات الحياة <span class="accent">تُمارَس</span> في الصف، ويُرصد أثرها</span>
+          <span data-lang-only="en">Life skills, <span class="accent">practised</span> in the room. And actually observed.</span>
+        </h1>
+        <p class="lead">
+          <span data-lang-only="ar">برنامج ما بعد المدرسة داخل مدرسة طفلك: ميسّر مدرَّب، جلستان أسبوعياً مدة كل منهما 90 دقيقة، مجموعة لا تتجاوز 14 طالباً، ومنهج من تسعة مجالات — بالعربية والإنجليزية.</span>
+          <span data-lang-only="en">An after-school programme inside your child's school: a trained facilitator, two 90-minute sessions a week, a group of no more than fourteen, and a nine-domain curriculum — in Arabic and English.</span>
+        </p>
+        <div class="hero-actions">
+          <a href="enroll.html" class="btn btn-primary btn-lg"><span data-lang-only="ar">سجّل ابنك</span><span data-lang-only="en">Enrol your child</span></a>
+          <a href="index.html#schools" class="btn btn-secondary btn-lg"><span data-lang-only="ar">أضِف البرنامج لمدرستك</span><span data-lang-only="en">Bring it to your school</span></a>
+        </div>
+        <div class="hero-proof">
+          <span><span data-lang-only="ar">نصف كل جلسة تحدٍّ عملي في مجموعات</span><span data-lang-only="en">Half of every session is a hands-on group challenge</span></span>
+          <span><span data-lang-only="ar">أثر مرصود سلوكاً بسلوك، لا درجات</span><span data-lang-only="en">Growth observed behaviour by behaviour, not graded</span></span>
+          <span><span data-lang-only="ar">بدّل اللغة في أي وقت</span><span data-lang-only="en">Switch language any time</span></span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <div class="stage">
+          <div class="stage-chip timer">
+            <span class="ring" style="background:conic-gradient(var(--color-primary) 0 84%, var(--color-neutral-200) 84% 100%)"></span>
+            <div>
+              <div class="mono" dir="ltr">04:12</div>
+              <div class="cap"><span data-lang-only="ar">التهيئة · 5 دقائق</span><span data-lang-only="en">Check-in · 5 min</span></div>
+            </div>
+          </div>
+
+          <div class="stage-card">
+            <span class="stage-name"><span data-lang-only="ar">التهيئة</span><span data-lang-only="en">Check-in</span></span>
+            <div class="statement">
+              <span data-lang-only="ar">بكلمة واحدة:
+كيف وصلتَ إلى الجلسة اليوم؟</span>
+              <span data-lang-only="en">In one word:
+how did you arrive today?</span>
+            </div>
+            <div class="statement-lead">
+              <span data-lang-only="ar">كلمة واحدة فقط — بلا شرح. الميسّر يبدأ بنفسه.</span>
+              <span data-lang-only="en">One word only — no explanation. The facilitator goes first.</span>
+            </div>
+            <div class="stage-spine">
+              <span class="now" style="flex:5"></span><span style="flex:10"></span><span style="flex:10"></span><span style="flex:15"></span><span style="flex:30"></span><span style="flex:10"></span><span style="flex:5"></span><span style="flex:5"></span>
+            </div>
+            <div class="stage-labels">
+              <span class="now" style="flex:5"><span data-lang-only="ar">التهيئة</span><span data-lang-only="en">Check-in</span></span>
+              <span style="flex:10"><span data-lang-only="ar">التمهيد</span><span data-lang-only="en">Hook</span></span>
+              <span style="flex:10"><span data-lang-only="ar">الشرح</span><span data-lang-only="en">Explain</span></span>
+              <span style="flex:15"><span data-lang-only="ar">التجريب</span><span data-lang-only="en">Experiment</span></span>
+              <span style="flex:30"><span data-lang-only="ar">التحدي · 30 د</span><span data-lang-only="en">Challenge · 30 min</span></span>
+              <span style="flex:10"><span data-lang-only="ar">الاستخلاص</span><span data-lang-only="en">Debrief</span></span>
+              <span style="flex:5"><span data-lang-only="ar">التأمل</span><span data-lang-only="en">Reflect</span></span>
+              <span style="flex:5"><span data-lang-only="ar">المهمة</span><span data-lang-only="en">Mission</span></span>
+            </div>
+          </div>
+
+          <div class="stage-chip obs">
+            <span class="lvl">3</span>
+            <div>
+              <div class="cap"><span data-lang-only="ar">✍️ رصد · نورة</span><span data-lang-only="en">✍️ Observation · Noura</span></div>
+              <strong><span data-lang-only="ar">يلخّص ما سمعه بدقة</span><span data-lang-only="en">Summarises what she heard accurately</span></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- FEATURE BAND — true product facts, not adoption claims -->
+<section class="stat-bar" data-observe>
+  <div class="container grid grid-4">
+    <div><div class="stat-num num">9</div><div class="stat-label"><span data-lang-only="ar">مجالات مهارية</span><span data-lang-only="en">Skill domains</span></div></div>
+    <div><div class="stat-num num">3<span class="accent">–</span>12</div><div class="stat-label"><span data-lang-only="ar">الصفوف الدراسية</span><span data-lang-only="en">Grades covered</span></div></div>
+    <div><div class="stat-num num">2<span class="accent">×</span>90</div><div class="stat-label"><span data-lang-only="ar">دقيقة أسبوعياً، وجهاً لوجه</span><span data-lang-only="en">Minutes a week, in person</span></div></div>
+    <div><div class="stat-num num">14</div><div class="stat-label"><span data-lang-only="ar">طالباً كحد أقصى للمجموعة</span><span data-lang-only="en">Students per group, at most</span></div></div>
+  </div>
+</section>
+
+<!-- TWO PATHS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-8" style="max-width:640px; margin-inline:auto;" data-observe>
+      <h2><span data-lang-only="ar">طريقان إلى البرنامج</span><span data-lang-only="en">Two ways in</span></h2>
+      <p class="text-muted mt-2"><span data-lang-only="ar">المدرسة شريك، وولي الأمر هو من يشترك. اختر الطريق الذي يخصّك.</span><span data-lang-only="en">The school is the partner; the family subscribes. Pick the path that's yours.</span></p>
+    </div>
+    <div class="path-grid" data-observe>
+      <div class="card card-hover path-card">
+        <span class="icon-chip primary">👨‍👩‍👧</span>
+        <h3 class="mt-4"><span data-lang-only="ar">لأولياء الأمور</span><span data-lang-only="en">For families</span></h3>
+        <p class="text-muted mt-2"><span data-lang-only="ar">إذا كانت مدرسة طفلك شريكة، سجّله في دقائق باستخدام رمز المدرسة واختر مدة الاشتراك.</span><span data-lang-only="en">If your child's school is a partner, enrol in minutes with the school's code and choose a subscription length.</span></p>
+        <ul>
+          <li><span><span data-lang-only="ar">جلستان في الأسبوع داخل المدرسة، بعد اليوم الدراسي</span><span data-lang-only="en">Two sessions a week at school, after the school day</span></span></li>
+          <li><span><span data-lang-only="ar">مجموعة صغيرة بعمر مختلط — الأكبر يقود والأصغر يتعلّم منه</span><span data-lang-only="en">A small mixed-age group — older students lead, younger ones learn from them</span></span></li>
+          <li><span><span data-lang-only="ar">شواهد على نمو طفلك، لا درجات فقط</span><span data-lang-only="en">Evidence of your child's growth, not just a score</span></span></li>
+        </ul>
+        <a href="enroll.html" class="btn btn-primary btn-block mt-6"><span data-lang-only="ar">سجّل ابنك</span><span data-lang-only="en">Enrol your child</span></a>
+      </div>
+      <div class="card card-hover path-card" id="schools">
+        <span class="icon-chip success">🏫</span>
+        <h3 class="mt-4"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></h3>
+        <p class="text-muted mt-2"><span data-lang-only="ar">برنامج ما بعد المدرسة كامل الجاهزية، يقدّمه ميسّرون مدرَّبون بموادكم وقاعاتكم — ولكم حصة من الإيراد.</span><span data-lang-only="en">A fully prepared after-school programme, delivered by trained facilitators in your rooms — with a share of the revenue.</span></p>
+        <ul>
+          <li><span><span data-lang-only="ar">منهج مكتوب بالكامل: كل جلسة مجهّزة ببطاقاتها ووقتها وأوراقها</span><span data-lang-only="en">Fully written curriculum: every session prepared, timed and printed</span></span></li>
+          <li><span><span data-lang-only="ar">بوابة الميسّر: تجهيز الجلسة، وضع العرض، ورصد المؤشرات</span><span data-lang-only="en">Facilitator portal: session prep, classroom mode, observation capture</span></span></li>
+          <li><span><span data-lang-only="ar">تقرير للمدرسة: الجلسات المنفَّذة، الحضور، ونمو الطلاب لكل مجال</span><span data-lang-only="en">School reporting: sessions delivered, attendance, and growth by domain</span></span></li>
+        </ul>
+        <a href="request-demo.html" class="btn btn-secondary btn-block mt-6"><span data-lang-only="ar">اطلب عرضاً تجريبياً</span><span data-lang-only="en">Request a demo</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY IT WORKS -->
+<section class="section" style="background:var(--surface-alt);">
+  <div class="container">
+    <div class="text-center mb-8" style="max-width:640px; margin-inline:auto;" data-observe>
+      <h2><span data-lang-only="ar">لماذا ينجح البرنامج في القاعة؟</span><span data-lang-only="en">Why it works in the room</span></h2>
+      <p class="text-muted mt-2"><span data-lang-only="ar">ثلاثة أشياء تجعل الجلسة تُنفَّذ كما صُمِّمت — لا كما تيسَّر.</span><span data-lang-only="en">Three things that make a session run as designed — not as improvised.</span></p>
+    </div>
+    <div class="grid grid-3" data-observe>
+      <div class="card card-hover audience-card">
+        <span class="icon-chip primary">📋</span>
+        <h3 class="mt-4"><span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Session prep</span></h3>
+        <p class="text-muted mt-2"><span data-lang-only="ar">قبل كل جلسة يرى الميسّر الهدف، والخطأ الشائع، والمؤشرات التي سيرصدها، وقائمة تجهيز بالدقائق، وترتيب القاعة، وبديلاً كاملاً إن تعطّلت التقنية.</span><span data-lang-only="en">Before every session the facilitator sees the goal, the common mistake, the indicators to watch, a prep checklist in minutes, the room layout, and a full fallback if the technology fails.</span></p>
+      </div>
+      <div class="card card-hover audience-card">
+        <span class="icon-chip warning">🎬</span>
+        <h3 class="mt-4"><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom mode</span></h3>
+        <p class="text-muted mt-2"><span data-lang-only="ar">بطاقات جاهزة للعرض على الشاشة، بطاقات خاصة بالميسّر لا يراها الطلاب، مؤقّت لكل مرحلة، وتسجيل الحضور والرصد بثلاث لمسات.</span><span data-lang-only="en">Projector-ready cards, facilitator-only cards students never see, a timer for each stage, and attendance and observation in three taps.</span></p>
+      </div>
+      <div class="card card-hover audience-card">
+        <span class="icon-chip success">🔍</span>
+        <h3 class="mt-4"><span data-lang-only="ar">شواهد لا درجات</span><span data-lang-only="en">Evidence, not scores</span></h3>
+        <p class="text-muted mt-2"><span data-lang-only="ar">نمو كل طالب يُرصد بمؤشرات سلوكية على سلّم من أربعة مستويات — من «بداية» إلى «نقل» — مع نماذج من أعماله. ما تراه الأسرة والمدرسة هو التغيّر عبر الوقت.</span><span data-lang-only="en">Each student's growth is recorded against observable indicators on a four-level scale — Beginning to Transferring — with samples of their work. What families and schools see is change over time.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NINE DOMAINS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-8" style="max-width:640px; margin-inline:auto;" data-observe>
+      <h2><span data-lang-only="ar">ماذا سيتعلم طفلك؟</span><span data-lang-only="en">What will your child learn?</span></h2>
+      <p class="text-muted mt-2"><span data-lang-only="ar">تسعة مجالات مهارية، تُكتب كل جلسة فيها بما يناسب المرحلة — لعبة صفّية للصف الثالث، ودراسة حالة للصف الحادي عشر.</span><span data-lang-only="en">Nine skill domains, each session written for its stage — a classroom game in Grade 3, a case study in Grade 11.</span></p>
+    </div>
+    <div class="grid grid-3" id="domain-cards" data-observe></div>
+  </div>
+</section>
+
+<!-- PROGRAMS / BANDS -->
+<section class="section" id="programs" style="background:var(--surface-alt);">
+  <div class="container">
+    <div class="section-head" data-observe>
+      <div>
+        <h2><span data-lang-only="ar">ثلاث مراحل، بعمر مختلط</span><span data-lang-only="en">Three stages, mixed ages</span></h2>
+        <p class="text-muted mt-2"><span data-lang-only="ar">تُشكَّل المجموعات من صفوف متجاورة عن قصد: في مهارات كالقيادة والتعاون، وجود أعمار مختلفة في القاعة هو ما يجعل التدريب حقيقياً.</span><span data-lang-only="en">Groups deliberately mix neighbouring grades: for skills like leadership and collaboration, having different ages in the room is what makes the practice real.</span></p>
+      </div>
+    </div>
+    <div class="grid grid-3" id="program-cards" data-observe></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-8" style="max-width:640px; margin-inline:auto;" data-observe>
+      <h2><span data-lang-only="ar">كيف يعمل البرنامج؟</span><span data-lang-only="en">How does it work?</span></h2>
+    </div>
+    <div class="steps-row" data-observe>
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <h3><span data-lang-only="ar">تنضم المدرسة</span><span data-lang-only="en">The school partners</span></h3>
+        <p class="text-muted mt-2 caption"><span data-lang-only="ar">تحصل المدرسة على رمزها الخاص، ويُدعى ميسّروها إلى المنصة ومعهم مكتبة الجلسات كاملة.</span><span data-lang-only="en">The school gets its own code, and its facilitators are invited to the platform with the full session library.</span></p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <h3><span data-lang-only="ar">تسجّل الأسر</span><span data-lang-only="en">Families enrol</span></h3>
+        <p class="text-muted mt-2 caption"><span data-lang-only="ar">يسجّل ولي الأمر طفله برمز المدرسة، ويُوضع الطالب في مجموعة تناسب مرحلته.</span><span data-lang-only="en">A parent enrols their child with the school's code, and the student joins a group for their stage.</span></p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <h3><span data-lang-only="ar">تُنفَّذ الجلسات ويُرصد النمو</span><span data-lang-only="en">Sessions run, growth is recorded</span></h3>
+        <p class="text-muted mt-2 caption"><span data-lang-only="ar">جلستان في الأسبوع على إيقاع ثابت، يرصد فيهما الميسّر مؤشرات كل طالب — فتصل الشواهد إلى الأسرة والمدرسة.</span><span data-lang-only="en">Two sessions a week on a fixed rhythm, with the facilitator recording each student's indicators — so the evidence reaches the family and the school.</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="background:var(--surface-alt);">
+  <div class="container">
+    <div class="cta-banner" data-observe>
+      <h2><span data-lang-only="ar">جاهز؟ الطريقان يبدآن من هنا</span><span data-lang-only="en">Ready? Both paths start here</span></h2>
+      <p class="mt-2 text-muted"><span data-lang-only="ar">الأسر تسجّل الآن. المدارس تطلب عرضاً ونتواصل خلال يومي عمل.</span><span data-lang-only="en">Families enrol now. Schools request a demo and we reply within two business days.</span></p>
+      <div class="hero-actions">
+        <a href="enroll.html" class="btn btn-primary btn-lg"><span data-lang-only="ar">سجّل ابنك</span><span data-lang-only="en">Enrol your child</span></a>
+        <a href="request-demo.html" class="btn btn-secondary btn-lg"><span data-lang-only="ar">اطلب عرضاً للمدرسة</span><span data-lang-only="en">Request a school demo</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-cols">
+      <div>
+        <div class="brand" style="color:#fff;"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></div>
+        <p class="mt-4" style="max-width:32ch;"><span data-lang-only="ar">مهارات حياتية تُبنى بالمرح، وتدوم مدى الحياة.</span><span data-lang-only="en">Life skills, built in the room — and kept for life.</span></p>
+      </div>
+      <div>
+        <h3 style="color:#fff; font-size:1rem;"><span data-lang-only="ar">المنصة</span><span data-lang-only="en">Platform</span></h3>
+        <ul class="mt-4 flex-col gap-3">
+          <li><a href="index.html#programs"><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></a></li>
+          <li><a href="index.html#schools"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></a></li>
+          <li><a href="pricing.html"><span data-lang-only="ar">الاشتراكات</span><span data-lang-only="en">Subscriptions</span></a></li>
+          <li><a href="login.html"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Login</span></a></li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="color:#fff; font-size:1rem;"><span data-lang-only="ar">الدعم</span><span data-lang-only="en">Support</span></h3>
+        <ul class="mt-4 flex-col gap-3">
+          <li><a href="pricing.html#faq"><span data-lang-only="ar">الأسئلة الشائعة</span><span data-lang-only="en">FAQ</span></a></li>
+          <li><a href="mailto:hello@lifeskills.example">hello@lifeskills.example</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span><span data-lang-only="ar">© 2026 نادي مهارات الحياة. جميع الحقوق محفوظة.</span><span data-lang-only="en">© 2026 Life Skills Club. All rights reserved.</span></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>hideLoginLinkUntilChecked();</script>
+<script>
+  // Nine skill domains — the real curriculum (skill_strands), not the old
+  // three-pillar marketing grid.
+  const DOMAIN_COLORS = ['primary', 'blue', 'success', 'warning'];
+  const domainsWrap = document.getElementById('domain-cards');
+  SKILL_DOMAINS.forEach((d, i) => {
+    const el = document.createElement('div');
+    el.className = 'card card-hover domain-card';
+    el.innerHTML = `
+      <span class="icon-chip ${DOMAIN_COLORS[i % DOMAIN_COLORS.length]}">${d.icon}</span>
+      <h3 class="mt-4"><span data-lang-only="ar">${d.nameAr}</span><span data-lang-only="en">${d.nameEn}</span></h3>
+      <p class="text-muted mt-2 caption"><span data-lang-only="ar">${d.descAr}</span><span data-lang-only="en">${d.descEn}</span></p>
+    `;
+    domainsWrap.appendChild(el);
+  });
+
+  const bandColor = { g3_6: 'blue', g7_9: 'amber', g10_12: 'teal' };
+  const wrap = document.getElementById('program-cards');
+  PROGRAMS.forEach((p) => {
+    const el = document.createElement('div');
+    el.className = `card card-hover age-card ${bandColor[p.ageGroup]}`;
+    el.innerHTML = `
+      <span class="age-range num"><span data-lang-only="ar">الصفوف </span><span data-lang-only="en">Grades </span>${p.ageLabel}</span>
+      <h3 class="mt-3"><span data-lang-only="ar">${p.nameAr}</span><span data-lang-only="en">${p.nameEn}</span></h3>
+      <p class="text-muted mt-2 caption"><span data-lang-only="ar">${p.focusAr}</span><span data-lang-only="en">${p.focusEn}</span></p>
+    `;
+    wrap.appendChild(el);
+  });
+  applyLanguage(getLang());
+
+  getSessionOrNull().then(showLoginOrDashboardLink);
+</script>
+</body>
+</html>

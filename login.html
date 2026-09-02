@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | تسجيل الدخول</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="auth-shell">
+  <div class="auth-side">
+    <a href="index.html" class="brand" style="color:#fff;">
+      <span class="logo-mark" style="background:rgba(255,255,255,0.15);">🌱</span>
+      <span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span>
+    </a>
+    <div>
+      <h2 style="color:#fff;"><span data-lang-only="ar">أهلاً بعودتك!</span><span data-lang-only="en">Welcome back!</span></h2>
+      <p class="mt-4" style="color:rgba(255,255,255,0.85); max-width:36ch;">
+        <span data-lang-only="ar">استمتع ببرنامجك لمهارات الحياة. تابع تقدّم الطلاب، حمّل المواد، وشاهد الشارات تتجمّع.</span>
+        <span data-lang-only="en">Access your soft skills program. Track progress, download materials, and watch the badges add up.</span>
+      </p>
+      <div class="card" style="max-width:280px; margin-top:var(--space-10); color:var(--text);">
+        <div class="flex items-center gap-4">
+          <div class="progress-ring sm" style="--percent:62; --ring-color: var(--color-primary);">
+            <div class="progress-ring__label"><span class="pct num">62%</span></div>
+          </div>
+          <div>
+            <strong><span data-lang-only="ar">التقدّم الأسبوعي</span><span data-lang-only="en">Weekly progress</span></strong>
+            <div class="caption text-muted mt-1"><span class="num">18/29</span> <span data-lang-only="ar">طالباً على المسار الصحيح</span><span data-lang-only="en">students on track</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center gap-3 caption" style="color:rgba(255,255,255,0.7);">
+      <span>🌱</span>
+      <span data-lang-only="ar">© 2026 نادي مهارات الحياة</span>
+      <span data-lang-only="en">© 2026 Life Skills Club</span>
+    </div>
+  </div>
+
+  <div class="auth-form-side" data-main>
+    <div class="auth-box">
+      <div class="flex justify-between items-center mb-8">
+        <a href="index.html" class="brand"><span class="logo-mark">🌱</span></a>
+        <div class="lang-toggle">
+          <button data-lang="ar">AR</button>
+          <button data-lang="en">EN</button>
+        </div>
+      </div>
+
+      <h1 style="font-size:1.5rem;"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Log in</span></h1>
+      <p class="text-muted mt-2"><span data-lang-only="ar">اختر نوع حسابك للمتابعة</span><span data-lang-only="en">Choose your account type to continue</span></p>
+
+      <div class="role-tabs mt-6">
+        <button class="role-tab active" data-role="teacher"><span class="icon-chip sm">🧑‍🏫</span><span data-lang-only="ar">معلم</span><span data-lang-only="en">Teacher</span></button>
+        <button class="role-tab" data-role="student"><span class="icon-chip sm">🎓</span><span data-lang-only="ar">طالب</span><span data-lang-only="en">Student</span></button>
+        <button class="role-tab" data-role="admin"><span class="icon-chip sm">🛡️</span><span data-lang-only="ar">إداري</span><span data-lang-only="en">Admin</span></button>
+      </div>
+
+      <form id="login-form" class="mt-8">
+        <div class="field">
+          <label>
+            <span class="identifier-label-email"><span data-lang-only="ar">البريد الإلكتروني</span><span data-lang-only="en">Email</span></span>
+            <span class="identifier-label-username hidden"><span data-lang-only="ar">اسم المستخدم</span><span data-lang-only="en">Username</span></span>
+          </label>
+          <input class="input" type="email" id="login-identifier" data-ph-ar="you@example.com" data-ph-en="you@example.com" required>
+        </div>
+        <div class="field">
+          <label><span data-lang-only="ar">كلمة المرور</span><span data-lang-only="en">Password</span></label>
+          <input class="input" type="password" id="login-password" placeholder="••••••••" required>
+        </div>
+        <div class="flex justify-between items-center caption mt-2 mb-6">
+          <label class="flex items-center gap-2"><input type="checkbox"><span data-lang-only="ar">تذكرني</span><span data-lang-only="en">Remember me</span></label>
+          <a href="#" id="forgot-password-link" class="text-primary" style="font-weight:600;"><span data-lang-only="ar">نسيت كلمة المرور؟</span><span data-lang-only="en">Forgot password?</span></a>
+        </div>
+        <p id="login-message" class="caption mt-2 mb-4 hidden"></p>
+        <button type="submit" class="btn btn-primary btn-block btn-lg" id="login-submit">
+          <span data-lang-only="ar">دخول</span><span data-lang-only="en">Log in</span>
+        </button>
+      </form>
+
+      <p class="caption text-center text-muted mt-6">
+        <span data-lang-only="ar">ليس لديك حساب؟</span><span data-lang-only="en">Don't have an account?</span>
+        <a href="signup.html" class="text-primary" style="font-weight:700;"><span data-lang-only="ar">إنشاء حساب</span><span data-lang-only="en">Sign up</span></a>
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>
+  // Role tabs only preselect which identifier field to show (email vs username) —
+  // the server, not this client-side value, decides the account's real role and
+  // where to redirect after login.
+  const KNOWN_ROLES = ['teacher', 'student', 'admin'];
+  const IDENTIFIER_CONFIG = {
+    teacher: { type: 'email', phAr: 'you@example.com', phEn: 'you@example.com' },
+    admin: { type: 'email', phAr: 'you@example.com', phEn: 'you@example.com' },
+    student: { type: 'text', phAr: 'مثال: salma482', phEn: 'e.g. salma482' },
+  };
+
+  let role = 'teacher';
+  const params = new URLSearchParams(location.search);
+  if (params.get('role') && KNOWN_ROLES.includes(params.get('role'))) {
+    role = params.get('role');
+  }
+
+  function setActiveRole() {
+    document.querySelectorAll('.role-tab').forEach((btn) => btn.classList.toggle('active', btn.dataset.role === role));
+    const input = document.getElementById('login-identifier');
+    const config = IDENTIFIER_CONFIG[role];
+    input.type = config.type;
+    input.setAttribute('data-ph-ar', config.phAr);
+    input.setAttribute('data-ph-en', config.phEn);
+    document.querySelector('.identifier-label-email').classList.toggle('hidden', role === 'student');
+    document.querySelector('.identifier-label-username').classList.toggle('hidden', role !== 'student');
+    applyLanguage(getLang());
+  }
+  document.querySelectorAll('.role-tab').forEach((btn) => {
+    btn.addEventListener('click', () => { role = btn.dataset.role; setActiveRole(); });
+  });
+  setActiveRole();
+
+  function showLoginMessage(text, isError) {
+    const el = document.getElementById('login-message');
+    el.textContent = text;
+    el.style.color = isError ? '#c0392b' : '#2e7d32';
+    el.classList.remove('hidden');
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const identifier = document.getElementById('login-identifier').value.trim();
+    const password = document.getElementById('login-password').value;
+    const submitBtn = document.getElementById('login-submit');
+    submitBtn.disabled = true;
+    try {
+      const data = await apiFetch('/auth/login', { method: 'POST', body: JSON.stringify({ identifier, password }) });
+      window.location.href = data.redirect;
+    } catch (err) {
+      showLoginMessage(err.message, true);
+      submitBtn.disabled = false;
+    }
+  });
+
+  // The "Dev quick login" panel that used to live here shipped three seeded
+  // accounts and their shared password in production markup. Removed on the
+  // safety branch. For development: seeded credentials are shared privately
+  // alongside .env (see ONBOARDING.md), and any screen can be explored with no
+  // backend at all via ?fixtures=1 (see js/dev-fixtures.js).
+
+  document.getElementById('forgot-password-link').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const identifier = document.getElementById('login-identifier').value.trim();
+    if (!identifier) {
+      showLoginMessage(getLang() === 'ar' ? 'أدخل البريد الإلكتروني أو اسم المستخدم أولاً' : 'Enter your email or username first', true);
+      return;
+    }
+    try {
+      const result = await apiFetch('/auth/forgot-password', { method: 'POST', body: JSON.stringify({ identifier }) });
+      if (result.dev_reset_link) {
+        // Dev-mode only (see backend DEBUG flag): the email failed to send, so the
+        // link is handed back directly instead of leaving the flow untestable.
+        const el = document.getElementById('login-message');
+        el.innerHTML = `${getLang() === 'ar' ? 'تعذّر إرسال البريد — رابط تجريبي:' : "Email didn't send — dev link:"} <a href="${result.dev_reset_link}" target="_blank">${getLang() === 'ar' ? 'فتح' : 'open'}</a>`;
+        el.style.color = '#2e7d32';
+        el.classList.remove('hidden');
+      } else {
+        showLoginMessage(
+          getLang() === 'ar' ? 'إذا كان الحساب موجوداً، أرسلنا رابط إعادة التعيين.' : "If that account exists, we've sent reset instructions.",
+          false
+        );
+      }
+    } catch (err) {
+      showLoginMessage(err.message, true);
+    }
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | تفاصيل المدرسة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">لوحة المدرسة</span><span data-lang-only="en">School Admin</span></div>
+      <a href="admin-dashboard.html"><span class="ic">🏠</span><span data-lang-only="ar">نظرة عامة</span><span data-lang-only="en">Overview</span></a>
+      <a href="admin-dashboard.html#schools" class="active" data-requires-permission="schools.view"><span class="ic">🏢</span><span data-lang-only="ar">المدارس</span><span data-lang-only="en">Schools</span></a>
+      <a href="admin-dashboard.html#materials" data-requires-permission="content.view"><span class="ic">📎</span><span data-lang-only="ar">المواد التعليمية</span><span data-lang-only="en">Materials</span></a>
+      <a href="skills.html" data-requires-permission="content.view"><span class="ic">📚</span><span data-lang-only="ar">محتوى البرامج</span><span data-lang-only="en">Programs Content</span></a>
+      <a href="finance-dashboard.html" data-requires-permission="finance.view,billing.view"><span class="ic">📊</span><span data-lang-only="ar">لوحة المالية</span><span data-lang-only="en">Finance Dashboard</span></a>
+      <a href="employees.html" data-requires-permission="users.view"><span class="ic">👥</span><span data-lang-only="ar">الموظفون والأدوار</span><span data-lang-only="en">Team & Roles</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <div>
+          <a href="admin-dashboard.html#schools" class="caption text-muted"><span data-lang-only="ar">← المدارس</span><span data-lang-only="en">← Schools</span></a>
+          <strong id="school-title" style="display:block;">…</strong>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="admin-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- SCHOOL HEADER -->
+      <div class="card">
+        <div class="flex justify-between items-start wrap gap-4">
+          <div>
+            <h2 id="school-name">…</h2>
+            <p class="caption text-muted mt-1" id="school-meta"></p>
+          </div>
+          <div data-requires-permission="finance.view">
+            <div class="caption text-muted"><span data-lang-only="ar">الإيراد هذا الشهر</span><span data-lang-only="en">Revenue this month</span></div>
+            <h3 class="mt-1 num" id="school-revenue">—</h3>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRAMS (classes) -->
+      <div class="section-head mt-8" id="programs">
+        <h2><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></h2>
+        <div class="flex items-center gap-3">
+          <span class="caption text-muted"><span data-lang-only="ar">الحد الأقصى: 14 طالباً / برنامج</span><span data-lang-only="en">Max 14 students / program</span></span>
+          <button class="btn btn-primary btn-sm" id="create-program-btn" data-requires-permission="schools.edit">+ <span data-lang-only="ar">إنشاء برنامج</span><span data-lang-only="en">Create Program</span></button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">البرنامج</span><span data-lang-only="en">Program</span></th>
+            <th><span data-lang-only="ar">المعلم</span><span data-lang-only="en">Teacher</span></th>
+            <th><span data-lang-only="ar">الإشغال</span><span data-lang-only="en">Occupancy</span></th>
+            <th><span data-lang-only="ar">الإنجاز</span><span data-lang-only="en">Progress</span></th>
+            <th><span data-lang-only="ar">الحالة</span><span data-lang-only="en">Status</span></th>
+            <th></th>
+          </tr></thead>
+          <tbody id="programs-body">
+            <tr><td colspan="6" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TEACHERS -->
+      <div class="section-head mt-8" id="teachers">
+        <h2><span data-lang-only="ar">المعلمون</span><span data-lang-only="en">Teachers</span></h2>
+        <button class="btn btn-secondary btn-sm" id="invite-teacher-btn" data-requires-permission="schools.edit">+ <span data-lang-only="ar">دعوة معلم</span><span data-lang-only="en">Invite Teacher</span></button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">الاسم</span><span data-lang-only="en">Name</span></th>
+            <th><span data-lang-only="ar">البريد الإلكتروني</span><span data-lang-only="en">Email</span></th>
+            <th><span data-lang-only="ar">المرحلة</span><span data-lang-only="en">Grade Band</span></th>
+            <th><span data-lang-only="ar">البرامج المسندة</span><span data-lang-only="en">Programs Assigned</span></th>
+            <th><span data-lang-only="ar">الحالة</span><span data-lang-only="en">Status</span></th>
+          </tr></thead>
+          <tbody id="teachers-body">
+            <tr><td colspan="5" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- STUDENTS -->
+      <div class="section-head mt-8" id="students">
+        <h2><span data-lang-only="ar">الطلاب</span><span data-lang-only="en">Students</span></h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">الاسم</span><span data-lang-only="en">Name</span></th>
+            <th><span data-lang-only="ar">اسم المستخدم</span><span data-lang-only="en">Username</span></th>
+            <th><span data-lang-only="ar">المرحلة</span><span data-lang-only="en">Grade Band</span></th>
+            <th><span data-lang-only="ar">البرنامج</span><span data-lang-only="en">Program</span></th>
+          </tr></thead>
+          <tbody id="students-body">
+            <tr><td colspan="4" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CREATE PROGRAM MODAL -->
+<div class="modal-backdrop" id="create-program-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">إنشاء برنامج جديد</span><span data-lang-only="en">Create a new program</span></h3>
+    <form id="create-program-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">المعلم</span><span data-lang-only="en">Teacher</span></label>
+        <select class="select" id="program-teacher" required>
+          <option value="" disabled selected><span data-lang-only="ar">اختر معلماً</span><span data-lang-only="en">Select a teacher</span></option>
+        </select>
+        <p class="caption text-muted mt-1"><span data-lang-only="ar">سيُحدَّد البرنامج تلقائياً بمرحلة هذا المعلم الدراسية.</span><span data-lang-only="en">The program's grade band is taken automatically from this teacher's.</span></p>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">اسم البرنامج (عربي)</span><span data-lang-only="en">Program name (Arabic)</span></label>
+        <input class="input" type="text" id="program-name-ar" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">اسم البرنامج (إنجليزي)</span><span data-lang-only="en">Program name (English)</span></label>
+        <input class="input" type="text" id="program-name-en" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">السعة</span><span data-lang-only="en">Capacity</span></label>
+        <input class="input num" type="number" id="program-capacity" min="1" max="20" value="20" required>
+      </div>
+      <p id="create-program-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="create-program-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="create-program-submit-btn">
+          <span data-lang-only="ar">إنشاء البرنامج</span><span data-lang-only="en">Create program</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- REASSIGN TEACHER MODAL -->
+<div class="modal-backdrop" id="reassign-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">تغيير معلم البرنامج</span><span data-lang-only="en">Reassign program teacher</span></h3>
+    <p class="caption text-muted mt-1"><span data-lang-only="ar">الطلاب المسجّلون في هذا البرنامج يبقون مسجّلين — لن يتأثروا بتغيير المعلم.</span><span data-lang-only="en">Students already enrolled in this program stay enrolled — reassigning the teacher doesn't affect them.</span></p>
+    <form id="reassign-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">المعلم الجديد</span><span data-lang-only="en">New teacher</span></label>
+        <select class="select" id="reassign-teacher" required>
+          <option value="" disabled selected><span data-lang-only="ar">اختر معلماً</span><span data-lang-only="en">Select a teacher</span></option>
+        </select>
+      </div>
+      <p id="reassign-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="reassign-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="reassign-submit-btn">
+          <span data-lang-only="ar">حفظ</span><span data-lang-only="en">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- INVITE TEACHER MODAL -->
+<div class="modal-backdrop" id="invite-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">دعوة معلم جديد</span><span data-lang-only="en">Invite a new teacher</span></h3>
+    <form id="invite-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">الاسم الكامل</span><span data-lang-only="en">Full name</span></label>
+        <input class="input" type="text" id="invite-name" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">البريد الإلكتروني</span><span data-lang-only="en">Email</span></label>
+        <input class="input" type="email" id="invite-email" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">المرحلة الدراسية التي سيدرّسها</span><span data-lang-only="en">Grade band they'll teach</span></label>
+        <select class="select" id="invite-grade-band" required>
+          <option value="" disabled selected><span data-lang-only="ar">اختر المرحلة</span><span data-lang-only="en">Select a grade band</span></option>
+        </select>
+      </div>
+      <p id="invite-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="invite-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="invite-submit-btn">
+          <span data-lang-only="ar">إرسال الدعوة</span><span data-lang-only="en">Send invite</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/permissions.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  const schoolId = new URLSearchParams(location.search).get('id');
+  let currentSchool = null;
+  let currentTeachers = [];
+  let currentMe = null;
+
+  function schoolNameHTML(s) {
+    // English falls back to the Arabic name — schools are signed up with an
+    // Arabic name only, no separate English name is collected.
+    return `<span data-lang-only="ar">${s.name_ar}</span><span data-lang-only="en">${s.name_en || s.name_ar}</span>`;
+  }
+
+  function renderSchoolHeader(school) {
+    document.getElementById('school-title').innerHTML = schoolNameHTML(school);
+    document.getElementById('school-name').innerHTML = schoolNameHTML(school);
+    document.getElementById('school-meta').innerHTML =
+      `${school.city || '—'} · <span class="num" style="font-weight:700;">${school.code}</span>`;
+    if (Object.prototype.hasOwnProperty.call(school, 'revenue_this_month')) {
+      document.getElementById('school-revenue').innerHTML =
+        `${formatNumber(school.revenue_this_month)} <span style="font-size:1rem;"><span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></span>`;
+    }
+    document.getElementById('admin-avatar').textContent = (school.name_ar || school.name_en || '?').trim().charAt(0);
+  }
+
+  function renderPrograms(classes) {
+    const body = document.getElementById('programs-body');
+    body.innerHTML = '';
+    if (!classes.length) {
+      body.innerHTML = '<tr><td colspan="6" class="text-muted"><span data-lang-only="ar">لا توجد برامج بعد.</span><span data-lang-only="en">No programs yet.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    classes.forEach((c) => {
+      const pct = Math.round((c.enrolled / c.capacity) * 100);
+      const full = c.enrolled >= c.capacity;
+      const near = !full && pct >= 80;
+      const statusBadge = full
+        ? '<span class="badge badge-error"><span data-lang-only="ar">مكتمل</span><span data-lang-only="en">Full</span></span>'
+        : near
+          ? '<span class="badge badge-warning"><span data-lang-only="ar">شبه ممتلئ</span><span data-lang-only="en">Nearly full</span></span>'
+          : '<span class="badge badge-success"><span data-lang-only="ar">متاح</span><span data-lang-only="en">Available</span></span>';
+      const bandLabel = c.grade_bands
+        ? `<span data-lang-only="ar">${c.grade_bands.label_ar}</span><span data-lang-only="en">${c.grade_bands.label_en}</span>`
+        : '';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span data-lang-only="ar">${c.name_ar}</span><span data-lang-only="en">${c.name_en}</span><div class="caption text-muted mt-1">${bandLabel}</div></td>
+        <td>${c.teachers ? c.teachers.full_name : '—'}</td>
+        <td style="min-width:160px;">
+          <div class="capacity-meta"><span class="num">${c.enrolled}/${c.capacity}</span></div>
+          <div class="capacity-bar mt-1"><div class="capacity-bar__fill ${full ? 'full' : near ? 'near' : ''}" style="width:${pct}%"></div></div>
+        </td>
+        <td class="num">${c.progress}%</td>
+        <td>${statusBadge}</td>
+        <td><button class="btn btn-tertiary btn-sm reassign-btn" data-id="${c.id}" data-requires-permission="schools.edit"><span data-lang-only="ar">تغيير المعلم</span><span data-lang-only="en">Reassign teacher</span></button></td>
+      `;
+      body.appendChild(tr);
+    });
+    document.querySelectorAll('.reassign-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openReassignModal(btn.dataset.id));
+    });
+    applyLanguage(getLang());
+  }
+
+  function teacherOptionsHTML(selectedId) {
+    return currentTeachers
+      .filter((t) => t.status === 'active')
+      .map((t) => {
+        const band = t.grade_bands ? (getLang() === 'ar' ? t.grade_bands.label_ar : t.grade_bands.label_en) : '';
+        const selected = t.user_id === selectedId ? 'selected' : '';
+        return `<option value="${t.user_id}" ${selected}>${t.full_name}${band ? ' — ' + band : ''}</option>`;
+      })
+      .join('');
+  }
+
+  function renderTeachers(teachers) {
+    const body = document.getElementById('teachers-body');
+    body.innerHTML = '';
+    if (!teachers.length) {
+      body.innerHTML = '<tr><td colspan="5" class="text-muted"><span data-lang-only="ar">لا يوجد معلمون بعد.</span><span data-lang-only="en">No teachers yet.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    teachers.forEach((t) => {
+      const statusBadge = t.status === 'active'
+        ? '<span class="badge badge-success"><span data-lang-only="ar">نشط</span><span data-lang-only="en">Active</span></span>'
+        : '<span class="badge badge-warning"><span data-lang-only="ar">دعوة معلّقة</span><span data-lang-only="en">Invite pending</span></span>';
+      const gradeBand = t.grade_bands
+        ? `<span data-lang-only="ar">${t.grade_bands.label_ar}</span><span data-lang-only="en">${t.grade_bands.label_en}</span>`
+        : '—';
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${t.full_name}</td>
+        <td class="num">${t.profiles ? t.profiles.email : ''}</td>
+        <td>${gradeBand}</td>
+        <td class="num">${t.classes_assigned}</td>
+        <td>${statusBadge}</td>
+      `;
+      body.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  function renderStudents(students) {
+    const body = document.getElementById('students-body');
+    body.innerHTML = '';
+    if (!students.length) {
+      body.innerHTML = '<tr><td colspan="4" class="text-muted"><span data-lang-only="ar">لا يوجد طلاب بعد.</span><span data-lang-only="en">No students yet.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    students.forEach((s) => {
+      const gradeBand = s.grade_bands
+        ? `<span data-lang-only="ar">${s.grade_bands.label_ar}</span><span data-lang-only="en">${s.grade_bands.label_en}</span>`
+        : '—';
+      const sub = (s.subscriptions || [])[0];
+      const program = sub && sub.classes
+        ? `<span data-lang-only="ar">${sub.classes.name_ar}</span><span data-lang-only="en">${sub.classes.name_en}</span>`
+        : `<span data-lang-only="ar">غير مسند</span><span data-lang-only="en">Unassigned</span>`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.full_name}</td>
+        <td class="num">${s.username || '—'}</td>
+        <td>${gradeBand}</td>
+        <td>${program}</td>
+      `;
+      body.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  function openCreateProgramModal() {
+    document.getElementById('program-name-ar').value = '';
+    document.getElementById('program-name-en').value = '';
+    document.getElementById('program-capacity').value = 20;
+    document.getElementById('create-program-error').classList.add('hidden');
+    document.getElementById('program-teacher').innerHTML =
+      '<option value="" disabled selected><span data-lang-only="ar">اختر معلماً</span><span data-lang-only="en">Select a teacher</span></option>'
+      + teacherOptionsHTML(null);
+    applyLanguage(getLang());
+    document.getElementById('create-program-modal-backdrop').classList.add('open');
+  }
+  function closeCreateProgramModal() {
+    document.getElementById('create-program-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('create-program-btn').addEventListener('click', openCreateProgramModal);
+  document.getElementById('create-program-cancel').addEventListener('click', closeCreateProgramModal);
+
+  document.getElementById('create-program-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const teacher_id = document.getElementById('program-teacher').value;
+    const name_ar = document.getElementById('program-name-ar').value.trim();
+    const name_en = document.getElementById('program-name-en').value.trim();
+    const capacity = Number(document.getElementById('program-capacity').value);
+    const submitBtn = document.getElementById('create-program-submit-btn');
+    const errorEl = document.getElementById('create-program-error');
+    submitBtn.disabled = true;
+    try {
+      const result = await apiFetch(`/admin/schools/${schoolId}/programs`, {
+        method: 'POST',
+        body: JSON.stringify({ teacher_id, name_ar, name_en, capacity }),
+      });
+      closeCreateProgramModal();
+      announce('تم إنشاء البرنامج', 'Program created');
+      await loadSchool();
+      const notice = result.auto_assigned > 0
+        ? (getLang() === 'ar'
+          ? `تم إنشاء البرنامج، وتم تسجيل ${result.auto_assigned} طالباً كانوا بانتظار برنامج لمرحلتهم.`
+          : `Program created. ${result.auto_assigned} waiting student(s) were enrolled into it automatically.`)
+        : (getLang() === 'ar' ? 'تم إنشاء البرنامج.' : 'Program created.');
+      alert(notice);
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  let reassignClassId = null;
+  function openReassignModal(classId) {
+    reassignClassId = classId;
+    document.getElementById('reassign-error').classList.add('hidden');
+    document.getElementById('reassign-teacher').innerHTML =
+      '<option value="" disabled selected><span data-lang-only="ar">اختر معلماً</span><span data-lang-only="en">Select a teacher</span></option>'
+      + teacherOptionsHTML(null);
+    applyLanguage(getLang());
+    document.getElementById('reassign-modal-backdrop').classList.add('open');
+  }
+  function closeReassignModal() {
+    document.getElementById('reassign-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('reassign-cancel').addEventListener('click', closeReassignModal);
+
+  document.getElementById('reassign-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const teacher_id = document.getElementById('reassign-teacher').value;
+    const submitBtn = document.getElementById('reassign-submit-btn');
+    const errorEl = document.getElementById('reassign-error');
+    submitBtn.disabled = true;
+    try {
+      await apiFetch(`/admin/schools/${schoolId}/programs/${reassignClassId}/teacher`, {
+        method: 'PATCH',
+        body: JSON.stringify({ teacher_id }),
+      });
+      closeReassignModal();
+      announce('تم تغيير المعلم', 'Teacher reassigned');
+      await loadSchool();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  async function openInviteModal() {
+    document.getElementById('invite-name').value = '';
+    document.getElementById('invite-email').value = '';
+    document.getElementById('invite-error').classList.add('hidden');
+    const select = document.getElementById('invite-grade-band');
+    select.innerHTML = '<option value="" disabled selected><span data-lang-only="ar">اختر المرحلة</span><span data-lang-only="en">Select a grade band</span></option>';
+    try {
+      const bands = await apiFetch('/catalog/grade-bands');
+      bands.forEach((b) => {
+        const opt = document.createElement('option');
+        opt.value = b.id;
+        opt.textContent = getLang() === 'ar' ? b.label_ar : b.label_en;
+        select.appendChild(opt);
+      });
+    } catch (err) {
+      console.error(err);
+    }
+    document.getElementById('invite-modal-backdrop').classList.add('open');
+  }
+  function closeInviteModal() {
+    document.getElementById('invite-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('invite-teacher-btn').addEventListener('click', openInviteModal);
+  document.getElementById('invite-cancel').addEventListener('click', closeInviteModal);
+
+  document.getElementById('invite-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const full_name = document.getElementById('invite-name').value.trim();
+    const email = document.getElementById('invite-email').value.trim();
+    const grade_band_id = document.getElementById('invite-grade-band').value;
+    const submitBtn = document.getElementById('invite-submit-btn');
+    submitBtn.disabled = true;
+    try {
+      // The school is already known from the page context — no need to make
+      // the admin re-type a code they just saw on the Schools list.
+      const result = await apiFetch('/admin/teachers/invite', {
+        method: 'POST',
+        body: JSON.stringify({ full_name, email, grade_band_id, school_code: currentSchool.code }),
+      });
+      closeInviteModal();
+      announce('تم إرسال الدعوة', 'Invitation sent');
+      await loadSchool();
+      if (result.invite_link) {
+        // Always hand the admin the link — Mailgun's accept response doesn't
+        // guarantee actual delivery (sandbox domains reject silently after
+        // accepting), so email_sent alone can't be trusted to mean "arrived."
+        const notice = result.email_sent
+          ? (getLang() === 'ar' ? 'تم إرسال البريد. رابط الدعوة (احتياطي):' : 'Email sent. Invite link (backup):')
+          : (getLang() === 'ar' ? 'تعذّر إرسال البريد. رابط الدعوة:' : "Email didn't send. Invite link:");
+        alert(`${notice}\n${result.invite_link}`);
+      }
+    } catch (err) {
+      const el = document.getElementById('invite-error');
+      el.textContent = err.message;
+      el.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  async function loadSchool() {
+    const { school, classes, teachers, students } = await apiFetch(`/admin/schools/${schoolId}`);
+    currentSchool = school;
+    currentTeachers = teachers;
+    renderSchoolHeader(school);
+    renderPrograms(classes);
+    renderTeachers(teachers);
+    renderStudents(students);
+    gateNav(currentMe);
+  }
+
+  (async () => {
+    const me = await requireAuth('admin');
+    if (!me) return;
+    if (!requirePermission(me, 'schools.view')) return;
+    currentMe = me;
+    if (!schoolId) {
+      window.location.href = 'admin-dashboard.html#schools';
+      return;
+    }
+    try {
+      await loadSchool();
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+  })();
+</script>
+</body>
+</html>

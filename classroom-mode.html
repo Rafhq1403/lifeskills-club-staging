@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | وضع العرض</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+/* ============================================
+   Classroom Mode — session delivery
+   Layout + card-type renderers. Everything else
+   comes from the platform's tokens/components.
+   ============================================ */
+html,body{height:100%;overflow:hidden}
+body{display:flex;flex-direction:column;background:var(--surface-alt)}
+
+.cm-notice{
+  background:var(--color-warning-50);color:var(--color-warning-dark);
+  border-bottom:1px solid var(--color-warning-light);
+  padding:var(--space-2) var(--space-6);text-align:center;
+  font-size:var(--caption-size);font-weight:600;flex:0 0 auto;
+}
+
+/* ── session bar (sits under the platform topnav) ── */
+.cm-bar{
+  flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);
+  padding-block:var(--space-3);
+}
+.cm-bar .container{gap:var(--space-5)}
+.cm-id{display:flex;align-items:center;gap:var(--space-3);min-width:0}
+.cm-id h2{margin:0;font-size:var(--h3-size);line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-id .hero-eyebrow{margin-bottom:var(--space-1)}
+.cm-spacer{flex:1}
+.cm-progress{min-width:11rem}
+
+/* the timer reuses .progress-ring, so only the countdown type differs */
+.progress-ring.sm .pct#cmDigits{font-size:.95rem;letter-spacing:-.02em}
+.progress-ring.is-running{animation:cmPulse 2.4s ease-in-out infinite}
+@keyframes cmPulse{0%,100%{box-shadow:0 0 0 0 var(--color-primary-50)}50%{box-shadow:0 0 0 7px transparent}}
+
+/* ── spine: proportional to real durations ── */
+.cm-spine{
+  flex:0 0 auto;background:var(--surface);border-bottom:1px solid var(--border);
+  padding-block:var(--space-3);
+}
+.cm-spine .container{display:flex;gap:3px}
+.cm-step{
+  position:relative;height:48px;border:1px solid var(--border);cursor:pointer;
+  background:var(--color-neutral-50);border-radius:var(--radius-sm);overflow:hidden;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;
+  font-family:inherit;padding:0 var(--space-1);transition:var(--transition-fast);
+}
+.cm-step:hover{background:var(--color-neutral-100);transform:translateY(-1px)}
+.cm-step:focus-visible{outline:2px solid var(--color-primary);outline-offset:2px}
+.cm-step .lab{font-size:0.7rem;font-weight:600;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.cm-step .mm{font-family:var(--font-mono);font-size:0.62rem;color:var(--text-muted);opacity:.75}
+.cm-step.is-done{background:var(--color-primary-50);border-color:var(--color-primary-light)}
+.cm-step.is-done .lab{color:var(--color-primary-dark)}
+.cm-step.is-now{
+  background:linear-gradient(160deg,var(--color-primary-light),var(--color-primary-dark));
+  border-color:var(--color-primary-dark);box-shadow:var(--shadow-md);
+}
+.cm-step.is-now .lab{color:#fff;font-weight:700}
+.cm-step.is-now .mm{color:rgba(255,255,255,.85)}
+.cm-step.is-now::after{
+  content:'';position:absolute;inset-inline-start:0;bottom:0;height:3px;
+  width:var(--elapsed,0%);background:rgba(255,255,255,.92);transition:width .95s linear;
+}
+.cm-step.is-prep{flex:0 0 74px}
+
+/* ── split ── */
+.cm-split{flex:1;display:grid;grid-template-columns:minmax(0,1fr) 24rem;min-height:0}
+
+/* ── stage ── */
+.cm-stage{
+  position:relative;min-width:0;overflow-y:auto;
+  padding:var(--space-8) var(--space-10);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.cm-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
+  box-shadow:var(--shadow-md);padding:var(--space-10) var(--space-12);
+  position:relative;max-width:62rem;width:100%;margin-inline:auto;overflow:hidden;
+}
+.cm-card::before{
+  content:'';position:absolute;inset-block-start:0;inset-inline:0;height:4px;
+  background:linear-gradient(90deg,var(--color-primary-light),var(--color-primary-dark));
+}
+.cm-stage[data-aud="facilitator"] .cm-card{background:var(--color-warning-50);border-color:var(--color-warning-light)}
+.cm-stage[data-aud="facilitator"] .cm-card::before{background:linear-gradient(90deg,var(--color-warning-light),var(--color-warning-dark))}
+.cm-stage[data-aud="student_device"] .cm-card{background:var(--color-success-50);border-color:var(--color-success-light)}
+.cm-stage[data-aud="student_device"] .cm-card::before{background:linear-gradient(90deg,var(--color-success-light),var(--color-success-dark))}
+
+.cm-eyebrow{display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-5);flex-wrap:wrap}
+.cm-card h1{font-size:clamp(1.7rem,2.9vw,2.6rem);line-height:1.22;margin:0 0 var(--space-6);letter-spacing:-0.01em}
+.cm-num{
+  position:absolute;inset-block-start:var(--space-5);inset-inline-end:var(--space-8);
+  font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);
+}
+.cm-lead{font-size:clamp(1.1rem,1.45vw,1.4rem);line-height:1.72;white-space:pre-wrap;max-width:36ch}
+html[lang="en"] .cm-lead{max-width:52ch}
+
+/* statement (check-in / big question) */
+.cm-statement{
+  font-size:clamp(1.5rem,2.4vw,2.1rem);line-height:1.5;font-weight:500;
+  white-space:pre-wrap;max-width:26ch;
+}
+html[lang="en"] .cm-statement{max-width:34ch}
+
+/* infographic flow */
+.cm-flow{display:flex;align-items:stretch;gap:var(--space-2);flex-wrap:wrap;margin-bottom:var(--space-6)}
+.cm-flow-item{
+  flex:1 1 9rem;background:var(--color-primary-50);border:1px solid var(--color-primary-light);
+  border-radius:var(--radius-lg);padding:var(--space-4);position:relative;
+}
+.cm-flow-item .n{
+  display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;
+  border-radius:50%;background:var(--color-primary);color:#fff;
+  font-family:var(--font-mono);font-size:0.78rem;font-weight:600;margin-bottom:var(--space-2);
+}
+.cm-flow-item .h{font-weight:700;font-size:1.05rem;margin-bottom:var(--space-1);color:var(--color-primary-dark)}
+.cm-flow-item .d{font-size:0.92rem;line-height:1.55;color:var(--text-muted)}
+
+/* rounds (activity) */
+.cm-rounds{display:grid;gap:var(--space-3);margin-bottom:var(--space-6)}
+.cm-round{
+  display:flex;gap:var(--space-4);align-items:flex-start;
+  background:var(--color-neutral-50);border:1px solid var(--border);
+  border-radius:var(--radius-lg);padding:var(--space-4) var(--space-5);
+}
+.cm-round .t{
+  font-family:var(--font-mono);font-size:0.92rem;font-weight:600;color:var(--color-primary-dark);
+  background:var(--color-primary-50);border-radius:var(--radius-sm);
+  padding:var(--space-1) var(--space-3);white-space:nowrap;flex:0 0 auto;
+}
+.cm-round .x{font-size:1.02rem;line-height:1.6}
+.cm-round .x b{display:block;margin-bottom:2px}
+
+/* highlighted rule */
+.cm-rule{
+  background:var(--color-primary-50);border:1px solid var(--color-primary-light);
+  border-radius:var(--radius-lg);padding:var(--space-5) var(--space-6);
+  margin-bottom:var(--space-5);
+}
+.cm-rule .k{
+  font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--color-primary-dark);margin-bottom:var(--space-2);
+}
+.cm-rule .v{font-size:clamp(1.15rem,1.6vw,1.5rem);line-height:1.55;font-weight:500;white-space:pre-wrap}
+
+/* option chips */
+.cm-opts{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-5)}
+.cm-opt{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);
+  padding:var(--space-2) var(--space-5);font-size:1.02rem;font-weight:500;box-shadow:var(--shadow-sm);
+}
+
+/* numbered prompts (reflection / questions) */
+.cm-qs{display:grid;gap:var(--space-4);max-width:44ch}
+html[lang="en"] .cm-qs{max-width:58ch}
+.cm-q{display:flex;gap:var(--space-3);align-items:flex-start}
+.cm-q .n{
+  flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;background:var(--surface);
+  border:1px solid var(--border);font-family:var(--font-mono);font-size:0.8rem;font-weight:600;
+}
+.cm-q .x{font-size:clamp(1.05rem,1.35vw,1.3rem);line-height:1.6}
+
+/* checklist + scale (evidence) */
+.cm-checks{display:grid;gap:var(--space-2);margin-bottom:var(--space-5)}
+.cm-check{
+  display:flex;align-items:center;gap:var(--space-3);background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-3) var(--space-4);
+}
+.cm-check .box{width:18px;height:18px;border:2px solid var(--color-neutral-400);border-radius:5px;flex:0 0 auto}
+.cm-check .x{font-size:1.02rem;font-weight:500}
+.cm-scale{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.cm-lvl{
+  display:flex;align-items:center;gap:var(--space-2);background:var(--surface);
+  border:1px solid var(--border);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);
+  font-size:0.85rem;
+}
+.cm-lvl .n{
+  width:22px;height:22px;border-radius:50%;background:var(--color-primary);color:#fff;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:var(--font-mono);font-size:0.72rem;font-weight:600;
+}
+.cm-lvl:nth-child(1) .n{background:var(--color-neutral-400)}
+.cm-lvl:nth-child(2) .n{background:var(--color-warning)}
+.cm-lvl:nth-child(3) .n{background:var(--color-primary)}
+.cm-lvl:nth-child(4) .n{background:var(--color-success)}
+
+/* mission */
+.cm-mission{
+  background:linear-gradient(160deg,var(--color-primary-light),var(--color-primary-dark));
+  color:#fff;border-radius:var(--radius-xl);padding:var(--space-8);margin-bottom:var(--space-5);
+}
+.cm-mission .k{font-size:0.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:var(--space-3)}
+.cm-mission .v{font-size:clamp(1.2rem,1.7vw,1.6rem);line-height:1.6;white-space:pre-wrap}
+.cm-next-up{display:flex;align-items:center;gap:var(--space-3);color:var(--text-muted);font-size:0.95rem}
+
+.cm-blank{
+  position:absolute;inset:0;z-index:9;background:var(--color-neutral-900);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-2);
+  color:var(--color-neutral-400);
+}
+.cm-blank .big{font-size:1.75rem;font-weight:700;color:#fff}
+
+/* ── presenter notes ── */
+.cm-notes{background:var(--surface);border-inline-start:1px solid var(--border);overflow-y:auto;padding:var(--space-6) var(--space-5) var(--space-12)}
+.cm-notes-h{display:flex;align-items:center;gap:var(--space-2);margin:0 0 var(--space-4);padding-bottom:var(--space-3);border-bottom:1px solid var(--border)}
+.cm-meta{display:flex;flex-wrap:wrap;gap:var(--space-2);margin-bottom:var(--space-5)}
+.cm-blk{margin-bottom:var(--space-4)}
+.cm-blk h4{font-size:0.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin:0 0 var(--space-2);display:flex;align-items:center;gap:var(--space-2)}
+.cm-blk p{margin:0;font-size:0.9rem;line-height:1.65;white-space:pre-wrap}
+.cm-blk ul{margin:var(--space-2) 0 0;padding-inline-start:1.15rem}
+.cm-blk li{font-size:0.9rem;line-height:1.6;margin-bottom:var(--space-1)}
+.cm-blk.is-script{background:var(--color-primary-50);border-radius:var(--radius-md);padding:var(--space-4);border-inline-start:3px solid var(--color-primary)}
+.cm-blk.is-safety{background:var(--color-warning-50);border-radius:var(--radius-md);padding:var(--space-4);border-inline-start:3px solid var(--color-warning)}
+.cm-blk.is-offline{background:var(--color-neutral-50);border-radius:var(--radius-md);padding:var(--space-4);border-inline-start:3px solid var(--color-neutral-400)}
+.cm-blk.is-family{background:var(--color-success-50);border-radius:var(--radius-md);padding:var(--space-4);border-inline-start:3px solid var(--color-success)}
+
+/* ── foot ── */
+.cm-foot{flex:0 0 auto;background:var(--surface);border-top:1px solid var(--border);padding-block:var(--space-3)}
+.cm-kbd{font-family:var(--font-mono);font-size:0.68rem;border:1px solid currentColor;border-radius:4px;padding:0 4px;opacity:.6;margin-inline-start:var(--space-2)}
+
+/* ── progressive reveal ── */
+.cm-hidden{display:none!important}
+.cm-reveal{
+  display:flex;align-items:center;gap:var(--space-3);margin-top:var(--space-5);
+  padding-top:var(--space-4);border-top:1px dashed var(--border);
+}
+.cm-reveal .caption{font-family:var(--font-mono)}
+
+/* ── drawers (roster / observe) ── */
+.cm-drawer{
+  position:fixed;inset-block:0;inset-inline-end:0;width:min(30rem,100%);z-index:60;
+  background:var(--surface);border-inline-start:1px solid var(--border);
+  box-shadow:var(--shadow-lg);display:flex;flex-direction:column;
+  transform:translateX(var(--cm-out,100%));transition:transform var(--transition-base);
+}
+html[dir="rtl"] .cm-drawer{--cm-out:-100%}
+.cm-drawer.is-open{transform:translateX(0)}
+.cm-drawer header{
+  display:flex;align-items:center;gap:var(--space-3);padding:var(--space-5);
+  border-bottom:1px solid var(--border);
+}
+.cm-drawer .cm-drawer-body{flex:1;overflow-y:auto;padding:var(--space-5)}
+.cm-drawer footer{padding:var(--space-4) var(--space-5);border-top:1px solid var(--border);display:flex;gap:var(--space-3)}
+.cm-scrim{position:fixed;inset:0;background:rgba(22,24,29,.45);z-index:55;opacity:0;pointer-events:none;transition:opacity var(--transition-base)}
+.cm-scrim.is-open{opacity:1;pointer-events:auto}
+
+/* ── roster ── */
+.cm-roster{display:grid;gap:var(--space-2)}
+.cm-person{
+  display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3);
+  border:1px solid var(--border);border-radius:var(--radius-md);background:var(--surface);
+  cursor:pointer;transition:var(--transition-fast);text-align:start;font-family:inherit;width:100%;
+}
+.cm-person:hover{border-color:var(--color-primary-light);background:var(--color-primary-50)}
+.cm-person.is-absent{opacity:.45}
+.cm-person .nm{flex:1;font-weight:600;font-size:.95rem}
+.cm-person .meta{display:flex;gap:var(--space-2);align-items:center}
+
+/* ── pairing output ── */
+.cm-groups{display:grid;gap:var(--space-3)}
+.cm-group{border:1px solid var(--border);border-radius:var(--radius-lg);padding:var(--space-4);background:var(--color-neutral-50)}
+.cm-group h5{margin:0 0 var(--space-2);font-size:.85rem;color:var(--color-primary-dark)}
+.cm-group .who{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+
+/* ── observation: three taps ── */
+.cm-obs-step{margin-bottom:var(--space-5)}
+.cm-obs-step h4{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text-muted);margin:0 0 var(--space-2)}
+.cm-pick{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.cm-pick button{
+  font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;
+  border:1px solid var(--border);background:var(--surface);color:var(--text);
+  padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);transition:var(--transition-fast);
+}
+.cm-pick button:hover{border-color:var(--color-primary-light);background:var(--color-primary-50)}
+.cm-pick button.is-sel{background:var(--color-primary);border-color:var(--color-primary);color:#fff}
+.cm-levels{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-2)}
+.cm-levels button{
+  font-family:inherit;cursor:pointer;border:1px solid var(--border);background:var(--surface);
+  border-radius:var(--radius-md);padding:var(--space-4) var(--space-2);text-align:center;transition:var(--transition-fast);
+}
+.cm-levels button:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+.cm-levels .n{display:block;font-family:var(--font-mono);font-size:1.35rem;font-weight:700}
+.cm-levels .l{display:block;font-size:.7rem;color:var(--text-muted);margin-top:2px}
+.cm-levels button:nth-child(1) .n{color:var(--color-neutral-500)}
+.cm-levels button:nth-child(2) .n{color:var(--color-warning-dark)}
+.cm-levels button:nth-child(3) .n{color:var(--color-primary)}
+.cm-levels button:nth-child(4) .n{color:var(--color-success-dark)}
+.cm-obs-log{display:grid;gap:var(--space-2);margin-top:var(--space-4)}
+.cm-obs-row{display:flex;align-items:center;gap:var(--space-2);font-size:.85rem;padding:var(--space-2) var(--space-3);background:var(--color-neutral-50);border-radius:var(--radius-sm)}
+
+/* ── session pacing (replaces the per-card countdown warning) ── */
+.cm-pace{font-size:.78rem;font-weight:700}
+.cm-pace.ahead{color:var(--color-success-dark)}
+.cm-pace.behind{color:var(--color-warning-dark)}
+
+@keyframes cmRise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.cm-anim{animation:cmRise var(--transition-base) cubic-bezier(.2,.8,.3,1) backwards}
+.cm-anim>*{animation:cmRise 380ms cubic-bezier(.2,.8,.3,1) backwards}
+.cm-anim>*:nth-child(2){animation-delay:60ms}
+.cm-anim>*:nth-child(3){animation-delay:110ms}
+.cm-anim>*:nth-child(4){animation-delay:150ms}
+@media (prefers-reduced-motion:reduce){.cm-anim,.cm-anim>*{animation:none}.progress-ring.is-running{animation:none}}
+
+@media (max-width:1024px){
+  .cm-split{grid-template-columns:1fr}
+  .cm-notes,.cm-bar .trust-row,.cm-progress,.nav-links{display:none}
+  .cm-stage{padding:var(--space-5)}
+  .cm-card{padding:var(--space-6)}
+}
+</style>
+</head>
+<body>
+
+<div class="cm-notice">
+  <span data-lang-only="ar">عرض تجريبي — محتوى الجلسة 4 مضمّن في الصفحة، وسيُقرأ من قاعدة البيانات بعد تطبيق التهجيرين 0003 و0004</span>
+  <span data-lang-only="en">Prototype — Session 4 content is embedded in this page; it will read from the database once migrations 0003 and 0004 are applied</span>
+</div>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar"> مهارات الحياة</span><span data-lang-only="en">Life Skills </span></span>
+    </a>
+    <div class="nav-links">
+      <a href="teacher-dashboard.html"><span data-lang-only="ar">لوحة المعلم</span><span data-lang-only="en">Teacher Portal</span></a>
+      <a href="#" class="active"><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom Mode</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-lang="ar">AR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="teacher-dashboard.html" class="btn btn-secondary btn-sm"><span data-lang-only="ar">إنهاء الجلسة</span><span data-lang-only="en">End session</span></a>
+    </div>
+  </div>
+</nav>
+
+<header class="cm-bar">
+  <div class="container flex items-center gap-4 wrap">
+
+    <div class="cm-id">
+      <span class="icon-chip circle primary">🎧</span>
+      <div>
+        <span class="hero-eyebrow" style="margin-bottom:var(--space-1)">
+          <span data-lang-only="ar">الجلسة 4 · التواصل</span><span data-lang-only="en">Session 4 · Communication</span>
+        </span>
+        <h2 id="cmSessTitle">—</h2>
+      </div>
+    </div>
+
+    <span class="cm-spacer"></span>
+
+    <div class="trust-row" style="margin:0">
+      <div class="avatar-stack">
+        <span class="avatar solid-primary">ن</span>
+        <span class="avatar solid-warning">س</span>
+        <span class="avatar solid-success">ر</span>
+      </div>
+      <span class="caption">
+        <span data-lang-only="ar">الصف 8-ب · 18 طالباً</span>
+        <span data-lang-only="en">Grade 8-B · 18 students</span>
+      </span>
+    </div>
+
+    <div class="cm-progress">
+      <div class="flex items-center justify-between">
+        <span class="caption text-muted"><span data-lang-only="ar">تقدّم الجلسة</span><span data-lang-only="en">Session progress</span></span>
+        <span class="caption num" id="cmTotalTxt">—</span>
+      </div>
+      <div class="progress-bar mt-1"><div class="progress-bar__fill" id="cmTotalFill" style="width:0"></div></div>
+    </div>
+
+    <div class="progress-ring sm" id="cmRing" style="--percent:100; --ring-color:var(--color-primary);">
+      <div class="progress-ring__label">
+        <span class="pct num" id="cmDigits">00:00</span>
+      </div>
+    </div>
+
+    <div class="flex gap-2">
+      <button class="btn btn-secondary btn-sm" id="cmTimerBtn">—</button>
+      <button class="btn btn-secondary btn-sm" id="cmHideBtn">—</button>
+      <button class="btn btn-secondary btn-sm" id="cmProjBtn" onclick="openProjector()" data-title-ar="افتح نافذة العرض واسحبها إلى شاشة العرض" data-title-en="Open the projector window and drag it to the projector screen">📽 <span data-lang-only="ar">شاشة العرض</span><span data-lang-only="en">Projector</span></button>
+      <button class="btn btn-secondary btn-sm" id="cmWallBtn" onclick="wallTimer=!wallTimer;this.classList.toggle('btn-primary',wallTimer);this.classList.toggle('btn-secondary',!wallTimer);publish()" data-title-ar="إظهار العدّ التنازلي على شاشة العرض" data-title-en="Show the countdown on the projector">⏱ <span data-lang-only="ar">المؤقّت على الشاشة</span><span data-lang-only="en">Timer on wall</span></button>
+      <button class="btn btn-secondary btn-sm" id="cmPackBtn" onclick="window.open('print-pack.html?session='+encodeURIComponent(SESSION.id||''),'_blank')" data-title-ar="دليل التنفيذ وأوراق التأمل والأنشطة وبطاقة الرصد" data-title-en="Run-sheet, reflection slips, activity sheets, observation card">🖨 <span data-lang-only="ar">حزمة الجلسة</span><span data-lang-only="en">Print pack</span></button>
+      <button class="btn btn-secondary btn-sm" id="cmRosterBtn">👥 <span data-lang-only="ar">الحضور</span><span data-lang-only="en">Roster</span></button>
+      <button class="btn btn-primary btn-sm" id="cmObsBtn">✍️ <span data-lang-only="ar">رصد</span><span data-lang-only="en">Observe</span> <span class="badge badge-neutral" id="cmObsCount">0</span></button>
+    </div>
+  </div>
+</header>
+
+<nav class="cm-spine"><div class="container" id="cmSpine" aria-label="Session flow"></div></nav>
+
+<div class="cm-split">
+  <main class="cm-stage" id="cmStage">
+    <article class="card cm-card cm-anim" id="cmCard"></article>
+    <div class="cm-blank" id="cmBlank" hidden>
+      <span class="big" data-lang-only="ar">الشاشة مخفية</span>
+      <span class="big" data-lang-only="en">Screen hidden</span>
+      <span class="caption" data-lang-only="ar">اضغط H للعودة</span>
+      <span class="caption" data-lang-only="en">Press H to resume</span>
+    </div>
+  </main>
+
+  <aside class="cm-notes">
+    <div class="cm-notes-h">
+      <span class="icon-chip sm warning">👁️</span>
+      <div>
+        <strong><span data-lang-only="ar">ملاحظات الميسّر</span><span data-lang-only="en">Presenter notes</span></strong>
+        <div class="caption text-muted"><span data-lang-only="ar">لا تظهر على الشاشة</span><span data-lang-only="en">Never projected</span></div>
+      </div>
+    </div>
+    <div class="cm-meta" id="cmMeta"></div>
+    <div id="cmBlocks"></div>
+  </aside>
+</div>
+
+<footer class="cm-foot">
+  <div class="container flex items-center gap-3">
+    <button class="btn btn-secondary btn-lg" id="cmPrev">—</button>
+    <span class="cm-spacer"></span>
+    <span class="hero-eyebrow" style="margin:0" id="cmStageName">—</span>
+    <span class="cm-spacer"></span>
+    <button class="btn btn-primary btn-lg" id="cmNext">—</button>
+  </div>
+</footer>
+
+
+<div class="cm-scrim" id="cmScrim"></div>
+
+<!-- Roster: attendance, grouping, participation -->
+<aside class="cm-drawer" id="cmRoster" aria-hidden="true">
+  <header>
+    <span class="icon-chip circle blue">👥</span>
+    <div style="flex:1">
+      <strong><span data-lang-only="ar">الحضور والتوزيع</span><span data-lang-only="en">Roster &amp; groups</span></strong>
+      <div class="caption text-muted" id="cmRosterMeta">—</div>
+    </div>
+    <button class="btn btn-tertiary btn-sm" data-close>✕</button>
+  </header>
+  <div class="cm-drawer-body">
+    <div class="flex gap-2 mb-4">
+      <button class="btn btn-secondary btn-sm" id="cmPairBtn"><span data-lang-only="ar">توزيع ثنائي</span><span data-lang-only="en">Make pairs</span></button>
+      <button class="btn btn-secondary btn-sm" id="cmTeamBtn"><span data-lang-only="ar">مجموعات رباعية</span><span data-lang-only="en">Teams of 4</span></button>
+    </div>
+    <div id="cmGroups" class="cm-groups mb-6"></div>
+    <h4 class="caption text-muted mb-2">
+      <span data-lang-only="ar">اضغط على الاسم لتسجيل الغياب · النقطة تعني مشاركته اليوم</span>
+      <span data-lang-only="en">Tap a name to mark absent · the dot means they have spoken today</span>
+    </h4>
+    <div class="cm-roster" id="cmRosterList"></div>
+  </div>
+  <footer>
+    <button class="btn btn-primary btn-block" id="cmSaveAtt"><span data-lang-only="ar">حفظ الحضور</span><span data-lang-only="en">Save attendance</span></button>
+  </footer>
+</aside>
+
+<!-- Observation: student -> behaviour -> level, three taps -->
+<aside class="cm-drawer" id="cmObserve" aria-hidden="true">
+  <header>
+    <span class="icon-chip circle primary">✍️</span>
+    <div style="flex:1">
+      <strong><span data-lang-only="ar">رصد ملاحظة</span><span data-lang-only="en">Record an observation</span></strong>
+      <div class="caption text-muted"><span data-lang-only="ar">ثلاث نقرات — أثناء النشاط لا بعده</span><span data-lang-only="en">Three taps — during the activity, not after</span></div>
+    </div>
+    <button class="btn btn-tertiary btn-sm" data-close>✕</button>
+  </header>
+  <div class="cm-drawer-body">
+    <div class="cm-obs-step">
+      <h4>1 · <span data-lang-only="ar">الطالب</span><span data-lang-only="en">Student</span></h4>
+      <div class="cm-pick" id="cmObsWho"></div>
+    </div>
+    <div class="cm-obs-step">
+      <h4>2 · <span data-lang-only="ar">السلوك</span><span data-lang-only="en">Behaviour</span></h4>
+      <div class="cm-pick" id="cmObsWhat"></div>
+    </div>
+    <div class="cm-obs-step">
+      <h4>3 · <span data-lang-only="ar">المستوى</span><span data-lang-only="en">Level</span></h4>
+      <div class="cm-levels" id="cmObsLevel"></div>
+    </div>
+    <div class="cm-obs-log" id="cmObsLog"></div>
+  </div>
+</aside>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/cm-cards.js"></script>
+<script src="js/session-fixtures.js"></script>
+<script>
+/* Cards render as what they are (flow boxes, timed rounds, one rule, questions
+   revealed one at a time) because their structured keys live in
+   skill_content_blocks.content — the contract in migration 0009. */
+window.PAGE_TITLES={ar:'نادي مهارات الحياة | وضع العرض',en:'Life Skills Club | Classroom Mode'};
+
+/* Session 4 ships as a fixture in js/session-fixtures.js (the same shape the
+   database returns through GET /teacher/sessions/{id} after 0009), so the
+   page has something to teach with no backend. loadSession() replaces the
+   contents in place when ?session=<id> is given. */
+const SESSION_PARAM=new URLSearchParams(location.search).get('session');
+const SESSION=JSON.parse(JSON.stringify((window.SESSION_FIXTURES&&SESSION_FIXTURES[SESSION_PARAM])||SESSION4_FIXTURE));
+
+/* Stage names, audience labels and the card renderer live in js/cm-cards.js,
+   shared with projector.html so the class always sees exactly the card the
+   facilitator sees — just larger, and without the controls. */
+const STAGES=CM.STAGES, AUD=CM.AUD;
+
+let i=0,left=0,run=false,tick=null,blank=false,revealed=0,elapsed=0;
+let roster=[],absent=new Set(),spoke=new Set(),observations=[],obsWho=null,obsWhat=null;
+const lang=()=>window.getLang?getLang():'ar';
+const L=(a,e)=>lang()==='ar'?a:e;
+const $=id=>document.getElementById(id);
+const C=()=>SESSION.cards[i];
+const esc=CM.esc;
+const fmt=s=>{const n=Math.abs(s);
+ return (s<0?'−':'')+String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0')};
+let TOTAL=SESSION.cards.reduce((a,c)=>a+(c.dur||0),0);   // recomputed when a session loads from the API
+
+function stageBody(c){
+  return CM.stageBody(c,{lang:lang(),revealed,controls:true,next:{ar:SESSION.next_ar,en:SESSION.next_en}});
+}
+
+/* ── Projector window / Present mode ──────────────────────────────────
+   projector.html is a second browser window that shows only what the class
+   should see. It never reads state itself: the cockpit broadcasts it after
+   every draw and every timer tick. Keys pressed on the projector (Present
+   mode — one screen, that window fullscreen) come back here as commands, so
+   the facilitator can drive from whichever window has focus. */
+const CH=('BroadcastChannel' in window)?new BroadcastChannel('lsc-classroom'):null;
+let projectorWin=null, wallTimer=false, lastSentCard=-1;
+function publish(){
+  if(!CH) return;
+  const c=C();
+  const msg={type:'state',i,revealed,blank,lang:lang(),left,run,total:c.dur||0,showTimer:wallTimer,aud:c.aud,stage:c.stage};
+  if(lastSentCard!==i){
+    msg.session={title_ar:SESSION.title_ar,title_en:SESSION.title_en,next_ar:SESSION.next_ar,next_en:SESSION.next_en,cards:SESSION.cards};
+    lastSentCard=i;
+  }
+  CH.postMessage(msg);
+}
+if(CH) CH.onmessage=e=>{
+  const m=e.data||{};
+  if(m.type==='hello'){lastSentCard=-1;publish();}
+  if(m.type==='cmd'&&m.key) window.dispatchEvent(new KeyboardEvent('keydown',{key:m.key}));
+};
+function openProjector(){
+  projectorWin=window.open('projector.html','lsc-projector','popup,width=1280,height=720');
+  if(projectorWin) projectorWin.focus();
+}
+
+function drawSpine(){
+  $('cmSpine').innerHTML=SESSION.cards.map((c,n)=>{
+    const st=n<i?'is-done':n===i?'is-now':'';
+    return `<button class="cm-step ${st} ${c.dur?'':'is-prep'}"
+      style="${c.dur?`flex:${c.dur} 1 0`:''}" data-i="${n}">
+      <span class="lab">${L(STAGES[c.stage][0],STAGES[c.stage][1])}</span>
+      ${c.dur?`<span class="mm">${c.dur/60}′</span>`:''}</button>`;
+  }).join('');
+  $('cmSpine').querySelectorAll('.cm-step').forEach(b=>
+    b.onclick=()=>{i=+b.dataset.i;reset();draw()});
+}
+
+function draw(){
+  const c=C(),a=AUD[c.aud];
+  $('cmSessTitle').textContent=L(SESSION.title_ar,SESSION.title_en);
+  $('cmStage').dataset.aud=c.aud;
+  $('cmStageName').textContent=L(STAGES[c.stage][0],STAGES[c.stage][1]);
+
+  $('cmCard').innerHTML=
+    `<span class="cm-num">${i+1} / ${SESSION.cards.length}</span>
+     <div class="cm-eyebrow">
+       <span class="badge ${a.cls}">${L(a.ar,a.en)}</span>
+       <span class="badge badge-neutral">${esc(c.type)}</span>
+       ${c.dur?`<span class="badge badge-neutral">${c.dur/60} ${L('د','min')}</span>`:''}
+     </div>
+     <h1>${esc(L(c.t_ar,c.t_en))}</h1>
+     ${stageBody(c)}`;
+
+  const tags=[`<span class="badge badge-neutral">${esc(c.type)}</span>`,
+              `<span class="badge ${a.cls}">${esc(c.aud)}</span>`];
+  if(c.dur)tags.push(`<span class="badge badge-neutral">${c.dur/60} min</span>`);
+  if(c.ev) tags.push(`<span class="badge badge-success">evidence · ${esc(c.ev)}</span>`);
+  $('cmMeta').innerHTML=tags.join('');
+
+  const blk=(cls,ic,label,text)=>text
+    ?`<div class="cm-blk ${cls}"><h4>${ic} ${label}</h4><p>${esc(text)}</p></div>`:'';
+  let h=blk('is-script','🗣️',L('إرشادات التنفيذ','What you say and do'),L(c.i_ar,c.i_en));
+  if(c.p_ar)h+=`<div class="cm-blk"><h4>💬 ${L('أسئلة إثرائية','Follow-up prompts')}</h4><ul>${
+    L(c.p_ar,c.p_en).map(p=>`<li>${esc(p)}</li>`).join('')}</ul></div>`;
+  h+=blk('','🧰',L('الأدوات والمواد','Materials'),L(c.m_ar,c.m_en));
+  h+=blk('','🤝',L('الدعم والإثراء','Adaptation'),L(c.a_ar,c.a_en));
+  h+=blk('is-offline','📄',L('البديل الورقي','Offline fallback'),L(c.off_ar,c.off_en));
+  h+=blk('is-safety','⚠️',L('تنبيه حماية الطفل','Safeguarding'),L(c.s_ar,c.s_en));
+  h+=blk('is-family','👨‍👩‍👧',L('رسالة لولي الأمر','Family message'),L(c.fam_ar,c.fam_en));
+  $('cmBlocks').innerHTML=h;
+
+  const rb=$('cmRevealBtn');
+  if(rb) rb.onclick=()=>{revealed++;draw()};
+
+  const card=$('cmCard');
+  card.classList.remove('cm-anim');void card.offsetWidth;card.classList.add('cm-anim');
+
+  drawSpine();
+  $('cmPrev').disabled=i===0;
+  $('cmNext').disabled=i===SESSION.cards.length-1;
+  $('cmPrev').textContent=L('السابق','Back');
+  $('cmNext').innerHTML=L('التالي','Next')+'<span class="cm-kbd">Space</span>';
+  $('cmTimerBtn').innerHTML=(run?L('إيقاف','Pause'):L('تشغيل','Start'))+'<span class="cm-kbd">T</span>';
+  $('cmHideBtn').innerHTML=(blank?L('إظهار','Show'):L('إخفاء','Hide'))+'<span class="cm-kbd">H</span>';
+  $('cmBlank').hidden=!blank;
+  $('cmRing').classList.toggle('is-running',run);
+  clock();
+}
+
+function clock(){
+  const total=C().dur||0;
+  $('cmDigits').textContent=fmt(left);
+  const frac=total?Math.max(0,Math.min(1,left/total)):0;
+  const ring=$('cmRing');
+  ring.style.setProperty('--percent',(frac*100).toFixed(1));
+  ring.style.setProperty('--ring-color',left<0?'var(--color-error)':'var(--color-primary)');
+  const now=$('cmSpine').querySelector('.cm-step.is-now');
+  if(now&&total)now.style.setProperty('--elapsed',((1-frac)*100)+'%');
+
+  const before=SESSION.cards.slice(0,i).reduce((a,c)=>a+(c.dur||0),0);
+  const done=Math.min(TOTAL,before+(total?total-Math.max(0,left):0));
+  $('cmTotalFill').style.width=(done/TOTAL*100)+'%';
+  $('cmTotalTxt').textContent=Math.round(done/60)+' / '+Math.round(TOTAL/60)+L(' د',' min');
+  publish();   // every draw ends in clock(), and every timer tick calls it — the projector follows both
+}
+function reset(){left=C().dur||0;revealed=0;run=false;clearInterval(tick);tick=null}
+
+$('cmTimerBtn').onclick=()=>{run=!run;clearInterval(tick);
+  if(run)tick=setInterval(()=>{left--;clock()},1000);draw()};
+$('cmHideBtn').onclick=()=>{blank=!blank;draw()};
+$('cmPrev').onclick=()=>{if(i>0){i--;reset();draw()}};
+$('cmNext').onclick=()=>{if(i<SESSION.cards.length-1){i++;reset();draw()}};
+
+addEventListener('keydown',e=>{
+  if(/^(INPUT|TEXTAREA)$/.test(e.target.tagName))return;
+  const rtl=document.documentElement.dir==='rtl';
+  if(e.key==='ArrowRight')(rtl?$('cmPrev'):$('cmNext')).click();
+  if(e.key==='ArrowLeft')(rtl?$('cmNext'):$('cmPrev')).click();
+  if(e.key===' '){e.preventDefault();$('cmNext').click()}
+  if(e.key.toLowerCase()==='t')$('cmTimerBtn').click();
+  if(e.key.toLowerCase()==='h')$('cmHideBtn').click();
+});
+
+
+/* ══════════════════════════════════════════════════════════════
+   Roster, attendance, grouping, observation
+   Spec (Life Skills Lab §"Classroom Mode") calls for a random group/student
+   selector, team role assignment, attendance, and one-tap rubric observation.
+   Roster + attendance already have endpoints:
+     GET  /teacher/classes/{id}/roster
+     POST /teacher/classes/{id}/attendance
+   Observations need migration 0001, so they queue locally until it lands.
+   ══════════════════════════════════════════════════════════════ */
+const DEMO_ROSTER=[
+ 'سارة','أحمد','نورة','خالد','ريم','فيصل','لمى','عبدالله',
+ 'جواهر','تركي','دانة','سلمان','هيا','ماجد','شهد','بدر','رغد','ناصر'
+].map((n,k)=>({student_id:'demo-'+k,full_name:n,username:'demo'+k,demo:true}));
+
+let CLASS_ID=null;
+const BEHAVIOURS=[
+  {k:'attention',ar:'يحافظ على الانتباه',en:'Maintains attention'},
+  {k:'no_interrupt',ar:'لا يقاطع',en:'Does not interrupt'},
+  {k:'summarise',ar:'يلخّص بدقة',en:'Summarises accurately'},
+  {k:'follow_up',ar:'يسأل سؤال متابعة',en:'Asks a follow-up question'}
+];
+const LEVELS=[['مبتدئ','Beginning'],['متطوّر','Developing'],['مطبِّق','Applying'],['ناقل للأثر','Transferring']];
+
+async function loadRoster(){
+  try{
+    const cls=await (await fetch('http://'+location.hostname+':8090/teacher/classes',{credentials:'include'})).json();
+    if(Array.isArray(cls)&&cls.length){
+      CLASS_ID=cls[0].id;
+      const r=await (await fetch(`http://${location.hostname}:8090/teacher/classes/${CLASS_ID}/roster`,{credentials:'include'})).json();
+      // A pairing tool needs a class to pair; fall back below 4 so the
+      // grouping and observation flows stay demonstrable.
+      if(Array.isArray(r)&&r.length>=4){roster=r;return}
+      if(Array.isArray(r)&&r.length) roster=r.concat(DEMO_ROSTER.slice(r.length));
+      else roster=DEMO_ROSTER;
+      return;
+    }
+  }catch(e){/* not signed in as a teacher — demo roster */}
+  roster=DEMO_ROSTER;
+}
+
+const present=()=>roster.filter(p=>!absent.has(p.student_id));
+function shuffle(a){const x=a.slice();
+  for(let n=x.length-1;n>0;n--){const j=Math.floor(Math.random()*(n+1));[x[n],x[j]]=[x[j],x[n]]}return x}
+
+const ROLES=[['ميسّر','Facilitator'],['باحث','Researcher'],['مخطّط','Planner'],['مقدّم','Presenter']];
+function makeGroups(size){
+  const pool=shuffle(present()),out=[];
+  for(let n=0;n<pool.length;n+=size)out.push(pool.slice(n,n+size));
+  if(out.length>1&&out[out.length-1].length===1)out[out.length-2].push(out.pop()[0]);
+  $('cmGroups').innerHTML=out.map((g,n)=>
+    `<div class="cm-group"><h5>${L('المجموعة','Group')} ${n+1}</h5><div class="who">${
+      g.map((m,k)=>`<span class="badge ${size>2?'badge-primary':'badge-neutral'}">${esc(m.full_name)}${
+        size>2?' · '+L(ROLES[k%4][0],ROLES[k%4][1]):''}</span>`).join('')}</div></div>`).join('');
+}
+
+function drawRoster(){
+  $('cmRosterMeta').textContent=L(
+    `${present().length} حاضراً من ${roster.length}${roster[0]&&roster[0].demo?' · قائمة تجريبية':''}`,
+    `${present().length} of ${roster.length} present${roster[0]&&roster[0].demo?' · demo roster':''}`);
+  $('cmRosterList').innerHTML=roster.map(p=>
+    `<button class="cm-person ${absent.has(p.student_id)?'is-absent':''}" data-id="${p.student_id}">
+       <span class="avatar">${esc((p.full_name||'?').trim()[0])}</span>
+       <span class="nm">${esc(p.full_name)}</span>
+       <span class="meta">
+         ${spoke.has(p.student_id)?'<span class="badge badge-success">•</span>':''}
+         <span class="badge ${absent.has(p.student_id)?'badge-error':'badge-neutral'}">${
+           absent.has(p.student_id)?L('غائب','Absent'):L('حاضر','Present')}</span>
+       </span></button>`).join('');
+  $('cmRosterList').querySelectorAll('.cm-person').forEach(b=>b.onclick=()=>{
+    const id=b.dataset.id;
+    absent.has(id)?absent.delete(id):absent.add(id);
+    drawRoster();
+  });
+}
+
+function drawObserve(){
+  $('cmObsWho').innerHTML=present().map(p=>
+    `<button data-id="${p.student_id}" class="${obsWho===p.student_id?'is-sel':''}">${esc(p.full_name)}</button>`).join('');
+  $('cmObsWhat').innerHTML=BEHAVIOURS.map(b=>
+    `<button data-k="${b.k}" class="${obsWhat===b.k?'is-sel':''}">${esc(L(b.ar,b.en))}</button>`).join('');
+  $('cmObsLevel').innerHTML=LEVELS.map((l,n)=>
+    `<button data-l="${n+1}" ${obsWho&&obsWhat?'':'disabled style="opacity:.4"'}>
+       <span class="n">${n+1}</span><span class="l">${esc(L(l[0],l[1]))}</span></button>`).join('');
+
+  $('cmObsWho').querySelectorAll('button').forEach(b=>b.onclick=()=>{obsWho=b.dataset.id;drawObserve()});
+  $('cmObsWhat').querySelectorAll('button').forEach(b=>b.onclick=()=>{obsWhat=b.dataset.k;drawObserve()});
+  $('cmObsLevel').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    if(!obsWho||!obsWhat)return;
+    const who=roster.find(p=>p.student_id===obsWho);
+    observations.push({student_id:obsWho,name:who?who.full_name:'',behaviour:obsWhat,
+                       level:+b.dataset.l,card:i,at:new Date().toISOString()});
+    spoke.add(obsWho);          // observing someone means they participated
+    obsWho=obsWhat=null;
+    $('cmObsCount').textContent=observations.length;
+    drawObserve();
+  });
+
+  $('cmObsLog').innerHTML=observations.slice(-6).reverse().map(o=>{
+    const b=BEHAVIOURS.find(x=>x.k===o.behaviour);
+    return `<div class="cm-obs-row"><span class="badge badge-primary">${o.level}</span>
+      <strong>${esc(o.name)}</strong><span class="text-muted">${esc(L(b.ar,b.en))}</span></div>`;
+  }).join('');
+}
+
+function openDrawer(el){
+  el.classList.add('is-open');el.setAttribute('aria-hidden','false');
+  $('cmScrim').classList.add('is-open');
+}
+function closeDrawers(){
+  document.querySelectorAll('.cm-drawer').forEach(d=>{
+    d.classList.remove('is-open');d.setAttribute('aria-hidden','true')});
+  $('cmScrim').classList.remove('is-open');
+}
+$('cmScrim').onclick=closeDrawers;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeDrawers);
+$('cmRosterBtn').onclick=()=>{drawRoster();openDrawer($('cmRoster'))};
+$('cmObsBtn').onclick=()=>{drawObserve();openDrawer($('cmObserve'))};
+$('cmPairBtn').onclick=()=>makeGroups(2);
+$('cmTeamBtn').onclick=()=>makeGroups(4);
+
+$('cmSaveAtt').onclick=async()=>{
+  const btn=$('cmSaveAtt');
+  if(!CLASS_ID||roster[0]&&roster[0].demo){
+    btn.textContent=L('قائمة تجريبية — لم تُحفظ','Demo roster — not saved');
+    setTimeout(()=>drawRoster()||(btn.textContent=L('حفظ الحضور','Save attendance')),2200);return;
+  }
+  const body={session_date:new Date().toISOString().slice(0,10),
+    records:roster.map(p=>({student_id:p.student_id,attended:!absent.has(p.student_id)}))};
+  try{
+    const res=await fetch(`http://${location.hostname}:8090/teacher/classes/${CLASS_ID}/attendance`,
+      {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    btn.textContent=res.ok?L('تم الحفظ ✓','Saved ✓'):L('تعذّر الحفظ','Could not save');
+  }catch(e){btn.textContent=L('تعذّر الحفظ','Could not save')}
+  setTimeout(()=>btn.textContent=L('حفظ الحضور','Save attendance'),2200);
+};
+
+/* Load a real session when asked for one (?session=<id>) — the same endpoint
+   the print pack uses. With no id, or in fixture mode, the embedded Session 4
+   stays in place so the page always has something to teach. */
+async function loadSession(){
+  const id=new URLSearchParams(location.search).get('session');
+  if(!id||localStorage.getItem('dev_fixtures')==='1') return;
+  try{
+    const res=await fetch(`http://${location.hostname}:8090/teacher/sessions/${id}`,{credentials:'include'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    Object.assign(SESSION, CM.fromSession(await res.json()));   // SESSION is a const binding; its contents are replaced
+    TOTAL=SESSION.cards.reduce((a,c)=>a+(c.dur||0),0);
+    lastSentCard=-1;
+    document.querySelectorAll('[data-proto-note]').forEach(n=>n.hidden=true);
+  }catch(e){console.warn('Could not load the session from the API — using the embedded Session 4.',e)}
+}
+
+document.addEventListener('langchange',draw);
+document.addEventListener('DOMContentLoaded',async()=>{await loadSession();reset();draw();await loadRoster();drawRoster();drawObserve()});
+</script>
+</body>
+</html>

@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | سجّل اشتراكك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span>
+    </a>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-lang="ar">AR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="index.html" class="btn btn-tertiary btn-sm" id="cancel-enroll-link"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></a>
+    </div>
+  </div>
+</nav>
+
+<div class="container section" style="max-width: 720px;" data-main>
+
+  <div class="wizard-steps" id="wizard-steps">
+    <div class="wizard-step active" data-step="1">
+      <div class="wizard-step__dot">1</div>
+      <div class="wizard-step__label"><span data-lang-only="ar">بيانات الاشتراك</span><span data-lang-only="en">Details</span></div>
+    </div>
+    <div class="wizard-connector"></div>
+    <div class="wizard-step" data-step="2">
+      <div class="wizard-step__dot">2</div>
+      <div class="wizard-step__label"><span data-lang-only="ar">الدفع</span><span data-lang-only="en">Payment</span></div>
+    </div>
+    <div class="wizard-connector"></div>
+    <div class="wizard-step" data-step="3">
+      <div class="wizard-step__dot">3</div>
+      <div class="wizard-step__label"><span data-lang-only="ar">التأكيد</span><span data-lang-only="en">Confirmation</span></div>
+    </div>
+  </div>
+
+  <!-- STEP 1: ENROLLMENT DETAILS -->
+  <section id="enroll-form-panel">
+    <div class="text-center mb-8">
+      <h1 class="mt-3"><span data-lang-only="ar">سجّل طفلك في نادي مهارات الحياة</span><span data-lang-only="en">Enroll your child in Life Skills Club</span></h1>
+      <p class="text-muted mt-2"><span data-lang-only="ar">عبّئ البيانات واختر خطة الاشتراك المناسبة — الاشتراك والدفع يتمّان مباشرة من هنا.</span><span data-lang-only="en">Fill in the details and choose a subscription plan — subscribing and paying both happen right here.</span></p>
+    </div>
+
+    <form id="enroll-form" class="card" style="padding: var(--space-8);">
+      <h3><span data-lang-only="ar">بيانات ولي الأمر</span><span data-lang-only="en">Parent information</span></h3>
+      <div class="input-row mt-4">
+       
+        <div style="display:flex; gap:16px;">
+
+  <div class="field" style="flex:1;">
+    <label>
+      <span data-lang-only="ar">اسمك</span>
+      <span data-lang-only="en">Your name</span>
+    </label>
+    <input class="input" type="text" id="parent-name" data-no-digits required
+      data-ph-ar="مثال: نورة الحربي"
+      data-ph-en="e.g. Noura Al-Harbi">
+  </div>
+
+  <div class="field" style="flex:1;">
+    <label>
+      <span data-lang-only="ar">رقم الجوال</span>
+      <span data-lang-only="en">Phone number</span>
+    </label>
+
+    <div dir="ltr" style="display:flex;">
+      <span style="padding:12px 14px; border:1px solid #ccc; border-right:none; border-radius:8px 0 0 8px; background:#f5f5f5;">
+        +966
+      </span>
+
+      <input class="input"
+        type="tel"
+        inputmode="numeric"
+        id="parent-phone"
+        required
+        pattern="[0-9]{9}"
+        maxlength="9"
+        data-title-ar="9 أرقام، مثال: 5xxxxxxxx"
+        data-title-en="9 digits, e.g. 5xxxxxxxx"
+        placeholder="5x xxx xxxx"
+        style="border-radius:0 8px 8px 0;">
+    </div>
+  </div>
+
+</div>
+        
+        
+        
+      </div>
+      <div class="field">
+        <label><span data-lang-only="ar">البريد الإلكتروني</span><span data-lang-only="en">Email</span></label>
+        <input class="input" type="email" id="parent-email" required data-ph-ar="you@example.com" data-ph-en="you@example.com">
+      </div>
+
+      <h3 class="mt-6"><span data-lang-only="ar">خطة الاشتراك</span><span data-lang-only="en">Subscription plan</span></h3>
+      <p class="caption text-muted mt-1"><span data-lang-only="ar">اختر مدة الاشتراك — تُدفع مقدماً وتنطبق على جميع الأطفال في هذا الطلب.</span><span data-lang-only="en">Choose a billing period — paid upfront, and it applies to every child in this order.</span></p>
+      <div id="plan-options" class="flex-col gap-3 mt-3"></div>
+
+      <h3 class="mt-6"><span data-lang-only="ar">بيانات الأطفال</span><span data-lang-only="en">Children's information</span></h3>
+      <div id="children-list" class="mt-4"></div>
+      <button type="button" id="add-child-btn" class="btn btn-secondary btn-block">
+        + <span data-lang-only="ar">إضافة طفل آخر</span><span data-lang-only="en">Add another child</span>
+      </button>
+
+      <h3 class="mt-6"><span data-lang-only="ar">المدينة</span><span data-lang-only="en">City</span></h3>
+      <div class="field mt-2">
+        <input class="input" type="text" id="city" data-no-digits required data-ph-ar="مثال: الرياض" data-ph-en="e.g. Riyadh">
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg mt-6">
+        <span data-lang-only="ar">المتابعة إلى الدفع</span><span data-lang-only="en">Continue to Payment</span>
+      </button>
+      <p class="caption text-muted text-center mt-4">
+        <span data-lang-only="ar">مشتركة بالفعل؟</span><span data-lang-only="en">Already subscribed?</span>
+        <a href="login.html" class="text-primary" style="font-weight:700;"><span data-lang-only="ar">سجّل الدخول</span><span data-lang-only="en">Log in</span></a>
+      </p>
+    </form>
+  </section>
+
+  <!-- STEP 2: PAYMENT -->
+  <section id="payment-panel" class="hidden">
+    <div class="text-center mb-8">
+      <h1 class="mt-3"><span data-lang-only="ar">إتمام الدفع</span><span data-lang-only="en">Complete payment</span></h1>
+      <p class="text-muted mt-2"><span data-lang-only="ar">آخر خطوة! أكمل الدفع لتفعيل الاشتراك.</span><span data-lang-only="en">Last step! Complete payment to activate the subscription.</span></p>
+    </div>
+
+    <div class="plan-highlight-note" id="order-summary" style="padding: var(--space-5); margin-bottom: var(--space-6);"></div>
+
+    <p id="payment-message" class="caption mb-4 hidden"></p>
+
+    <div class="role-tabs cols-2" id="payment-method-tabs" style="margin-bottom: var(--space-6);">
+      <button type="button" class="role-tab active" data-method="card"><span data-lang-only="ar">بطاقة ائتمان</span><span data-lang-only="en">Credit Card</span></button>
+      <button type="button" class="role-tab" data-method="applepay">Apple Pay</button>
+    </div>
+
+    <form id="payment-form" class="card" style="padding: var(--space-8);">
+      <div class="field">
+        <label><span data-lang-only="ar">الاسم على البطاقة</span><span data-lang-only="en">Name on card</span></label>
+        <input class="input" type="text" id="card-name" data-no-digits required data-ph-ar="مثال: نورة الحربي" data-ph-en="e.g. Noura Al-Harbi">
+      </div>
+      <div class="field">
+        <label><span data-lang-only="ar">رقم البطاقة</span><span data-lang-only="en">Card number</span></label>
+        <input class="input num" type="text" inputmode="numeric" id="card-number" required placeholder="4242 4242 4242 4242" maxlength="19">
+      </div>
+      <div class="input-row">
+        <div class="field">
+          <label><span data-lang-only="ar">تاريخ الانتهاء</span><span data-lang-only="en">Expiry</span></label>
+          <input class="input num" type="text" inputmode="numeric" id="card-expiry" required placeholder="MM/YY" maxlength="5">
+        </div>
+        <div class="field">
+          <label>CVV</label>
+          <input class="input num" type="text" inputmode="numeric" id="card-cvv" required placeholder="123" maxlength="3">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block btn-lg mt-4" id="pay-btn">
+        <span data-lang-only="ar">ادفع الآن</span><span data-lang-only="en">Pay Now</span>
+      </button>
+    </form>
+
+    <div id="apple-pay-panel" class="card hidden text-center" style="padding: var(--space-8);">
+      <p class="text-muted mb-4"><span data-lang-only="ar">الدفع عبر Apple Pay غير متاح بعد — يرجى استخدام بطاقة الائتمان حالياً.</span><span data-lang-only="en">Apple Pay isn't available yet — please use Credit Card for now.</span></p>
+      <button type="button" class="btn btn-apple-pay btn-block btn-lg" id="apple-pay-btn" disabled style="opacity:0.5; cursor:not-allowed;"> Pay</button>
+    </div>
+
+    <button type="button" class="btn btn-tertiary btn-block mt-2" id="back-to-details">
+      <span data-lang-only="ar">الرجوع لتعديل البيانات</span><span data-lang-only="en">Back to edit details</span>
+    </button>
+  </section>
+
+  <!-- SUCCESS -->
+  <section id="success-panel" class="hidden text-center">
+    <div style="font-size:3.5rem;">🎉</div>
+    <h2 class="mt-4"><span data-lang-only="ar">تم الاشتراك بنجاح!</span><span data-lang-only="en">Subscription confirmed!</span></h2>
+    <p class="text-muted mt-2" style="max-width:52ch; margin-inline:auto;" id="success-message"></p>
+    <div class="hero-actions justify-center mt-8">
+      <a href="index.html" class="btn btn-primary btn-lg"><span data-lang-only="ar">العودة للرئيسية</span><span data-lang-only="en">Back to Home</span></a>
+    </div>
+  </section>
+
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>
+(async () => {
+  // Live from the DB — price is never hardcoded here, so it can't drift
+  // from what /enroll actually charges.
+  const _plans = await apiFetch('/catalog/plans');
+  const SUBSCRIPTION_PLANS = {};
+  _plans.forEach((p) => {
+    SUBSCRIPTION_PLANS[p.id] = {
+      id: p.id,
+      nameAr: p.name_ar,
+      nameEn: p.name_en,
+      priceMonthly: p.price_monthly,
+      priceTotal: p.price_total,
+      months: p.months,
+      recommended: p.is_recommended,
+    };
+  });
+
+  // Grades 3–12 only, in three mixed-age bands (migration 0006). Grades 1–2
+  // are not served — the backend rejects them too (ChildEnrollment.grade).
+  const GRADE_OPTIONS = [
+    { value: 3, ar: 'الصف الثالث', en: 'Grade 3', band: 'g3_6' },
+    { value: 4, ar: 'الصف الرابع', en: 'Grade 4', band: 'g3_6' },
+    { value: 5, ar: 'الصف الخامس', en: 'Grade 5', band: 'g3_6' },
+    { value: 6, ar: 'الصف السادس', en: 'Grade 6', band: 'g3_6' },
+    { value: 7, ar: 'الصف السابع', en: 'Grade 7', band: 'g7_9' },
+    { value: 8, ar: 'الصف الثامن', en: 'Grade 8', band: 'g7_9' },
+    { value: 9, ar: 'الصف التاسع', en: 'Grade 9', band: 'g7_9' },
+    { value: 10, ar: 'الصف العاشر', en: 'Grade 10', band: 'g10_12' },
+    { value: 11, ar: 'الصف الحادي عشر', en: 'Grade 11', band: 'g10_12' },
+    { value: 12, ar: 'الصف الثاني عشر', en: 'Grade 12', band: 'g10_12' }
+  ];
+
+  const params = new URLSearchParams(location.search);
+  const preselectPlan = params.get('plan') && SUBSCRIPTION_PLANS[params.get('plan')] ? params.get('plan') : Object.values(SUBSCRIPTION_PLANS).find((p) => p.recommended).id;
+
+  function gradeOptionsHTML(lang) {
+    return GRADE_OPTIONS.map((g) => `<option value="${g.value}">${lang === 'ar' ? g.ar : g.en}</option>`).join('');
+  }
+
+  function planRadiosHTML(groupName, preselectId) {
+    return Object.values(SUBSCRIPTION_PLANS).map((plan) => `
+      <label class="radio-card ${plan.id === preselectId ? 'selected' : ''}">
+        <input type="radio" name="${groupName}" value="${plan.id}" ${plan.id === preselectId ? 'checked' : ''}>
+        <div class="flex-col" style="flex:1;">
+          <div class="flex justify-between items-center">
+            <strong><span data-lang-only="ar">${plan.nameAr}</span><span data-lang-only="en">${plan.nameEn}</span></strong>
+            <span class="num" style="font-weight:700;">${plan.priceMonthly} <span data-lang-only="ar">ر.س/شهرياً</span><span data-lang-only="en">SAR/mo</span></span>
+          </div>
+          <span class="caption text-muted mt-1">
+            <span data-lang-only="ar">${formatNumber(plan.priceTotal, 'ar')} ر.س تُدفع مرة واحدة</span>
+            <span data-lang-only="en">${formatNumber(plan.priceTotal, 'en')} SAR billed once</span>
+          </span>
+        </div>
+      </label>
+    `).join('');
+  }
+
+  function wirePlanRadios(container) {
+    container.querySelectorAll('input[type=radio]').forEach((input) => {
+      input.addEventListener('change', () => {
+        container.querySelectorAll('.radio-card').forEach((c) => c.classList.remove('selected'));
+        input.closest('.radio-card').classList.add('selected');
+      });
+    });
+  }
+
+  const planOptionsEl = document.getElementById('plan-options');
+  planOptionsEl.innerHTML = planRadiosHTML('plan-group', preselectPlan);
+  wirePlanRadios(planOptionsEl);
+
+  function collectPlan() {
+    const planId = document.querySelector('#plan-options input[type=radio]:checked').value;
+    return SUBSCRIPTION_PLANS[planId];
+  }
+
+  let childUidCounter = 0;
+
+  function addChild() {
+    childUidCounter++;
+    const uid = childUidCounter;
+    const card = document.createElement('div');
+    card.className = 'child-card';
+    card.dataset.uid = uid;
+    card.innerHTML = `
+      <div class="child-card__head">
+        <h3 class="child-label"></h3>
+        <button type="button" class="remove-btn" aria-label="remove">×</button>
+      </div>
+      <div class="input-row">
+        <div class="field">
+          <label><span data-lang-only="ar">اسم الطفل</span><span data-lang-only="en">Child's name</span></label>
+          <input class="input child-name-input" type="text" data-no-digits required data-ph-ar="مثال: سلمى" data-ph-en="e.g. Salma">
+        </div>
+        <div class="field">
+          <label><span data-lang-only="ar">الصف الدراسي</span><span data-lang-only="en">Grade</span></label>
+          <select class="select child-grade-select" required></select>
+        </div>
+      </div>
+      <div class="field">
+        <label><span data-lang-only="ar">رمز المدرسة</span><span data-lang-only="en">School code</span></label>
+        <input class="input num child-school-code-input" type="text" maxlength="6" style="text-transform:uppercase;" data-ph-ar="مثال: AB12CD" data-ph-en="e.g. AB12CD" required>
+        <p class="caption text-muted mt-1"><span data-lang-only="ar">اسأل مدرسة طفلك عن رمز المدرسة إن لم تكن تعرفه.</span><span data-lang-only="en">Ask your school for the school code if you don't know it.</span></p>
+      </div>
+    `;
+    document.getElementById('children-list').appendChild(card);
+    card.querySelector('.child-grade-select').innerHTML = gradeOptionsHTML(getLang());
+    card.querySelector('.remove-btn').addEventListener('click', () => {
+      card.remove();
+      renumberChildren();
+    });
+    renumberChildren();
+    applyLanguage(getLang());
+  }
+
+  function renumberChildren() {
+    const cards = document.querySelectorAll('#children-list .child-card');
+    cards.forEach((card, i) => {
+      card.querySelector('.child-label').innerHTML =
+        `<span data-lang-only="ar">الطفل ${i + 1}</span><span data-lang-only="en">Child ${i + 1}</span>`;
+      card.querySelector('.remove-btn').style.display = cards.length > 1 ? 'inline-flex' : 'none';
+    });
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('add-child-btn').addEventListener('click', () => {
+    addChild();
+  });
+
+  addChild();
+
+  document.addEventListener('langchange', () => {
+    document.querySelectorAll('.child-grade-select').forEach((select) => {
+      const current = select.value;
+      select.innerHTML = gradeOptionsHTML(getLang());
+      if (current) select.value = current;
+    });
+  });
+
+  // Strip digits from name-only fields as the user types
+  document.addEventListener('input', (e) => {
+    if (e.target.matches('[data-no-digits]')) {
+      const cleaned = e.target.value.replace(/[0-90-9]/g, '');
+      if (cleaned !== e.target.value) e.target.value = cleaned;
+    }
+  });
+
+  // Phone: digits only, local number after the fixed +966 prefix
+  document.getElementById('parent-phone').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 9);
+  });
+
+  // Card number: group into 4s as the user types
+  document.getElementById('card-number').addEventListener('input', (e) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 16);
+    e.target.value = digits.replace(/(.{4})/g, '$1 ').trim();
+  });
+
+  // Expiry: auto-insert "/" right after the 2-digit month
+  document.getElementById('card-expiry').addEventListener('input', (e) => {
+    const digits = e.target.value.replace(/\D/g, '').slice(0, 4);
+    e.target.value = digits.length >= 2 ? digits.slice(0, 2) + '/' + digits.slice(2) : digits;
+  });
+
+  // CVV: exactly 3 digits
+  document.getElementById('card-cvv').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 3);
+  });
+
+  // Payment method tabs
+  document.querySelectorAll('#payment-method-tabs .role-tab').forEach((tab) => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('#payment-method-tabs .role-tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      const isCard = tab.dataset.method === 'card';
+      document.getElementById('payment-form').classList.toggle('hidden', !isCard);
+      document.getElementById('apple-pay-panel').classList.toggle('hidden', isCard);
+    });
+  });
+
+  function setStep(n) {
+    document.querySelectorAll('.wizard-step').forEach((step) => {
+      const stepNum = Number(step.dataset.step);
+      step.classList.toggle('active', stepNum === n);
+      step.classList.toggle('done', stepNum < n);
+      step.querySelector('.wizard-step__dot').textContent = stepNum < n ? '✓' : stepNum;
+    });
+  }
+
+  function collectChildren() {
+    return Array.from(document.querySelectorAll('#children-list .child-card')).map((card) => {
+      const name = card.querySelector('.child-name-input').value || (getLang() === 'ar' ? 'الطفل' : 'Child');
+      const gradeValue = Number(card.querySelector('.child-grade-select').value);
+      const schoolCode = card.querySelector('.child-school-code-input').value.trim().toUpperCase();
+      return {
+        name,
+        grade: GRADE_OPTIONS.find((g) => g.value === gradeValue),
+        schoolCode,
+      };
+    });
+  }
+
+  function joinNames(names, lang) {
+    if (names.length === 1) return names[0];
+    if (lang === 'ar') return names.slice(0, -1).join('، ') + ' و' + names[names.length - 1];
+    return names.length === 2
+      ? names[0] + ' and ' + names[1]
+      : names.slice(0, -1).join(', ') + ', and ' + names[names.length - 1];
+  }
+
+  document.getElementById('enroll-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const children = collectChildren();
+    const plan = collectPlan();
+    const rows = children.map((c) => `
+        <div class="flex justify-between items-center" style="padding-block:4px;">
+          <span>${c.name} — <span data-lang-only="ar">${plan.nameAr}</span><span data-lang-only="en">${plan.nameEn}</span></span>
+          <span class="num" style="font-weight:700;">${formatNumber(plan.priceTotal)} <span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></span>
+        </div>`).join('');
+    const total = plan.priceTotal * children.length;
+    document.getElementById('order-summary').innerHTML = rows + `
+      <div class="flex justify-between items-center mt-2" style="border-top:1px solid var(--color-primary-light); padding-top:var(--space-2);">
+        <strong><span data-lang-only="ar">الإجمالي</span><span data-lang-only="en">Total</span></strong>
+        <strong class="num">${formatNumber(total)} <span data-lang-only="ar">ر.س</span><span data-lang-only="en">SAR</span></strong>
+      </div>`;
+    document.getElementById('enroll-form-panel').classList.add('hidden');
+    document.getElementById('payment-panel').classList.remove('hidden');
+    setStep(2);
+    applyLanguage(getLang());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('back-to-details').addEventListener('click', () => {
+    document.getElementById('payment-panel').classList.add('hidden');
+    document.getElementById('enroll-form-panel').classList.remove('hidden');
+    setStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  function showPaymentMessage(text, isError) {
+    const el = document.getElementById('payment-message');
+    el.textContent = text;
+    el.style.color = isError ? '#c0392b' : '#2e7d32';
+    el.classList.remove('hidden');
+  }
+
+  function showSuccess(names, enrolledChildren, emailSent) {
+    const usernameLines = enrolledChildren
+      .map((c) => {
+        const link = c.invite_link
+          ? ` — <a href="${c.invite_link}" target="_blank">${getLang() === 'ar' ? 'تعيين كلمة المرور' : 'set password'}</a>`
+          : '';
+        return `<div>${c.name} — <span class="num">${c.username}</span>${link}</div>`;
+      })
+      .join('');
+    const emailNote = emailSent
+      ? `<span data-lang-only="ar">أرسلنا رابط تعيين كلمة المرور لكل طفل إلى بريدك الإلكتروني.</span><span data-lang-only="en">We've emailed you a password-setup link for each child.</span>`
+      : `<span data-lang-only="ar">تعذّر إرسال البريد الإلكتروني — استخدم الروابط أدناه لتعيين كلمة المرور مباشرة.</span><span data-lang-only="en">The email couldn't be sent — use the links below to set each password directly.</span>`;
+    document.getElementById('success-message').innerHTML = `
+      <span data-lang-only="ar">تم تسجيل الاشتراك بنجاح لـ ${joinNames(names, 'ar')}.</span>
+      <span data-lang-only="en">The subscription for ${joinNames(names, 'en')} is confirmed.</span>
+      ${emailNote}
+      <div class="mt-4">${usernameLines}</div>
+    `;
+    document.getElementById('payment-panel').classList.add('hidden');
+    document.getElementById('success-panel').classList.remove('hidden');
+    // There's nothing left to cancel once the subscription is confirmed.
+    document.getElementById('cancel-enroll-link').classList.add('hidden');
+    setStep(3);
+    applyLanguage(getLang());
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  async function submitEnrollment() {
+    const children = collectChildren();
+    const plan = collectPlan();
+    const payload = {
+      parent_name: document.getElementById('parent-name').value.trim(),
+      parent_phone: document.getElementById('parent-phone').value.trim(),
+      parent_email: document.getElementById('parent-email').value.trim(),
+      city: document.getElementById('city').value.trim(),
+      plan_id: plan.id,
+      children: children.map((c) => ({ name: c.name, grade: c.grade.value, school_code: c.schoolCode })),
+      payment_method: 'card',
+      moyasar_token: getPaymentToken(),
+    };
+
+    const payBtn = document.getElementById('pay-btn');
+    payBtn.disabled = true;
+    try {
+      const result = await apiFetch('/enroll', { method: 'POST', body: JSON.stringify(payload) });
+      showSuccess(children.map((c) => c.name), result.children, result.email_sent);
+    } catch (err) {
+      showPaymentMessage(err.message, true);
+    } finally {
+      payBtn.disabled = false;
+    }
+  }
+
+  document.getElementById('payment-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    submitEnrollment();
+  });
+})().catch((err) => {
+  document.getElementById('children-list').innerHTML =
+    `<p class="text-muted">${getLang() === 'ar' ? 'تعذّر تحميل خطط الاشتراك حالياً. حاول لاحقاً.' : 'Could not load subscription plans right now. Please try again later.'}</p>`;
+  console.error(err);
+});
+</script>
+</body>
+</html>

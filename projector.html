@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>شاشة العرض | Projector</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<style>
+  /* ────────────────────────────────────────────────────────────────
+     The projector is the only screen the class sees, from three
+     metres away, for ninety minutes. One idea per screen, large type,
+     high contrast, nothing that isn't for them. No nav, no timer
+     digits unless the facilitator asks for them, no card counters.
+     It never reads state itself — Classroom Mode broadcasts it.
+     ──────────────────────────────────────────────────────────────── */
+  html, body { height: 100%; overflow: hidden; }
+  body { background: var(--surface); color: var(--color-ink); cursor: none; }
+  body.is-idle { cursor: default; }
+
+  .pj { position: fixed; inset: 0; display: grid; grid-template-rows: auto 1fr auto; padding: 4vh 6vw 3vh; }
+  .pj-top { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
+  .pj-stage { font-family: var(--font-display-ar); font-weight: 700; font-size: clamp(1.1rem, 2vw, 1.8rem);
+    color: var(--color-primary); letter-spacing: .01em; display: inline-flex; align-items: center; gap: .6em; }
+  html[lang="en"] .pj-stage { font-family: var(--font-display-en); }
+  .pj-stage::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: var(--color-primary); }
+  .pj-aud { font-size: clamp(1rem, 1.6vw, 1.4rem); color: var(--color-success-dark); font-weight: 700; }
+
+  .pj-body { display: flex; flex-direction: column; justify-content: center; min-height: 0; padding-block: 3vh; }
+  .pj-card h1 { font-size: clamp(2.2rem, 5vw, 4.6rem); line-height: 1.15; font-weight: 900; margin-bottom: 3vh; max-width: 22ch; text-wrap: balance; }
+  .cm-statement { font-size: clamp(2rem, 4.2vw, 4rem); font-weight: 900; line-height: 1.25; max-width: 22ch; margin-bottom: 3vh; color: var(--color-primary-dark); }
+  .cm-lead { font-size: clamp(1.5rem, 2.7vw, 2.6rem); line-height: 1.6; max-width: 34ch; white-space: pre-wrap; margin-bottom: 2.5vh; }
+  html[lang="en"] .cm-lead { max-width: 48ch; }
+
+  .cm-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 2vw; margin-bottom: 2.5vh; }
+  .cm-flow-item { border: 2px solid var(--color-neutral-200); border-radius: var(--radius-xl); padding: 2.5vh 2vw; position: relative; }
+  .cm-flow-item .n { position: absolute; top: -1.1em; inset-inline-start: 1.2em; background: var(--color-primary); color: #fff; font-weight: 800;
+    width: 2.2em; height: 2.2em; border-radius: 50%; display: grid; place-items: center; font-size: clamp(1rem, 1.6vw, 1.4rem); }
+  .cm-flow-item .h { font-size: clamp(1.4rem, 2.4vw, 2.2rem); font-weight: 800; margin-top: .4em; }
+  .cm-flow-item .d { font-size: clamp(1.1rem, 1.8vw, 1.6rem); color: var(--text-muted); line-height: 1.5; margin-top: .4em; }
+
+  .cm-opts { display: flex; flex-wrap: wrap; gap: 1.2vw; margin-bottom: 2.5vh; }
+  .cm-opt { font-size: clamp(1.3rem, 2.2vw, 2rem); font-weight: 700; padding: .5em 1em; border-radius: var(--radius-full);
+    background: var(--color-primary-50); color: var(--color-primary-dark); border: 2px solid var(--color-primary-light); }
+
+  .cm-rounds { display: grid; gap: 1.5vh; margin-bottom: 2.5vh; }
+  .cm-round { display: flex; align-items: baseline; gap: 1.5vw; font-size: clamp(1.3rem, 2.2vw, 2rem); padding: 1.5vh 2vw;
+    border-radius: var(--radius-lg); background: var(--color-neutral-50); border: 2px solid var(--color-neutral-200); }
+  .cm-round .t { font-weight: 800; color: var(--color-primary-dark); white-space: nowrap; }
+  .cm-round .x b { margin-inline-end: .4em; }
+
+  .cm-rule { display: grid; grid-template-columns: auto 1fr; gap: 2vw; align-items: center; padding: 2vh 2.5vw; margin-bottom: 2.5vh;
+    background: var(--color-warning-50); border: 2px solid var(--color-warning-light); border-radius: var(--radius-xl); }
+  .cm-rule .k { font-size: clamp(1.1rem, 1.7vw, 1.5rem); font-weight: 800; color: var(--color-warning-dark); text-transform: uppercase; letter-spacing: .04em; }
+  .cm-rule .v { font-size: clamp(1.4rem, 2.4vw, 2.2rem); font-weight: 700; line-height: 1.4; }
+
+  .cm-qs { display: grid; gap: 2vh; margin-bottom: 2.5vh; }
+  .cm-q { display: flex; gap: 1.5vw; align-items: flex-start; }
+  .cm-q .n { flex: none; width: 2.1em; height: 2.1em; border-radius: 50%; background: var(--color-primary); color: #fff; font-weight: 800;
+    display: grid; place-items: center; font-size: clamp(1.1rem, 1.8vw, 1.6rem); margin-top: .15em; }
+  .cm-q .x { font-size: clamp(1.6rem, 2.9vw, 2.8rem); line-height: 1.5; font-weight: 600; }
+
+  .cm-checks { display: grid; gap: 1.5vh; margin-bottom: 2.5vh; }
+  .cm-check { display: flex; align-items: center; gap: 1.2vw; font-size: clamp(1.3rem, 2.3vw, 2.1rem); }
+  .cm-check .box { flex: none; width: 1.1em; height: 1.1em; border: 3px solid var(--color-primary); border-radius: .25em; }
+
+  .cm-scale { display: flex; flex-wrap: wrap; gap: 1.2vw; margin-bottom: 2.5vh; }
+  .cm-lvl { display: inline-flex; align-items: center; gap: .6em; font-size: clamp(1.2rem, 2vw, 1.9rem); font-weight: 700;
+    padding: .5em 1em; border-radius: var(--radius-lg); background: var(--color-neutral-50); border: 2px solid var(--color-neutral-200); }
+  .cm-lvl .n { width: 1.8em; height: 1.8em; border-radius: 50%; background: var(--color-primary); color: #fff; display: grid; place-items: center; font-size: .85em; }
+
+  .cm-mission { padding: 3vh 3vw; border-radius: var(--radius-xl); background: var(--color-primary); color: #fff; margin-bottom: 2vh; }
+  .cm-mission .k { font-size: clamp(1rem, 1.6vw, 1.4rem); font-weight: 800; opacity: .85; text-transform: uppercase; letter-spacing: .06em; margin-bottom: .5em; }
+  .cm-mission .v { font-size: clamp(1.6rem, 2.9vw, 2.8rem); font-weight: 700; line-height: 1.4; }
+  .cm-next-up { display: flex; align-items: center; gap: 1vw; font-size: clamp(1.2rem, 2vw, 1.8rem); color: var(--text-muted); }
+  .cm-next-up .icon-chip { display: none; }
+  .cm-hidden { display: none !important; }
+  .cm-reveal { display: none; }
+
+  /* Holding screens: blank (H), facilitator-only cards, no signal. */
+  .pj-hold { display: grid; place-items: center; text-align: center; gap: 2vh; }
+  .pj-hold .t { font-size: clamp(1.6rem, 3vw, 3rem); font-weight: 800; color: var(--color-neutral-400); }
+  .pj-hold .s { font-size: clamp(1.1rem, 1.8vw, 1.6rem); color: var(--color-neutral-400); max-width: 40ch; line-height: 1.5; }
+  .pj-hold .dots { display: inline-flex; gap: .6em; }
+  .pj-hold .dots i { width: .7em; height: .7em; border-radius: 50%; background: var(--color-neutral-300); animation: pj-pulse 1.6s infinite; }
+  .pj-hold .dots i:nth-child(2) { animation-delay: .25s; } .pj-hold .dots i:nth-child(3) { animation-delay: .5s; }
+  @keyframes pj-pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .pj-hold .dots i { animation: none; opacity: .6; } }
+
+  .pj-foot { display: flex; align-items: center; justify-content: space-between; gap: 2vw; }
+  .pj-title { font-size: clamp(.95rem, 1.4vw, 1.25rem); color: var(--color-neutral-400); }
+  .pj-timer { display: flex; align-items: center; gap: 1vw; }
+  .pj-digits { font-family: var(--font-mono); font-size: clamp(1.4rem, 2.4vw, 2.2rem); font-weight: 600; color: var(--color-neutral-600); font-variant-numeric: tabular-nums; }
+  .pj-digits.is-over { color: var(--color-error); }
+  .pj-bar { position: fixed; inset-inline: 0; bottom: 0; height: .6vh; background: var(--color-neutral-100); }
+  .pj-bar i { display: block; height: 100%; width: 0; background: var(--color-primary); transition: width 1s linear; }
+  .pj-bar i.is-over { background: var(--color-error); }
+
+  .pj-fs { position: fixed; top: 1.5vh; inset-inline-end: 1.5vw; border: 0; background: var(--color-neutral-100); color: var(--color-neutral-600);
+    border-radius: var(--radius-md); padding: .5em .8em; font: inherit; font-size: clamp(.9rem, 1.3vw, 1.1rem); cursor: pointer; opacity: 0; transition: opacity var(--transition-base); }
+  body.is-idle .pj-fs { opacity: 1; }
+  :fullscreen .pj-fs { display: none; }
+</style>
+</head>
+<body class="is-idle">
+
+<button class="pj-fs" id="pjFs" title="Fullscreen (F)">⛶ <span data-lang-only="ar">ملء الشاشة</span><span data-lang-only="en">Fullscreen</span> · F</button>
+
+<div class="pj">
+  <div class="pj-top">
+    <span class="pj-stage" id="pjStage"></span>
+    <span class="pj-aud" id="pjAud"></span>
+  </div>
+  <div class="pj-body" id="pjBody"></div>
+  <div class="pj-foot">
+    <span class="pj-title" id="pjTitle"></span>
+    <span class="pj-timer" id="pjTimer"></span>
+  </div>
+</div>
+<div class="pj-bar"><i id="pjBar"></i></div>
+
+<script src="js/i18n.js"></script>
+<script src="js/cm-cards.js"></script>
+<script>
+  /* ── State arrives only from Classroom Mode over a BroadcastChannel. ──
+     Keys pressed here (Present mode: one screen, this window fullscreen)
+     are forwarded back to the cockpit as commands, so the facilitator can
+     drive the session from whichever window has focus. */
+  const $ = (id) => document.getElementById(id);
+  const CH = 'BroadcastChannel' in window ? new BroadcastChannel('lsc-classroom') : null;
+  let S = null, session = null, lastSignal = 0;
+
+  const L = (a, e) => (S && S.lang === 'en' ? e : a);
+  const fmt = (s) => { const n = Math.abs(s); return (s < 0 ? '−' : '') + String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0'); };
+
+  function setLang(lang) {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  }
+
+  function hold(title, sub, dots) {
+    $('pjBody').innerHTML = `<div class="pj-hold">${dots ? '<span class="dots"><i></i><i></i><i></i></span>' : ''}<div class="t">${title}</div>${sub ? `<div class="s">${sub}</div>` : ''}</div>`;
+  }
+
+  function render() {
+    if (!S || !session) {
+      hold('في انتظار وضع العرض الصفّي<br>Waiting for Classroom Mode',
+           'افتح «وضع العرض الصفّي» على جهاز الميسّر — تظهر البطاقات هنا تلقائياً.<br>Open Classroom Mode on the facilitator\'s laptop — cards appear here automatically.', true);
+      $('pjStage').textContent = ''; $('pjAud').textContent = ''; $('pjTitle').textContent = ''; $('pjTimer').textContent = ''; $('pjBar').style.width = '0';
+      return;
+    }
+    setLang(S.lang);
+    const c = session.cards[S.i];
+    const stage = CM.STAGES[c.stage] || ['', ''];
+    $('pjStage').textContent = L(stage[0], stage[1]);
+    $('pjTitle').textContent = L(session.title_ar, session.title_en);
+
+    if (S.blank) {
+      $('pjAud').textContent = '';
+      hold(L(session.title_ar, session.title_en), '', false);
+    } else if (c.aud === 'facilitator') {
+      $('pjAud').textContent = '';
+      hold(L('لحظة…', 'One moment…'), L('الميسّر يجهّز الخطوة التالية', 'The facilitator is preparing the next step'), true);
+    } else {
+      $('pjAud').textContent = c.aud === 'student_device' ? L('✍️ أجب على ورقتك', '✍️ Answer on your slip') : '';
+      $('pjBody').innerHTML = `<div class="pj-card"><h1>${CM.esc(L(c.t_ar, c.t_en))}</h1>${CM.stageBody(c, { lang: S.lang, revealed: S.revealed, controls: false, next: { ar: session.next_ar, en: session.next_en } })}</div>`;
+    }
+
+    // Timer: the bar is always there when a timed card is running (it's
+    // quiet); digits only when the facilitator has switched them on.
+    const total = S.total || 0, left = S.left;
+    const frac = total ? Math.max(0, Math.min(1, (total - Math.max(0, left)) / total)) : 0;
+    const over = total && left < 0;
+    const bar = $('pjBar');
+    bar.style.width = (S.run || (total && left < total)) ? (over ? 100 : frac * 100) + '%' : '0';
+    bar.classList.toggle('is-over', !!over);
+    $('pjTimer').innerHTML = (S.showTimer && total && !S.blank && c.aud !== 'facilitator')
+      ? `<span class="pj-digits ${over ? 'is-over' : ''}">${fmt(left)}</span>` : '';
+    applyLanguage(S.lang);
+  }
+
+  if (CH) {
+    CH.onmessage = (e) => {
+      const m = e.data || {};
+      if (m.type !== 'state') return;
+      if (m.session) session = m.session;
+      S = m; lastSignal = Date.now();
+      render();
+    };
+    CH.postMessage({ type: 'hello' });
+    // Ask again for a while in case the cockpit opens after this window.
+    const retry = setInterval(() => { if (S) clearInterval(retry); else CH.postMessage({ type: 'hello' }); }, 2000);
+  }
+
+  // Present mode: keys pressed on this window drive the cockpit.
+  addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'f') { toggleFullscreen(); return; }
+    if ([' ', 'ArrowLeft', 'ArrowRight', 't', 'T', 'h', 'H'].includes(e.key)) {
+      e.preventDefault();
+      if (CH) CH.postMessage({ type: 'cmd', key: e.key });
+    }
+  });
+
+  function toggleFullscreen() {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen().catch(() => {});
+  }
+  $('pjFs').onclick = toggleFullscreen;
+
+  // Hide the cursor and the fullscreen hint while idle; show on movement.
+  let idleT = null;
+  const wake = () => { document.body.classList.add('is-idle'); clearTimeout(idleT); idleT = setTimeout(() => document.body.classList.remove('is-idle'), 2500); };
+  addEventListener('mousemove', wake); addEventListener('click', wake); wake();
+
+  // Keep the screen awake for the session where the browser allows it.
+  const keepAwake = () => { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => {}); };
+  keepAwake(); document.addEventListener('visibilitychange', () => { if (!document.hidden) keepAwake(); });
+
+  render();
+</script>
+</body>
+</html>

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | لوحة المعلم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">التدريس</span><span data-lang-only="en">Teaching</span></div>
+      <a href="teacher-dashboard.html" class="active"><span class="ic">🏠</span><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="session-prep.html"><span class="ic">📋</span><span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare Session</span></a>
+      <a href="classroom-mode.html"><span class="ic">🎧</span><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom Mode</span></a>
+      <a href="#classes"><span class="ic">👥</span><span data-lang-only="ar">مجموعاتي</span><span data-lang-only="en">My Cohorts</span></a>
+      <a href="#materials"><span class="ic">📎</span><span data-lang-only="ar">مواد الميسّر</span><span data-lang-only="en">Facilitator Materials</span></a>
+      <div class="sidebar-section-label"><span data-lang-only="ar">المتابعة</span><span data-lang-only="en">Follow-up</span></div>
+      <a href="#grading"><span class="ic">📝</span><span data-lang-only="ar">أعمال الطلاب</span><span data-lang-only="en">Student Work</span></a>
+      <a href="#progress"><span class="ic">📊</span><span data-lang-only="ar">تقدّم المجموعات</span><span data-lang-only="en">Cohort Progress</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <div>
+          <div class="caption text-muted"><span data-lang-only="ar">أهلاً بعودتك</span><span data-lang-only="en">Welcome back</span></div>
+          <strong id="teacher-name">—</strong>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="teacher-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- NEXT SESSION — the facilitator's first question, per the spec:
+           what am I teaching next, when, and is everything ready? -->
+      <div class="card" id="next-session" style="background:var(--color-primary-50); border-color:var(--color-primary-light);">
+        <div class="flex justify-between items-start wrap gap-4">
+          <div style="min-width:16rem;">
+            <span class="hero-eyebrow">
+              <span data-lang-only="ar">جلستك القادمة</span><span data-lang-only="en">Your next session</span>
+            </span>
+            <h2 class="mt-2" id="ns-title">—</h2>
+            <p class="caption text-muted mt-1" id="ns-when">—</p>
+            <div class="flex items-center gap-3 mt-3">
+              <span class="badge badge-primary" id="ns-domain">—</span>
+              <span class="badge badge-neutral" id="ns-length">—</span>
+            </div>
+          </div>
+
+          <div style="min-width:15rem;">
+            <div class="flex items-center justify-between">
+              <span class="caption text-muted"><span data-lang-only="ar">جاهزية التجهيز</span><span data-lang-only="en">Preparation</span></span>
+              <span class="caption num" id="ns-prep-time">—</span>
+            </div>
+            <div class="progress-bar mt-1"><div class="progress-bar__fill" id="ns-prep-fill" style="width:0"></div></div>
+            <div class="flex-col gap-1 mt-3" id="ns-checklist"></div>
+          </div>
+
+          <div class="flex-col gap-2" style="min-width:13rem;">
+            <a href="session-prep.html" class="btn btn-secondary btn-block">
+              <span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare session</span>
+            </a>
+            <a href="classroom-mode.html" class="btn btn-primary btn-block btn-lg">
+              <span data-lang-only="ar">ابدأ وضع العرض</span><span data-lang-only="en">Start Classroom Mode</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEEDS YOUR ATTENTION — demoted below teaching, where it belongs -->
+      <div class="grid grid-2 mt-4">
+        <div class="card card-flat" style="border-color:var(--color-warning-light);">
+          <div class="flex items-center gap-3">
+            <span class="icon-chip warning">📝</span>
+            <div style="flex:1;">
+              <strong id="pending-banner-title"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></strong>
+              <div class="caption text-muted mt-1"><span data-lang-only="ar">بانتظار تصحيحك</span><span data-lang-only="en">Waiting on your grading</span></div>
+            </div>
+            <a href="#grading" class="btn btn-secondary btn-sm"><span data-lang-only="ar">ابدأ التصحيح</span><span data-lang-only="en">Start grading</span></a>
+          </div>
+        </div>
+        <div class="card card-flat">
+          <div class="flex items-center gap-3">
+            <span class="icon-chip blue">👥</span>
+            <div style="flex:1;">
+              <strong id="ns-cohort">—</strong>
+              <div class="caption text-muted mt-1" id="ns-cohort-meta">—</div>
+            </div>
+            <a href="#classes" class="btn btn-secondary btn-sm"><span data-lang-only="ar">المجموعات</span><span data-lang-only="en">Cohorts</span></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY CLASSES -->
+      <div class="section-head mt-8" id="classes">
+        <h2><span data-lang-only="ar">مجموعاتي</span><span data-lang-only="en">My Cohorts</span></h2>
+        <span class="caption text-muted" id="cohorts-count"></span>
+      </div>
+      <div class="grid grid-2" id="classes-grid">
+        <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+      </div>
+
+      <!-- MATERIALS -->
+      <div class="section-head mt-8" id="materials">
+        <h2><span data-lang-only="ar">مواد الميسّر</span><span data-lang-only="en">Facilitator Materials</span></h2>
+        <span class="caption text-muted" id="materials-count"></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">العنوان</span><span data-lang-only="en">Title</span></th>
+            <th><span data-lang-only="ar">الوصف</span><span data-lang-only="en">Description</span></th>
+            <th><span data-lang-only="ar">المرحلة</span><span data-lang-only="en">Grade Band</span></th>
+            <th></th>
+          </tr></thead>
+          <tbody id="materials-body">
+            <tr><td colspan="4" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- STUDENT WORK — one job, not two. Setting work and marking work are
+           the same task in a facilitator's head; grading leads because it is
+           the actionable half. -->
+      <div class="section-head mt-8" id="grading">
+        <h2 id="grading-heading"><span data-lang-only="ar">بانتظار التصحيح</span><span data-lang-only="en">Pending Grading</span></h2>
+        <span class="caption text-muted"><span data-lang-only="ar">أعمال الطلاب</span><span data-lang-only="en">Student work</span></span>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">الواجب</span><span data-lang-only="en">Assignment</span></th>
+            <th><span data-lang-only="ar">الطالب</span><span data-lang-only="en">Student</span></th>
+            <th><span data-lang-only="ar">المجموعة</span><span data-lang-only="en">Cohort</span></th>
+            <th></th>
+          </tr></thead>
+          <tbody id="grading-body">
+            <tr><td colspan="4" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="mt-6" id="assignments"><span data-lang-only="ar">الواجبات المُسندة</span><span data-lang-only="en">Assignments set</span></h3>
+      <div class="card mt-3">
+        <div class="flex-col gap-4" id="assignments-list">
+          <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+        </div>
+      </div>
+
+      <!-- CLASS PROGRESS -->
+      <div class="section-head mt-8" id="progress">
+        <h2><span data-lang-only="ar">تقدّم المجموعات</span><span data-lang-only="en">Cohort Progress</span></h2>
+        <span class="caption text-muted">
+          <span data-lang-only="ar">يقيس التسليمات المصححة — لا نموّ المهارة. قياس المهارة يبدأ مع بطاقات الرصد.</span>
+          <span data-lang-only="en">Measures graded submissions, not skill growth. Skill measurement begins with observation records.</span>
+        </span>
+      </div>
+      <div class="grid grid-4" id="stats-grid">
+        <div class="card stat-tile"><span class="value">—</span><span class="label"><span data-lang-only="ar">نسبة الأعمال المصححة</span><span data-lang-only="en">Submissions graded</span></span></div>
+        <div class="card stat-tile"><span class="value">—</span><span class="label"><span data-lang-only="ar">شارات مُمنوحة</span><span data-lang-only="en">Badges awarded</span></span></div>
+        <div class="card stat-tile"><span class="value">—</span><span class="label"><span data-lang-only="ar">نسبة الحضور</span><span data-lang-only="en">Attendance</span></span></div>
+        <div class="card stat-tile"><span class="value">—</span><span class="label"><span data-lang-only="ar">طلاب بحاجة إلى دعم</span><span data-lang-only="en">Students needing support</span></span></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ROSTER MODAL -->
+<div class="modal-backdrop" id="roster-modal-backdrop">
+  <div class="modal" style="max-width:640px;">
+    <h3><span data-lang-only="ar">قائمة المجموعة</span><span data-lang-only="en">Cohort Roster</span></h3>
+    <p class="caption text-muted mt-1" id="roster-modal-subtitle"></p>
+    <div class="table-wrap mt-4">
+      <table>
+        <thead><tr>
+          <th><span data-lang-only="ar">الاسم</span><span data-lang-only="en">Name</span></th>
+          <th><span data-lang-only="ar">اسم المستخدم</span><span data-lang-only="en">Username</span></th>
+          <th><span data-lang-only="ar">الشارات</span><span data-lang-only="en">Badges</span></th>
+        </tr></thead>
+        <tbody id="roster-body"></tbody>
+      </table>
+    </div>
+    <button type="button" class="btn btn-tertiary btn-block mt-4" id="roster-close"><span data-lang-only="ar">إغلاق</span><span data-lang-only="en">Close</span></button>
+  </div>
+</div>
+
+<!-- ATTENDANCE MODAL -->
+<div class="modal-backdrop" id="attendance-modal-backdrop">
+  <div class="modal" style="max-width:520px;">
+    <h3><span data-lang-only="ar">تسجيل الحضور</span><span data-lang-only="en">Mark Attendance</span></h3>
+    <p class="caption text-muted mt-1" id="attendance-modal-subtitle"></p>
+    <div class="field mt-4">
+      <label><span data-lang-only="ar">التاريخ</span><span data-lang-only="en">Date</span></label>
+      <input class="input" type="date" id="attendance-date">
+    </div>
+    <div class="flex-col gap-2 mt-4" id="attendance-list"></div>
+    <p id="attendance-message" class="caption mt-3 hidden"></p>
+    <div class="flex gap-2 mt-4">
+      <button type="button" class="btn btn-tertiary btn-block" id="attendance-close"><span data-lang-only="ar">إغلاق</span><span data-lang-only="en">Close</span></button>
+      <button type="button" class="btn btn-primary btn-block" id="attendance-save"><span data-lang-only="ar">حفظ</span><span data-lang-only="en">Save</span></button>
+    </div>
+  </div>
+</div>
+
+<!-- GRADE MODAL -->
+<div class="modal-backdrop" id="grade-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">تصحيح الواجب</span><span data-lang-only="en">Grade submission</span></h3>
+    <p class="caption text-muted mt-1" id="grade-modal-subtitle"></p>
+    <form id="grade-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">الدرجة (من 100)</span><span data-lang-only="en">Grade (out of 100)</span></label>
+        <input class="input" type="number" min="0" max="100" step="1" id="grade-input" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">ملاحظات</span><span data-lang-only="en">Feedback</span></label>
+        <textarea class="input" id="feedback-input" rows="3"></textarea>
+      </div>
+      <p id="grade-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="grade-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block"><span data-lang-only="ar">حفظ</span><span data-lang-only="en">Save</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/session-fixtures.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  let gradingSubmissionId = null;
+
+  /* ── Next session ──────────────────────────────────────────────────────
+     The cohort is real (GET /teacher/classes). The schedule is not: there is
+     no table that says "this cohort teaches this session on this date" —
+     see supabase/migrations/0005_cohort_sessions.sql, which adds it. Until
+     0005 is applied, the session and date below are the Season 1 anchor and
+     a placeholder, and the panel says so rather than inventing a timetable.  */
+  /* The next session comes from GET /teacher/sessions — the live sessions
+     of the teacher's band (Season 4 fixture offline). With no schedule
+     model yet, "next" is the lowest-numbered live session. Preparation
+     progress is what the teacher ticked on session-prep.html, which stores
+     {done,total} per session in localStorage. */
+  const FALLBACK_SESSION = {
+    id: 'c5100000-0000-4000-8000-000000000004', order_index: 4,
+    title_ar: 'استمع كالمحقّق', title_en: 'Listen Like a Detective',
+    skill_title_ar: 'مختبر مهارات الحياة — الموسم الأول', skill_title_en: 'Life Skills Lab — Season 1',
+  };
+  let nextSession = null;
+
+  async function renderNextSession(cls) {
+    const L = (a, e) => (getLang() === 'ar' ? a : e);
+    if (!nextSession) {
+      try {
+        const list = await apiFetch('/teacher/sessions');
+        nextSession = (list || []).slice().sort((a, b) => a.order_index - b.order_index)[0] || FALLBACK_SESSION;
+      } catch (e) { console.warn('Sessions unavailable — showing the Season 1 anchor.', e); nextSession = FALLBACK_SESSION; }
+    }
+    const ns = nextSession;
+    document.getElementById('ns-title').textContent =
+      L(`الجلسة ${ns.order_index} · ${ns.title_ar}`, `Session ${ns.order_index} · ${ns.title_en}`);
+    document.getElementById('ns-domain').textContent = L(ns.skill_title_ar, ns.skill_title_en) || '—';
+    document.getElementById('ns-length').textContent = 90 + L(' دقيقة', ' min');
+
+    const prepHref = `session-prep.html?session=${encodeURIComponent(ns.id)}`;
+    const startHref = `classroom-mode.html?session=${encodeURIComponent(ns.id)}`;
+    document.querySelector('#next-session a[href^="session-prep"]').href = prepHref;
+    document.querySelector('#next-session a[href^="classroom-mode"]').href = startHref;
+
+    let st = {};
+    try { st = JSON.parse(localStorage.getItem('lsc_prep_' + ns.id) || '{}'); } catch (e) {}
+    const done = st.done || 0, total = st.total || 0;
+    document.getElementById('ns-prep-fill').style.width = (total ? done / total * 100 : 0) + '%';
+    document.getElementById('ns-prep-time').textContent = !total
+      ? L('لم يبدأ بعد', 'Not started')
+      : done === total ? L('جاهز', 'Ready') : L(`${total - done} بنود متبقية`, `${total - done} items left`);
+    document.getElementById('ns-checklist').innerHTML = total && done === total
+      ? `<span class="caption text-muted">✓ ${L('قائمة التجهيز مكتملة', 'Preparation checklist complete')}</span>`
+      : `<a class="caption" href="${prepHref}">${total ? L('أكمل قائمة التجهيز →', 'Finish the checklist →') : L('افتح قائمة التجهيز →', 'Open the preparation checklist →')}</a>`;
+
+    // No schedule model yet — say so instead of fabricating a date.
+    document.getElementById('ns-when').innerHTML = cls
+      ? L('لم يُجدول بعد — المجموعة: ', 'Not scheduled yet — cohort: ') +
+        `<strong>${getLang() === 'ar' ? cls.name_ar : cls.name_en}</strong>`
+      : L('لم يُجدول بعد', 'Not scheduled yet');
+
+    if (cls) {
+      document.getElementById('ns-cohort').textContent = getLang() === 'ar' ? cls.name_ar : cls.name_en;
+      document.getElementById('ns-cohort-meta').textContent =
+        L(`${cls.enrolled} طالباً · ${cls.grade_bands ? cls.grade_bands.label_ar : ''}`,
+          `${cls.enrolled} students · ${cls.grade_bands ? cls.grade_bands.label_en : ''}`);
+    }
+  }
+  document.addEventListener('langchange', () => renderNextSession(window.__firstClass));
+
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    return formatDate(iso);
+  }
+
+  function renderCohorts(classes) {
+    window.__firstClass = classes && classes.length ? classes[0] : null;
+    const cc = document.getElementById('cohorts-count');
+    if (cc) cc.innerHTML = classes.length
+      ? `<span data-lang-only="ar">${classes.length} مجموعة · ${classes.reduce((a,c)=>a+c.enrolled,0)} طالباً</span>`
+      + `<span data-lang-only="en">${classes.length} cohorts · ${classes.reduce((a,c)=>a+c.enrolled,0)} students</span>`
+      : '';
+    renderNextSession(window.__firstClass);
+
+    const grid = document.getElementById('classes-grid');
+    grid.innerHTML = '';
+    if (!classes.length) {
+      grid.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد مجموعات مسندة بعد.</span><span data-lang-only="en">No cohorts assigned yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    classes.forEach((c) => {
+      const pct = Math.round((c.enrolled / c.capacity) * 100);
+      const full = c.enrolled >= c.capacity;
+      const near = !full && pct >= 80;
+      const statusBadge = full
+        ? '<span class="badge badge-error"><span data-lang-only="ar">مكتمل</span><span data-lang-only="en">Full</span></span>'
+        : near
+          ? '<span class="badge badge-warning"><span data-lang-only="ar">شبه ممتلئ</span><span data-lang-only="en">Nearly full</span></span>'
+          : '<span class="badge badge-success"><span data-lang-only="ar">متاح</span><span data-lang-only="en">Available</span></span>';
+      const bandLabel = c.grade_bands
+        ? `<span data-lang-only="ar">${c.grade_bands.label_ar}</span><span data-lang-only="en">${c.grade_bands.label_en}</span>`
+        : '';
+      const nameForLang = getLang() === 'ar' ? c.name_ar : c.name_en;
+      const div = document.createElement('div');
+      div.className = 'card card-hover';
+      div.innerHTML = `
+        <div class="flex justify-between items-start">
+          <div>
+            <h3><span data-lang-only="ar">${c.name_ar}</span><span data-lang-only="en">${c.name_en}</span></h3>
+            <div class="caption text-muted mt-1">${bandLabel}</div>
+          </div>
+          ${statusBadge}
+        </div>
+        <div class="capacity mt-4">
+          <div class="capacity-meta"><span><span data-lang-only="ar">الطلاب المسجّلون</span><span data-lang-only="en">Students enrolled</span></span><span class="num">${c.enrolled}/${c.capacity}</span></div>
+          <div class="capacity-bar"><div class="capacity-bar__fill ${full ? 'full' : near ? 'near' : ''}" style="width:${pct}%"></div></div>
+        </div>
+        <div class="flex justify-between items-center mt-4">
+          <span class="caption text-muted"><span data-lang-only="ar">نسبة الإنجاز</span><span data-lang-only="en">Progress</span></span>
+          <span class="num" style="font-weight:700;">${c.progress}%</span>
+        </div>
+        <div class="progress-bar mt-1"><div class="progress-bar__fill" style="width:${c.progress}%"></div></div>
+        <div class="flex-col gap-2 mt-4">
+          <a href="session-prep.html" class="btn btn-primary btn-sm btn-block"><span data-lang-only="ar">تجهيز الجلسة القادمة</span><span data-lang-only="en">Prepare next session</span></a>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm btn-block roster-btn" data-id="${c.id}" data-name="${nameForLang}"><span data-lang-only="ar">القائمة</span><span data-lang-only="en">Roster</span></button>
+            <button class="btn btn-tertiary btn-sm btn-block attendance-btn" data-id="${c.id}" data-name="${nameForLang}"><span data-lang-only="ar">الحضور</span><span data-lang-only="en">Attendance</span></button>
+          </div>
+        </div>
+      `;
+      grid.appendChild(div);
+    });
+    document.querySelectorAll('.roster-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openRosterModal(btn.dataset.id, btn.dataset.name));
+    });
+    document.querySelectorAll('.attendance-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openAttendanceModal(btn.dataset.id, btn.dataset.name));
+    });
+    applyLanguage(getLang());
+  }
+
+  async function openRosterModal(classId, className) {
+    document.getElementById('roster-modal-subtitle').textContent = className;
+    document.getElementById('roster-body').innerHTML =
+      '<tr><td colspan="3" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>';
+    document.getElementById('roster-modal-backdrop').classList.add('open');
+    try {
+      const roster = await apiFetch(`/teacher/classes/${classId}/roster`);
+      const tbody = document.getElementById('roster-body');
+      tbody.innerHTML = '';
+      if (!roster.length) {
+        tbody.innerHTML = '<tr><td colspan="3" class="text-muted"><span data-lang-only="ar">لا يوجد طلاب مسجّلون بعد.</span><span data-lang-only="en">No students enrolled yet.</span></td></tr>';
+      } else {
+        roster.forEach((s) => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${s.full_name}</td>
+            <td class="num">${s.username}</td>
+            <td class="num">${s.badges_count} 🎖️</td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+      applyLanguage(getLang());
+    } catch (err) {
+      document.getElementById('roster-body').innerHTML = `<tr><td colspan="3" style="color:#c0392b;">${err.message}</td></tr>`;
+    }
+  }
+  document.getElementById('roster-close').addEventListener('click', () => {
+    document.getElementById('roster-modal-backdrop').classList.remove('open');
+  });
+
+  let attendanceClassId = null;
+
+  async function loadAttendance() {
+    const list = document.getElementById('attendance-list');
+    list.innerHTML = '<p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>';
+    document.getElementById('attendance-message').classList.add('hidden');
+    try {
+      const sessionDate = document.getElementById('attendance-date').value;
+      const data = await apiFetch(`/teacher/classes/${attendanceClassId}/attendance?session_date=${sessionDate}`);
+      list.innerHTML = '';
+      if (!data.roster.length) {
+        list.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا يوجد طلاب مسجّلون بعد.</span><span data-lang-only="en">No students enrolled yet.</span></p>';
+        applyLanguage(getLang());
+        return;
+      }
+      data.roster.forEach((s) => {
+        const row = document.createElement('label');
+        row.className = 'flex items-center gap-3';
+        row.style.padding = 'var(--space-2) 0';
+        row.innerHTML = `
+          <input type="checkbox" data-student-id="${s.student_id}" ${s.attended ? 'checked' : ''}>
+          <span>${s.full_name}</span>
+        `;
+        list.appendChild(row);
+      });
+      applyLanguage(getLang());
+    } catch (err) {
+      list.innerHTML = `<p style="color:#c0392b;">${err.message}</p>`;
+    }
+  }
+
+  function openAttendanceModal(classId, className) {
+    attendanceClassId = classId;
+    document.getElementById('attendance-modal-subtitle').textContent = className;
+    document.getElementById('attendance-date').value = new Date().toISOString().slice(0, 10);
+    document.getElementById('attendance-modal-backdrop').classList.add('open');
+    loadAttendance();
+  }
+  document.getElementById('attendance-date').addEventListener('change', loadAttendance);
+  document.getElementById('attendance-close').addEventListener('click', () => {
+    document.getElementById('attendance-modal-backdrop').classList.remove('open');
+  });
+  document.getElementById('attendance-save').addEventListener('click', async () => {
+    const sessionDate = document.getElementById('attendance-date').value;
+    const records = Array.from(document.querySelectorAll('#attendance-list input[type=checkbox]')).map((cb) => ({
+      student_id: cb.dataset.studentId,
+      attended: cb.checked,
+    }));
+    try {
+      await apiFetch(`/teacher/classes/${attendanceClassId}/attendance`, {
+        method: 'POST',
+        body: JSON.stringify({ session_date: sessionDate, records }),
+      });
+      const el = document.getElementById('attendance-message');
+      el.textContent = getLang() === 'ar' ? 'تم الحفظ ✓' : 'Saved ✓';
+      el.style.color = '#2e7d32';
+      el.classList.remove('hidden');
+      announce('تم حفظ الحضور', 'Attendance saved');
+    } catch (err) {
+      const el = document.getElementById('attendance-message');
+      el.textContent = err.message;
+      el.style.color = '#c0392b';
+      el.classList.remove('hidden');
+    }
+  });
+
+  function renderAssignments(assignments) {
+    const list = document.getElementById('assignments-list');
+    list.innerHTML = '';
+    if (!assignments.length) {
+      list.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد واجبات بعد.</span><span data-lang-only="en">No assignments yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    assignments.forEach((a, i) => {
+      const row = document.createElement('div');
+      row.className = 'flex justify-between items-center wrap gap-2';
+      row.style.paddingBottom = 'var(--space-4)';
+      if (i < assignments.length - 1) row.style.borderBottom = '1px solid var(--border)';
+      row.innerHTML = `
+        <div>
+          <strong>✍️ ${a.title}</strong>
+          <div class="caption text-muted mt-1">${a.classes ? `<span data-lang-only="ar">${a.classes.name_ar}</span><span data-lang-only="en">${a.classes.name_en}</span>` : ''} — ${fmtDate(a.due_date)} · <span data-lang-only="ar">التسليمات</span><span data-lang-only="en">Submissions</span>: ${a.submitted}</div>
+        </div>
+        <span class="badge ${a.graded === a.submitted && a.submitted > 0 ? 'badge-success' : 'badge-warning'}">
+          ${a.graded}/${a.submitted} <span data-lang-only="ar">تم التصحيح</span><span data-lang-only="en">graded</span>
+        </span>
+      `;
+      list.appendChild(row);
+    });
+    applyLanguage(getLang());
+  }
+
+  function renderGrading(submissions) {
+    const tbody = document.getElementById('grading-body');
+    document.getElementById('grading-heading').innerHTML =
+      `<span data-lang-only="ar">بانتظار التصحيح (${submissions.length})</span><span data-lang-only="en">Pending Grading (${submissions.length})</span>`;
+    tbody.innerHTML = '';
+    if (!submissions.length) {
+      tbody.innerHTML = '<tr><td colspan="4" class="text-muted"><span data-lang-only="ar">لا يوجد شيء بانتظار التصحيح 🎉</span><span data-lang-only="en">Nothing pending grading 🎉</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    submissions.forEach((s) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.assignments ? s.assignments.title : ''}</td>
+        <td>${s.students ? s.students.full_name : ''}</td>
+        <td>${s.assignments && s.assignments.classes ? `<span data-lang-only="ar">${s.assignments.classes.name_ar}</span><span data-lang-only="en">${s.assignments.classes.name_en}</span>` : ''}</td>
+        <td><button class="btn btn-primary btn-sm grade-btn" data-id="${s.id}" data-title="${s.assignments ? s.assignments.title : ''}" data-student="${s.students ? s.students.full_name : ''}"><span data-lang-only="ar">تصحيح</span><span data-lang-only="en">Grade</span></button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+    document.querySelectorAll('.grade-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openGradeModal(btn.dataset.id, btn.dataset.title, btn.dataset.student));
+    });
+    applyLanguage(getLang());
+  }
+
+  function renderStats(stats) {
+    const grid = document.getElementById('stats-grid');
+    const tiles = grid.querySelectorAll('.value');
+    tiles[0].textContent = `${stats.overall_completion}%`;
+    tiles[1].textContent = stats.badges_awarded;
+    // Attendance replaces the average score here. In a programme whose value
+    // is being in the room it is the stronger signal, and it needs no
+    // judgement call from the facilitator to produce.
+    tiles[2].textContent = stats.attendance_rate !== null && stats.attendance_rate !== undefined
+      ? `${stats.attendance_rate}%` : '—';
+    tiles[2].style.color = (stats.attendance_rate !== null && stats.attendance_rate < 70)
+      ? 'var(--color-warning-dark)' : '';
+    tiles[3].textContent = stats.at_risk_students;
+    tiles[3].style.color = stats.at_risk_students > 0 ? 'var(--color-error)' : '';
+  }
+
+  function openGradeModal(id, title, student) {
+    gradingSubmissionId = id;
+    document.getElementById('grade-modal-subtitle').textContent = `${title} — ${student}`;
+    document.getElementById('grade-input').value = '';
+    document.getElementById('feedback-input').value = '';
+    document.getElementById('grade-error').classList.add('hidden');
+    document.getElementById('grade-modal-backdrop').classList.add('open');
+  }
+  function closeGradeModal() {
+    document.getElementById('grade-modal-backdrop').classList.remove('open');
+    gradingSubmissionId = null;
+  }
+  document.getElementById('grade-cancel').addEventListener('click', closeGradeModal);
+
+  document.getElementById('grade-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const grade = parseFloat(document.getElementById('grade-input').value);
+    const feedback = document.getElementById('feedback-input').value.trim() || null;
+    try {
+      await apiFetch(`/teacher/submissions/${gradingSubmissionId}/grade`, {
+        method: 'POST',
+        body: JSON.stringify({ grade, feedback }),
+      });
+      closeGradeModal();
+      announce('تم حفظ التقييم', 'Grade saved');
+      await loadAll();
+    } catch (err) {
+      const el = document.getElementById('grade-error');
+      el.textContent = err.message;
+      el.classList.remove('hidden');
+    }
+  });
+
+  async function renderMaterials() {
+    const materials = await apiFetch('/teacher/materials');
+    const mc = document.getElementById('materials-count');
+    if (mc) mc.innerHTML = materials.length
+      ? `<span data-lang-only="ar">${materials.length} ملفاً</span><span data-lang-only="en">${materials.length} files</span>`
+      : '';
+    const body = document.getElementById('materials-body');
+    body.innerHTML = '';
+    if (!materials.length) {
+      body.innerHTML = '<tr><td colspan="4" class="text-muted"><span data-lang-only="ar">لا توجد مواد بعد.</span><span data-lang-only="en">No materials yet.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    materials.forEach((m) => {
+      const bandLabel = m.grade_bands
+        ? `<span data-lang-only="ar">${m.grade_bands.label_ar}</span><span data-lang-only="en">${m.grade_bands.label_en}</span>`
+        : `<span data-lang-only="ar">كل المراحل</span><span data-lang-only="en">All grade bands</span>`;
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${m.title}</td>
+        <td class="text-muted">${m.description || ''}</td>
+        <td>${bandLabel}</td>
+        <td><a href="${m.file_url}" target="_blank" class="btn btn-secondary btn-sm">⬇ <span data-lang-only="ar">تحميل</span><span data-lang-only="en">Download</span></a></td>
+      `;
+      body.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  // The "Curriculum Library" grid that used to render here was the public
+  // marketing grid (curriculum_topics), retired in migration 0008. A
+  // facilitator's real curriculum surface is Prepare Session.
+
+  async function loadAll() {
+    const [classes, assignments, pending, stats] = await Promise.all([
+      apiFetch('/teacher/classes'),
+      apiFetch('/teacher/assignments'),
+      apiFetch('/teacher/submissions?status_filter=pending'),
+      apiFetch('/teacher/stats'),
+    ]);
+    renderCohorts(classes);
+    renderAssignments(assignments);
+    renderGrading(pending);
+    renderStats(stats);
+    document.getElementById('pending-banner-title').innerHTML = pending.length
+      ? `<span data-lang-only="ar">لديك ${pending.length} واجبات بانتظار التصحيح</span><span data-lang-only="en">You have ${pending.length} pending assignments to grade</span>`
+      : `<span data-lang-only="ar">لا يوجد شيء بانتظار التصحيح 🎉</span><span data-lang-only="en">Nothing pending grading 🎉</span>`;
+    applyLanguage(getLang());
+  }
+
+  (async () => {
+    const me = await requireAuth('teacher');
+    if (!me) return;
+    document.getElementById('teacher-name').textContent = me.full_name || me.email;
+    document.getElementById('teacher-avatar').textContent = (me.full_name || me.email).trim().charAt(0);
+    try {
+      await loadAll();
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+    renderMaterials().catch((err) => console.error(err));
+  })();
+</script>
+</body>
+</html>

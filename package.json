@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "dev": "http-server -p 5500 -c-1",
+    "test": "node tests/dev-fixtures.test.mjs"
+  },
+  "dependencies": {
+    "framer-motion": "^12.42.2"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

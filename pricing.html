@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | الاشتراكات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Home</span></a>
+      <a href="index.html#programs"><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></a>
+      <a href="pricing.html#schools"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></a>
+      <a href="pricing.html" class="active"><span data-lang-only="ar">الاشتراكات</span><span data-lang-only="en">Subscriptions</span></a>
+      <a href="login.html"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Login</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle">
+        <button data-lang="ar">AR</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <a href="enroll.html" class="btn btn-primary btn-sm"><span data-lang-only="ar">اشترك الآن</span><span data-lang-only="en">Subscribe now</span></a>
+      <button class="nav-burger icon-btn" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+    </div>
+  </div>
+  <div class="mobile-menu">
+    <a href="index.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Home</span></a>
+    <a href="index.html#programs"><span data-lang-only="ar">البرامج</span><span data-lang-only="en">Programs</span></a>
+    <a href="pricing.html#schools"><span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></a>
+    <a href="pricing.html"><span data-lang-only="ar">الاشتراكات</span><span data-lang-only="en">Subscriptions</span></a>
+    <a href="login.html"><span data-lang-only="ar">تسجيل الدخول</span><span data-lang-only="en">Login</span></a>
+  </div>
+</nav>
+
+<main data-main>
+
+<header class="section" style="padding-bottom: var(--space-8);">
+  <div class="container text-center">
+    <h1 class="mt-3"><span data-lang-only="ar">اختر خطة الاشتراك المناسبة</span><span data-lang-only="en">Choose the subscription plan that fits you</span></h1>
+    <p class="lead text-muted mt-4" style="max-width:56ch; margin-inline:auto;">
+      <span data-lang-only="ar">اشترك مباشرة من الموقع واختر شهرياً أو كل 6 أشهر أو سنوياً — كلما التزمت لفترة أطول انخفض سعرك الشهري. البرنامج ثابت للجميع: جلستان أسبوعياً مدة كل منهما 90 دقيقة، في مجموعة من 14 طالباً مع معلم مخصص.</span>
+      <span data-lang-only="en">Subscribe directly on our site and choose Monthly, 6-Month, or Annual billing — the longer you commit, the lower your monthly rate. The program is the same for everyone: two 90-minute sessions a week, in a group of 14 with a dedicated teacher.</span>
+    </p>
+  </div>
+</header>
+
+<section class="section" style="padding-top: var(--space-4);">
+  <div class="container">
+    <div class="grid grid-3" id="pricing-cards"></div>
+    <p class="caption text-muted text-center mt-6"><span data-lang-only="ar">الأسعار تُدفع مقدماً بالكامل حسب المدة التي تختارها.</span><span data-lang-only="en">Prices are paid in full upfront for the period you choose. You can manage your plan anytime.</span></p>
+  </div>
+</section>
+
+<!-- FOR SCHOOLS — the partnership path has no price; it has a conversation -->
+<section class="section" id="schools">
+  <div class="container">
+    <div class="card" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-6); align-items:center;">
+      <div>
+        <span class="hero-eyebrow">🏫 <span data-lang-only="ar">للمدارس</span><span data-lang-only="en">For schools</span></span>
+        <h2 class="mt-3"><span data-lang-only="ar">الشراكة لا تُشترى من هذه الصفحة</span><span data-lang-only="en">Partnership isn't bought on this page</span></h2>
+        <p class="text-muted mt-2"><span data-lang-only="ar">الأسعار أعلاه تدفعها الأسر. المدرسة شريك: توفّر القاعات والميسّرين، ونحن نوفّر المنهج كاملاً وبوابة الميسّر والتقارير — وتحصل المدرسة على حصة من إيراد كل اشتراك. تُتّفق الشروط في محادثة، لا في عربة تسوّق.</span><span data-lang-only="en">The prices above are paid by families. The school is a partner: it provides the rooms and facilitators, we provide the complete curriculum, the facilitator portal and the reporting — and the school earns a share of every subscription. The terms are agreed in a conversation, not a checkout.</span></p>
+        <ul class="flex-col gap-2 mt-4" style="list-style:none;">
+          <li class="flex items-center gap-2"><span class="check">✓</span><span><span data-lang-only="ar">منهج مكتوب بالكامل، جلسة بجلسة، بالعربية والإنجليزية</span><span data-lang-only="en">A fully written curriculum, session by session, in Arabic and English</span></span></li>
+          <li class="flex items-center gap-2"><span class="check">✓</span><span><span data-lang-only="ar">تجهيز الجلسة ووضع العرض ورصد المؤشرات للميسّرين</span><span data-lang-only="en">Session prep, classroom mode and observation capture for facilitators</span></span></li>
+          <li class="flex items-center gap-2"><span class="check">✓</span><span><span data-lang-only="ar">تقرير للمدرسة: الجلسات المنفَّذة، الحضور، ونمو الطلاب لكل مجال</span><span data-lang-only="en">School reporting: sessions delivered, attendance, growth by domain</span></span></li>
+          <li class="flex items-center gap-2"><span class="check">✓</span><span><span data-lang-only="ar">حصة من الإيراد تُحدَّد في اتفاقية الشراكة</span><span data-lang-only="en">A revenue share set in the partnership agreement</span></span></li>
+        </ul>
+      </div>
+      <div class="text-center">
+        <p class="text-muted"><span data-lang-only="ar">نتواصل معكم خلال يومي عمل.</span><span data-lang-only="en">We reply within two business days.</span></p>
+        <a href="request-demo.html" class="btn btn-primary btn-lg btn-block mt-4"><span data-lang-only="ar">اطلب عرضاً لمدرستك</span><span data-lang-only="en">Request a school demo</span></a>
+        <a href="index.html#schools" class="btn btn-tertiary btn-block mt-2"><span data-lang-only="ar">ما الذي تحصل عليه المدرسة؟</span><span data-lang-only="en">What does the school get?</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CURRICULUM TABLE -->
+<section class="section" id="curriculum" style="background:var(--surface-alt);">
+  <div class="container">
+    <div class="text-center mb-8">
+      <h2><span data-lang-only="ar">ماذا يتعلم طفلك في كل مرحلة؟</span><span data-lang-only="en">What does your child learn at each stage?</span></h2>
+      <p class="text-muted mt-2"><span data-lang-only="ar">ثلاث مهارات رئيسية تتدرّج مع عمر الطفل من الصف الثالث وحتى الثاني عشر.</span><span data-lang-only="en">Three main skills that grow with your child from Grade 3 through Grade 12.</span></p>
+    </div>
+    <div class="table-wrap">
+      <table id="curriculum-table">
+        <thead><tr>
+          <th><span data-lang-only="ar">المهارات</span><span data-lang-only="en">Skills</span></th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="container" style="max-width:760px;">
+    <h2 class="text-center mb-8"><span data-lang-only="ar">أسئلة شائعة</span><span data-lang-only="en">Frequently asked questions</span></h2>
+    <div>
+      <div class="accordion-item open" data-accordion-item>
+        <button class="accordion-trigger" data-accordion-trigger>
+          <span><span data-lang-only="ar">كيف تتم عملية الدفع؟</span><span data-lang-only="en">How does payment work?</span></span>
+          <span class="chev">▾</span>
+        </button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <span data-lang-only="ar">تدفع دفعة واحدة مقدماً حسب الخطة التي تختارها (شهري، 6 أشهر، أو سنوي).</span>
+          <span data-lang-only="en">You pay once, upfront, based on the plan you choose (Monthly, 6-Month, or Annual).</span>
+        </div></div>
+      </div>
+      <div class="accordion-item" data-accordion-item>
+        <button class="accordion-trigger" data-accordion-trigger>
+          <span><span data-lang-only="ar">ما الفرق بين الخطط الثلاث؟</span><span data-lang-only="en">What's the difference between the three plans?</span></span>
+          <span class="chev">▾</span>
+        </button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <span data-lang-only="ar">الفرق هو مدة الاشتراك — شهري، كل 6 أشهر، أو سنوي — وليس البرنامج نفسه. كل مشترك يحصل على نفس البرنامج: جلستان أسبوعياً، مجموعة من 14 طالباً، جلسات مدتها 90 دقيقة. كلما التزمت لفترة أطول انخفض سعرك الشهري.</span>
+          <span data-lang-only="en">The difference is the billing period — Monthly, 6-Month, or Annual — not the program. Every subscriber gets the same two-session/week program, group of 14, 90-minute sessions. Longer commitments get a lower monthly rate.</span>
+        </div></div>
+      </div>
+      <div class="accordion-item" data-accordion-item>
+        <button class="accordion-trigger" data-accordion-trigger>
+          <span><span data-lang-only="ar">كيف أرى تقدّم طفلي؟</span><span data-lang-only="en">How do I see my child's progress?</span></span>
+          <span class="chev">▾</span>
+        </button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <span data-lang-only="ar">عبر الشارات المهارية ومعرض الأعمال الذي يُحدَّث كل 4–6 أسابيع، بالإضافة إلى فعالية عرض ختامي كل فصل دراسي تحضرها بنفسك.</span>
+          <span data-lang-only="en">Through skill badges and a portfolio updated every 4–6 weeks, plus an end-of-term showcase event you attend in person.</span>
+        </div></div>
+      </div>
+      <div class="accordion-item" data-accordion-item>
+        <button class="accordion-trigger" data-accordion-trigger>
+          <span><span data-lang-only="ar">هل اللغة العربية متاحة بالكامل؟</span><span data-lang-only="en">Is the platform fully available in Arabic?</span></span>
+          <span class="chev">▾</span>
+        </button>
+        <div class="accordion-panel"><div class="accordion-panel-inner">
+          <span data-lang-only="ar">نعم، العربية هي اللغة الافتراضية للمنصة بالكامل، مع إمكانية التبديل الكامل إلى الإنجليزية من أي صفحة.</span>
+          <span data-lang-only="en">Yes, Arabic is the platform's default language everywhere, with a full switch to English available on any page.</span>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="site-footer">
+  <div class="container footer-bottom" style="border-top:none; margin-top:0;">
+    <span><span data-lang-only="ar">© 2026 نادي مهارات الحياة. جميع الحقوق محفوظة.</span><span data-lang-only="en">© 2026 Life Skills Club. All rights reserved.</span></span>
+    <a href="index.html"><span data-lang-only="ar">العودة للرئيسية</span><span data-lang-only="en">Back to home</span></a>
+  </div>
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>hideLoginLinkUntilChecked();</script>
+<script>
+  // Live from the DB (price, months, which plan is recommended) merged
+  // with the static marketing copy in js/data.js (description) — price is
+  // never hardcoded here, so it can't drift from what /enroll actually
+  // charges.
+  async function fetchPlans() {
+    const plans = await apiFetch('/catalog/plans');
+    return plans.map((p) => ({
+      id: p.id,
+      nameAr: p.name_ar,
+      nameEn: p.name_en,
+      priceMonthly: p.price_monthly,
+      priceTotal: p.price_total,
+      months: p.months,
+      recommended: p.is_recommended,
+      ...PLAN_MARKETING_COPY[p.id],
+    }));
+  }
+
+  async function fetchGradeBands() {
+    const bands = await apiFetch('/catalog/grade-bands');
+    return bands.map((b) => ({ id: b.id, labelAr: b.label_ar, labelEn: b.label_en }));
+  }
+
+  // The curriculum grid uses the same static strands as the landing page
+  // (js/data.js), so the two pages cannot drift. Migration 0008 retired the
+  // curriculum_topics table this used to fetch. Kept async so callers that
+  // await it are unchanged.
+  async function fetchCurriculumStrands() {
+    return CURRICULUM_STRANDS;
+  }
+
+  async function renderPlans() {
+    const wrap = document.getElementById('pricing-cards');
+    const plans = await fetchPlans();
+    wrap.innerHTML = '';
+    plans.forEach((plan) => {
+      const el = document.createElement('div');
+      el.className = `card pricing-card ${plan.recommended ? 'featured' : ''}`;
+      el.innerHTML = `
+        ${plan.recommended ? `<span class="ribbon"><span data-lang-only="ar">الأكثر اختياراً</span><span data-lang-only="en">Most popular</span></span>` : ''}
+        <h3><span data-lang-only="ar">${plan.nameAr}</span><span data-lang-only="en">${plan.nameEn}</span></h3>
+        <p class="text-muted caption mt-2"><span data-lang-only="ar">${plan.descAr}</span><span data-lang-only="en">${plan.descEn}</span></p>
+        <div class="price mt-6"><span class="num">${formatNumber(plan.priceMonthly)}</span> <span class="unit"><span data-lang-only="ar">ر.س / شهرياً</span><span data-lang-only="en">SAR / mo</span></span></div>
+        <div class="plan-highlight-note mt-6">
+          💳
+          <span data-lang-only="ar">${formatNumber(plan.priceTotal, 'ar')} ر.س تُدفع مرة واحدة</span>
+          <span data-lang-only="en">${formatNumber(plan.priceTotal, 'en')} SAR billed once</span>
+        </div>
+        <ul>
+          ${PROGRAM_FEATURES.map((f) => `<li><span class="check">✓</span><span><span data-lang-only="ar">${f.ar}</span><span data-lang-only="en">${f.en}</span></span></li>`).join('')}
+        </ul>
+        <a href="enroll.html?plan=${plan.id}" class="btn ${plan.recommended ? 'btn-primary' : 'btn-secondary'} btn-block">
+          <span data-lang-only="ar"> اشترك الآن</span><span data-lang-only="en">Subscribe Now</span>
+        </a>
+      `;
+      wrap.appendChild(el);
+    });
+    applyLanguage(getLang());
+  }
+
+  async function renderCurriculumTable() {
+    const [bands, strands] = await Promise.all([fetchGradeBands(), fetchCurriculumStrands()]);
+    const thead = document.querySelector('#curriculum-table thead tr');
+    bands.forEach((band) => {
+      const th = document.createElement('th');
+      th.innerHTML = `<span data-lang-only="ar">${band.labelAr}</span><span data-lang-only="en">${band.labelEn}</span>`;
+      thead.appendChild(th);
+    });
+    const tbody = document.querySelector('#curriculum-table tbody');
+    strands.forEach((strand) => {
+      const tr = document.createElement('tr');
+      let cells = `<td><strong><span data-lang-only="ar">${strand.nameAr}</span><span data-lang-only="en">${strand.nameEn}</span></strong></td>`;
+      bands.forEach((band) => {
+        const topic = strand.byGrade[band.id];
+        cells += `<td><span data-lang-only="ar">${topic ? topic.ar : ''}</span><span data-lang-only="en">${topic ? topic.en : ''}</span></td>`;
+      });
+      tr.innerHTML = cells;
+      tbody.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  renderPlans().catch((err) => {
+    document.getElementById('pricing-cards').innerHTML =
+      `<p class="text-muted">${getLang() === 'ar' ? 'تعذّر تحميل الأسعار حالياً.' : 'Could not load pricing right now.'}</p>`;
+    console.error(err);
+  });
+  renderCurriculumTable().catch((err) => console.error(err));
+
+  getSessionOrNull().then(showLoginOrDashboardLink);
+</script>
+</body>
+</html>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | لوحة الطالب</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">تعلّمي</span><span data-lang-only="en">My Learning</span></div>
+      <a href="student-dashboard.html" class="active"><span class="ic">🏠</span><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="#program"><span class="ic">🎯</span><span data-lang-only="ar">برنامجي</span><span data-lang-only="en">My Program</span></a>
+      <a href="#skills"><span class="ic">📚</span><span data-lang-only="ar">مهاراتي</span><span data-lang-only="en">My Skills</span></a>
+      <a href="#work"><span class="ic">📥</span><span data-lang-only="ar">أعمالي</span><span data-lang-only="en">My Work</span></a>
+      <a href="#badges"><span class="ic">🏅</span><span data-lang-only="ar">الشارات والإنجازات</span><span data-lang-only="en">Badges & Achievements</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <div>
+          <div class="caption text-muted"><span data-lang-only="ar">مرحباً</span><span data-lang-only="en">Hi</span></div>
+          <strong id="student-name">—</strong>
+        </div>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="student-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <div class="card" id="program" style="background:linear-gradient(135deg, var(--color-primary-50), var(--surface));">
+        <div id="program-body">
+          <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+        </div>
+      </div>
+
+      <!-- SKILLS -->
+      <div class="section-head mt-8" id="skills">
+        <h2><span data-lang-only="ar">مهاراتي</span><span data-lang-only="en">My Skills</span></h2>
+      </div>
+      <div class="grid grid-3" id="skills-grid">
+        <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+      </div>
+
+      <!-- NEXT STEPS -->
+      <div class="section-head mt-8">
+        <h2><span data-lang-only="ar">خطواتك القادمة</span><span data-lang-only="en">Your Next Steps</span></h2>
+      </div>
+      <div class="grid grid-2" id="next-steps-grid">
+        <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+      </div>
+
+      <!-- SUBMISSIONS -->
+      <div class="section-head mt-8" id="work">
+        <h2><span data-lang-only="ar">أعمالي المُسلَّمة</span><span data-lang-only="en">Your Submissions</span></h2>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span data-lang-only="ar">العمل</span><span data-lang-only="en">Item</span></th>
+            <th><span data-lang-only="ar">الحالة</span><span data-lang-only="en">Status</span></th>
+            <th><span data-lang-only="ar">المستوى</span><span data-lang-only="en">Level</span></th>
+            <th><span data-lang-only="ar">ملاحظة الميسّر</span><span data-lang-only="en">Facilitator feedback</span></th>
+          </tr></thead>
+          <tbody id="submissions-body">
+            <tr><td colspan="3" class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- BADGES -->
+      <div class="section-head mt-8" id="badges">
+        <h2><span data-lang-only="ar">شاراتي وإنجازاتي</span><span data-lang-only="en">My Badges & Achievements</span></h2>
+      </div>
+      <div class="grid grid-4" id="badges-grid">
+        <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="modal-backdrop" id="submit-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">تسليم الواجب</span><span data-lang-only="en">Submit assignment</span></h3>
+    <p class="caption text-muted mt-1" id="submit-modal-subtitle"></p>
+    <form id="submit-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">إجابتك</span><span data-lang-only="en">Your answer</span></label>
+        <textarea class="input" id="submit-content" rows="5" required></textarea>
+      </div>
+      <p id="submit-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="submit-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block"><span data-lang-only="ar">تسليم</span><span data-lang-only="en">Submit</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  let submittingAssignmentId = null;
+
+  function fmtDate(iso) {
+    if (!iso) return '';
+    return formatDate(iso);
+  }
+
+  function renderProgram(data) {
+    const body = document.getElementById('program-body');
+    const sub = data.subscription;
+    if (!sub) {
+      body.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا يوجد برنامج نشط بعد.</span><span data-lang-only="en">No active program yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    const cls = sub.classes;
+    const plan = sub.subscription_plans;
+    const school = sub.students && sub.students.schools;
+    const schoolLabel = school
+      ? `<span data-lang-only="ar">${school.name_ar}</span><span data-lang-only="en">${school.name_en || school.name_ar}</span>`
+      : '';
+    /* The ring used to show badges_earned / badges_total — every badge in the
+       system, not this child's. Authoring more badges made every existing
+       student's "progress" fall, and since badges are awarded by hand it
+       largely measured teacher diligence. Attendance is real, already
+       collected, and in a programme whose value is being in the room it is
+       the honest headline until observations exist. */
+    const att = window.__attendance || {};
+    const pct = (att.rate === null || att.rate === undefined) ? null : att.rate;
+    const metaParts = [
+      schoolLabel,
+      cls && cls.grade_bands ? `<span data-lang-only="ar">${cls.grade_bands.label_ar}</span><span data-lang-only="en">${cls.grade_bands.label_en}</span>` : '',
+      cls && cls.teachers ? cls.teachers.full_name : '',
+      cls && plan ? `<span data-lang-only="ar">${plan.name_ar}</span><span data-lang-only="en">${plan.name_en}</span>` : '',
+      !cls ? `<span data-lang-only="ar">بانتظار تعيين فصل من المدرسة</span><span data-lang-only="en">Waiting to be assigned to a class</span>` : '',
+    ].filter(Boolean);
+    body.innerHTML = `
+      <div class="caption text-muted"><span data-lang-only="ar">برنامجي</span><span data-lang-only="en">My program</span></div>
+      <h2 class="mt-1">${cls ? `<span data-lang-only="ar">${cls.name_ar}</span><span data-lang-only="en">${cls.name_en}</span>` : (plan ? `<span data-lang-only="ar">${plan.name_ar}</span><span data-lang-only="en">${plan.name_en}</span>` : '')}</h2>
+      <div class="caption text-muted mt-1">${metaParts.join(' · ')}</div>
+      <div class="flex items-center gap-6 mt-6 wrap">
+        ${pct === null ? `
+          <div class="caption text-muted"><span data-lang-only="ar">لم تبدأ الجلسات بعد</span><span data-lang-only="en">Sessions haven't started yet</span></div>
+        ` : `
+        <div class="progress-ring" style="--percent:${pct}; --ring-color: var(--color-${pct >= 80 ? 'success' : pct >= 60 ? 'primary' : 'warning'});">
+          <div class="progress-ring__label">
+            <span class="pct num">${pct}%</span>
+            <span class="cap"><span data-lang-only="ar">حضور</span><span data-lang-only="en">attendance</span></span>
+          </div>
+        </div>
+        <div>
+          <strong><span data-lang-only="ar">حضرت ${att.attended} من ${att.sessions_held} جلسات</span><span data-lang-only="en">You attended ${att.attended} of ${att.sessions_held} sessions</span></strong>
+          <div class="caption text-muted mt-1"><span data-lang-only="ar">أهم ما في البرنامج أن تكون في القاعة مع فريقك</span><span data-lang-only="en">The programme works when you are in the room with your team</span></div>
+          <div class="flex gap-1 mt-3">
+            ${(att.recent || []).slice().reverse().map((r) =>
+              `<span class="badge ${r.attended ? 'badge-success' : 'badge-error'}" title="${r.session_date}">${r.attended ? '●' : '○'}</span>`).join('')}
+          </div>
+        </div>
+        `}
+      </div>
+    `;
+    applyLanguage(getLang());
+  }
+
+  function renderSkills(skills) {
+    const grid = document.getElementById('skills-grid');
+    grid.innerHTML = '';
+    if (!skills.length) {
+      grid.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد مهارات متاحة بعد.</span><span data-lang-only="en">No skills available yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    skills.forEach((s) => {
+      const pct = s.block_count ? Math.round((s.completed_count / s.block_count) * 100) : 0;
+      const div = document.createElement('div');
+      div.className = 'card card-hover';
+      div.innerHTML = `
+        <h3><span data-lang-only="ar">${s.title_ar}</span><span data-lang-only="en">${s.title_en}</span></h3>
+        <p class="caption text-muted mt-1"><span data-lang-only="ar">${s.description_ar || ''}</span><span data-lang-only="en">${s.description_en || ''}</span></p>
+        <div class="capacity-meta mt-3"><span data-lang-only="ar">التقدّم</span><span data-lang-only="en">Progress</span><span class="num">${s.completed_count}/${s.block_count}</span></div>
+        <div class="capacity-bar mt-1"><div class="capacity-bar__fill" style="width:${pct}%"></div></div>
+        <a href="student-skill.html?id=${s.id}" class="btn btn-primary btn-block mt-4"><span data-lang-only="ar">فتح المهارة</span><span data-lang-only="en">Open skill</span></a>
+      `;
+      grid.appendChild(div);
+    });
+    applyLanguage(getLang());
+  }
+
+  function renderNextSteps(assignments) {
+    const grid = document.getElementById('next-steps-grid');
+    grid.innerHTML = '';
+    if (!assignments.length) {
+      grid.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد واجبات قادمة 🎉</span><span data-lang-only="en">No upcoming assignments 🎉</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    assignments.forEach((a) => {
+      const div = document.createElement('div');
+      div.className = 'card card-hover';
+      div.innerHTML = `
+        <div class="flex justify-between items-start">
+          <strong>📝 ${a.title}</strong>
+          <span class="badge badge-warning">${fmtDate(a.due_date)}</span>
+        </div>
+        <p class="caption text-muted mt-2">${a.description || ''}</p>
+        <button class="btn btn-primary btn-block mt-4 submit-btn" data-id="${a.id}" data-title="${a.title}"><span data-lang-only="ar">ابدأ الواجب</span><span data-lang-only="en">Start Assignment</span></button>
+      `;
+      grid.appendChild(div);
+    });
+    document.querySelectorAll('.submit-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openSubmitModal(btn.dataset.id, btn.dataset.title));
+    });
+    applyLanguage(getLang());
+  }
+
+  /* A soft-skills programme should not report a percentage. The spec is
+     explicit — "measure growth without turning it into another graded
+     subject", and students get a Skill Passport, not a report card. The
+     stored grade stays (teachers still enter one) but the student sees the
+     programme's own four levels instead of "92%".
+     Thresholds are stated here rather than hidden: they are a presentation
+     choice, and they should move to the rubric once observations exist. */
+  const LEVELS = [
+    { min: 90, ar: 'ناقل للأثر', en: 'Transferring', cls: 'badge-success' },
+    { min: 75, ar: 'مطبِّق',     en: 'Applying',     cls: 'badge-primary' },
+    { min: 60, ar: 'متطوّر',     en: 'Developing',   cls: 'badge-warning' },
+    { min: 0,  ar: 'مبتدئ',      en: 'Beginning',    cls: 'badge-neutral' },
+  ];
+  function levelChip(grade) {
+    if (grade === null || grade === undefined) return '<span class="text-muted">—</span>';
+    const l = LEVELS.find((x) => grade >= x.min);
+    return `<span class="badge ${l.cls}"><span data-lang-only="ar">${l.ar}</span><span data-lang-only="en">${l.en}</span></span>`;
+  }
+
+  function renderSubmissions(submissions) {
+    const tbody = document.getElementById('submissions-body');
+    tbody.innerHTML = '';
+    if (!submissions.length) {
+      tbody.innerHTML = '<tr><td colspan="4" class="text-muted"><span data-lang-only="ar">لا توجد تسليمات بعد.</span><span data-lang-only="en">No submissions yet.</span></td></tr>';
+      applyLanguage(getLang());
+      return;
+    }
+    const statusMap = {
+      graded: '<span class="badge badge-success">✓ <span data-lang-only="ar">تم التصحيح</span><span data-lang-only="en">Graded</span></span>',
+      submitted: '<span class="badge badge-primary"><span data-lang-only="ar">بانتظار التصحيح</span><span data-lang-only="en">Awaiting grade</span></span>',
+      late: '<span class="badge badge-warning"><span data-lang-only="ar">متأخر</span><span data-lang-only="en">Late</span></span>',
+      missing: '<span class="badge badge-error"><span data-lang-only="ar">غير مُسلَّم</span><span data-lang-only="en">Missing</span></span>',
+    };
+    submissions.forEach((s) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${s.assignments ? s.assignments.title : ''}</td>
+        <td>${statusMap[s.status] || s.status}</td>
+        <td>${levelChip(s.grade)}</td>
+        <td class="caption">${s.feedback ? s.feedback : '<span class="text-muted">—</span>'}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+    applyLanguage(getLang());
+  }
+
+  function renderBadges(badges) {
+    /* Every badge already carries its skill_strands in the payload, and the
+       old renderer flattened that away into one undifferentiated wall. The
+       whole product is sold on skill domains, so group by domain — this is
+       the first place a student sees which skill a badge belongs to. */
+    const grid = document.getElementById('badges-grid');
+    grid.innerHTML = '';
+    const groups = new Map();
+    badges.forEach((b) => {
+      const st = b.skill_strands;
+      const key = st ? (st.name_en || st.name_ar) : '__none';
+      if (!groups.has(key)) groups.set(key, { strand: st, items: [] });
+      groups.get(key).items.push(b);
+    });
+    groups.forEach(({ strand, items }) => {
+      const earned = items.filter((x) => x.earned).length;
+      const wrap = document.createElement('div');
+      wrap.className = 'card';
+      wrap.style.gridColumn = '1 / -1';
+      wrap.innerHTML = `
+        <div class="flex items-center justify-between wrap gap-3">
+          <strong>${strand
+            ? `<span data-lang-only="ar">${strand.name_ar}</span><span data-lang-only="en">${strand.name_en}</span>`
+            : `<span data-lang-only="ar">عام</span><span data-lang-only="en">General</span>`}</strong>
+          <span class="badge ${earned ? 'badge-success' : 'badge-neutral'} num">${earned} / ${items.length}</span>
+        </div>
+        <div class="progress-bar mt-2"><div class="progress-bar__fill ${earned === items.length ? 'success' : ''}" style="width:${Math.round(earned / items.length * 100)}%"></div></div>
+        <div class="flex gap-3 mt-4 wrap">
+          ${items.map((b) => `
+            <div class="text-center" style="width:5.5rem;">
+              <span class="icon-chip circle ${b.earned ? 'warning' : ''}" style="font-size:1.4rem; margin-inline:auto;">${b.earned ? b.icon || '🎖️' : '🔒'}</span>
+              <div class="caption mt-2 ${b.earned ? '' : 'text-muted'}"><span data-lang-only="ar">${b.name_ar}</span><span data-lang-only="en">${b.name_en}</span></div>
+            </div>`).join('')}
+        </div>`;
+      grid.appendChild(wrap);
+    });
+    applyLanguage(getLang());
+  }
+
+  function openSubmitModal(id, title) {
+    submittingAssignmentId = id;
+    document.getElementById('submit-modal-subtitle').textContent = title;
+    document.getElementById('submit-content').value = '';
+    document.getElementById('submit-error').classList.add('hidden');
+    document.getElementById('submit-modal-backdrop').classList.add('open');
+  }
+  function closeSubmitModal() {
+    document.getElementById('submit-modal-backdrop').classList.remove('open');
+    submittingAssignmentId = null;
+  }
+  document.getElementById('submit-cancel').addEventListener('click', closeSubmitModal);
+
+  document.getElementById('submit-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const content = document.getElementById('submit-content').value.trim();
+    try {
+      await apiFetch(`/student/assignments/${submittingAssignmentId}/submit`, {
+        method: 'POST',
+        body: JSON.stringify({ content }),
+      });
+      closeSubmitModal();
+      announce('تم تسليم الواجب', 'Assignment submitted');
+      await loadAll();
+    } catch (err) {
+      const el = document.getElementById('submit-error');
+      el.textContent = err.message;
+      el.classList.remove('hidden');
+    }
+  });
+
+  async function loadAll() {
+    const [program, skills, assignments, submissions, badges, attendance] = await Promise.all([
+      apiFetch('/student/program'),
+      apiFetch('/student/skills'),
+      apiFetch('/student/assignments'),
+      apiFetch('/student/submissions'),
+      apiFetch('/student/badges'),
+      apiFetch('/student/attendance'),
+    ]);
+    window.__attendance = attendance;
+    renderProgram(program);
+    renderSkills(skills);
+    renderNextSteps(assignments);
+    renderSubmissions(submissions);
+    renderBadges(badges);
+  }
+
+  (async () => {
+    const me = await requireAuth('student');
+    if (!me) return;
+    document.getElementById('student-name').textContent = me.full_name || me.email;
+    document.getElementById('student-avatar').textContent = (me.full_name || me.email).trim().charAt(0);
+    try {
+      await loadAll();
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+  })();
+</script>
+</body>
+</html>

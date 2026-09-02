@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | محتوى البرامج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+</head>
+<body>
+
+<div class="dashboard-shell">
+  <div class="sidebar-backdrop"></div>
+  <aside class="sidebar">
+    <a href="index.html" class="brand"><span class="logo-mark">🌱</span><span><span data-lang-only="ar">نادي مهارات الحياة</span><span data-lang-only="en">Life Skills Club</span></span></a>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label"><span data-lang-only="ar">لوحة المدرسة</span><span data-lang-only="en">School Admin</span></div>
+      <a href="admin-dashboard.html"><span class="ic">🏠</span><span data-lang-only="ar">نظرة عامة</span><span data-lang-only="en">Overview</span></a>
+      <a href="admin-dashboard.html#schools" data-requires-permission="schools.view"><span class="ic">🏢</span><span data-lang-only="ar">المدارس</span><span data-lang-only="en">Schools</span></a>
+      <a href="admin-dashboard.html#materials" data-requires-permission="content.view"><span class="ic">📎</span><span data-lang-only="ar">المواد التعليمية</span><span data-lang-only="en">Materials</span></a>
+      <a href="skills.html" class="active" data-requires-permission="content.view"><span class="ic">📚</span><span data-lang-only="ar">محتوى البرامج</span><span data-lang-only="en">Programs Content</span></a>
+      <a href="finance-dashboard.html" data-requires-permission="finance.view,billing.view"><span class="ic">📊</span><span data-lang-only="ar">لوحة المالية</span><span data-lang-only="en">Finance Dashboard</span></a>
+      <a href="employees.html" data-requires-permission="users.view"><span class="ic">👥</span><span data-lang-only="ar">الموظفون والأدوار</span><span data-lang-only="en">Team & Roles</span></a>
+    </nav>
+    <div style="margin-top:auto;">
+      <a href="#" id="logout-link"><span class="ic">🚪</span><span data-lang-only="ar">تسجيل الخروج</span><span data-lang-only="en">Log out</span></a>
+    </div>
+  </aside>
+
+  <div class="dashboard-main">
+    <div class="dashboard-topbar">
+      <div class="flex items-center gap-3">
+        <button class="icon-btn sidebar-toggle" data-aria-ar="فتح القائمة" data-aria-en="Open menu" aria-label="فتح القائمة">☰</button>
+        <strong><span data-lang-only="ar">محتوى البرامج</span><span data-lang-only="en">Programs Content</span></strong>
+      </div>
+      <div class="flex items-center gap-3">
+        <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+        <div class="avatar" id="admin-avatar">?</div>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+
+      <!-- SKILL LIST -->
+      <div id="skill-list-view">
+        <div class="section-head">
+          <h2><span data-lang-only="ar">المهارات</span><span data-lang-only="en">Skills</span></h2>
+          <button class="btn btn-primary btn-sm" id="create-skill-btn" data-requires-permission="content.create">+ <span data-lang-only="ar">إنشاء مهارة</span><span data-lang-only="en">Create Skill</span></button>
+        </div>
+        <div class="grid grid-3 mt-4" id="skills-grid">
+          <div class="card text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></div>
+        </div>
+      </div>
+
+      <!-- SKILL BUILDER -->
+      <div id="skill-builder-view" class="hidden">
+        <a href="#" id="back-to-list-link" class="caption text-muted"><span data-lang-only="ar">← المهارات</span><span data-lang-only="en">← Skills</span></a>
+
+        <div class="card mt-2">
+          <div class="flex justify-between items-start wrap gap-4">
+            <div>
+              <h2 id="builder-skill-title">…</h2>
+              <p class="caption text-muted mt-1" id="builder-skill-meta"></p>
+              <p class="mt-2" id="builder-skill-description"></p>
+            </div>
+            <div class="flex gap-2 wrap">
+              <button class="btn btn-tertiary btn-sm" id="edit-skill-btn" data-requires-permission="content.edit"><span data-lang-only="ar">تعديل التفاصيل</span><span data-lang-only="en">Edit details</span></button>
+              <button class="btn btn-secondary btn-sm" id="preview-skill-btn">👁 <span data-lang-only="ar">معاينة</span><span data-lang-only="en">Preview</span></button>
+            </div>
+          </div>
+          <div class="flex items-center gap-2 mt-4 wrap" id="publish-controls">
+            <span id="skill-status-badge"></span>
+            <button class="btn btn-primary btn-sm" id="publish-now-btn" data-requires-permission="content.publish"><span data-lang-only="ar">نشر الآن</span><span data-lang-only="en">Publish now</span></button>
+            <button class="btn btn-secondary btn-sm" id="schedule-btn" data-requires-permission="content.publish"><span data-lang-only="ar">جدولة النشر</span><span data-lang-only="en">Schedule publish</span></button>
+            <button class="btn btn-tertiary btn-sm hidden" id="unpublish-btn" data-requires-permission="content.publish"><span data-lang-only="ar">إرجاع لمسودة</span><span data-lang-only="en">Revert to draft</span></button>
+          </div>
+        </div>
+
+        <div class="section-head mt-8">
+          <h2><span data-lang-only="ar">الجلسات</span><span data-lang-only="en">Sessions</span></h2>
+          <button class="btn btn-primary btn-sm" id="create-session-in-builder-btn" data-requires-permission="content.create">+ <span data-lang-only="ar">إنشاء جلسة</span><span data-lang-only="en">Create a Session</span></button>
+        </div>
+        <div id="sessions-list" class="mt-4"></div>
+      </div>
+
+      <!-- SESSION BUILDER -->
+      <div id="session-builder-view" class="hidden">
+        <a href="#" id="back-to-skill-builder-link" class="caption text-muted"><span data-lang-only="ar">← رجوع للمهارة</span><span data-lang-only="en">← Back to skill</span></a>
+
+        <div class="card mt-2">
+          <div class="flex justify-between items-start wrap gap-4">
+            <h2 id="builder-session-title">…</h2>
+            <button class="btn btn-tertiary btn-sm" id="edit-session-btn" data-requires-permission="content.edit"><span data-lang-only="ar">تعديل العنوان</span><span data-lang-only="en">Edit title</span></button>
+          </div>
+        </div>
+
+        <div class="section-head mt-8">
+          <h2><span data-lang-only="ar">عناصر المحتوى</span><span data-lang-only="en">Content Blocks</span></h2>
+          <button class="btn btn-primary btn-sm" id="session-add-block-btn" data-requires-permission="content.edit">+ <span data-lang-only="ar">إضافة عنصر</span><span data-lang-only="en">Add Block</span></button>
+        </div>
+        <div id="session-blocks-list" class="mt-4"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CREATE/EDIT SKILL MODAL -->
+<div class="modal-backdrop" id="skill-modal-backdrop">
+  <div class="modal">
+    <h3 id="skill-modal-title"><span data-lang-only="ar">إنشاء مهارة جديدة</span><span data-lang-only="en">Create a new skill</span></h3>
+    <form id="skill-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">المرحلة الدراسية</span><span data-lang-only="en">Grade band</span></label>
+        <div id="skill-grade-bands" class="flex-col gap-2 mt-1"></div>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">العنوان (عربي)</span><span data-lang-only="en">Title (Arabic)</span></label>
+        <input class="input" id="skill-title-ar" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">العنوان (إنجليزي)</span><span data-lang-only="en">Title (English)</span></label>
+        <input class="input" id="skill-title-en" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">الوصف (عربي)</span><span data-lang-only="en">Description (Arabic)</span></label>
+        <textarea class="input" id="skill-description-ar" rows="2"></textarea>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">الوصف (إنجليزي)</span><span data-lang-only="en">Description (English)</span></label>
+        <textarea class="input" id="skill-description-en" rows="2"></textarea>
+      </div>
+      <p id="skill-form-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="skill-form-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="skill-form-submit-btn"><span data-lang-only="ar">حفظ</span><span data-lang-only="en">Save</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- CREATE/EDIT SESSION MODAL -->
+<div class="modal-backdrop" id="session-modal-backdrop">
+  <div class="modal">
+    <h3 id="session-modal-title"><span data-lang-only="ar">إنشاء جلسة جديدة</span><span data-lang-only="en">Create a new session</span></h3>
+    <form id="session-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">عنوان الجلسة (عربي)</span><span data-lang-only="en">Session title (Arabic)</span></label>
+        <input class="input" id="session-title-ar" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">عنوان الجلسة (إنجليزي)</span><span data-lang-only="en">Session title (English)</span></label>
+        <input class="input" id="session-title-en" required>
+      </div>
+      <p id="session-form-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="session-form-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="session-form-submit-btn"><span data-lang-only="ar">حفظ</span><span data-lang-only="en">Save</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- BLOCK TYPE PICKER -->
+<div class="modal-backdrop" id="block-type-modal-backdrop">
+  <div class="modal" style="max-width:720px;">
+    <div class="flex justify-between items-start">
+      <div>
+        <h3><span data-lang-only="ar">إضافة عنصر محتوى</span><span data-lang-only="en">Add a content block</span></h3>
+        <p class="caption text-muted mt-1"><span data-lang-only="ar">اختر نوع العنصر الذي تريد إضافته إلى هذا البرنامج</span><span data-lang-only="en">Choose the type of block you want to add to this program</span></p>
+      </div>
+      <button type="button" class="btn btn-tertiary btn-sm" id="block-type-close" aria-label="close">✕</button>
+    </div>
+    <div class="grid grid-3 mt-4" id="block-type-grid"></div>
+    <button type="button" class="btn btn-tertiary btn-block mt-4" id="block-type-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+  </div>
+</div>
+
+<!-- BLOCK FORM (generic — sections toggled by type) -->
+<div class="modal-backdrop" id="block-form-modal-backdrop">
+  <div class="modal" style="max-width:640px; max-height:85vh; overflow-y:auto;">
+    <h3 id="block-form-title">…</h3>
+    <form id="block-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">عنوان العنصر (عربي)</span><span data-lang-only="en">Block title (Arabic)</span></label>
+        <input class="input" id="block-title-ar" required>
+      </div>
+      <div class="field mt-3">
+        <label><span data-lang-only="ar">عنوان العنصر (إنجليزي)</span><span data-lang-only="en">Block title (English)</span></label>
+        <input class="input" id="block-title-en" required>
+      </div>
+
+      <div id="block-fields-article" class="hidden">
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">النص (عربي)</span><span data-lang-only="en">Body (Arabic)</span></label>
+          <textarea class="input" id="block-body-ar" rows="6"></textarea>
+        </div>
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">النص (إنجليزي)</span><span data-lang-only="en">Body (English)</span></label>
+          <textarea class="input" id="block-body-en" rows="6"></textarea>
+        </div>
+      </div>
+
+      <div id="block-fields-video" class="hidden">
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">رابط الفيديو (يوتيوب، فيميو، ...)</span><span data-lang-only="en">Video URL (YouTube, Vimeo, ...)</span></label>
+          <input class="input" type="url" id="block-video-url" dir="ltr">
+        </div>
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">طول الفيديو التقريبي (بالدقائق)</span><span data-lang-only="en">Approximate video length (minutes)</span></label>
+          <input class="input" type="number" id="block-video-duration" min="0.5" step="0.5">
+          <p class="caption text-muted mt-1"><span data-lang-only="ar">يمنع الطالب من وضع علامة "تمت المشاهدة" قبل مرور وقت كافٍ.</span><span data-lang-only="en">Stops students marking a video watched before enough time has actually passed.</span></p>
+        </div>
+      </div>
+
+      <div id="block-fields-audio" class="hidden">
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">رابط الصوت</span><span data-lang-only="en">Audio URL</span></label>
+          <input class="input" type="url" id="block-audio-url" dir="ltr">
+          <p class="caption text-muted mt-1"><span data-lang-only="ar">يجب أن يكون رابطًا مباشرًا لملف صوتي (مثل .mp3) وليس رابط صفحة تحرير أو معاينة — على سبيل المثال، صفحات مشاريع ElevenLabs Studio لا تعمل هنا. صدّر الملف الصوتي وارفعه إلى مكان يوفر رابطًا مباشرًا.</span><span data-lang-only="en">Must be a direct link to an audio file (e.g. .mp3), not an editor/preview page — for example, an ElevenLabs Studio project link won't work here. Export the audio file and host it somewhere that gives a direct file link.</span></p>
+        </div>
+      </div>
+
+      <div id="block-fields-assignment" class="hidden">
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">التعليمات (عربي)</span><span data-lang-only="en">Instructions (Arabic)</span></label>
+          <textarea class="input" id="block-instructions-ar" rows="4"></textarea>
+        </div>
+        <div class="field mt-3">
+          <label><span data-lang-only="ar">التعليمات (إنجليزي)</span><span data-lang-only="en">Instructions (English)</span></label>
+          <textarea class="input" id="block-instructions-en" rows="4"></textarea>
+        </div>
+      </div>
+
+      <div id="block-fields-image" class="hidden">
+        <div class="field">
+          <label><span data-lang-only="ar">الصورة</span><span data-lang-only="en">Image</span></label>
+          <input class="input" type="file" id="block-image-file" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml">
+          <span class="hint"><span data-lang-only="ar">حتى 25 ميجابايت · PNG أو JPG أو WEBP أو SVG</span><span data-lang-only="en">Up to 25MB · PNG, JPG, WEBP or SVG</span></span>
+        </div>
+        <div id="block-image-preview" class="hidden mb-4"></div>
+        <input type="hidden" id="block-image-url">
+        <div class="field">
+          <label><span data-lang-only="ar">وصف الصورة (عربي)</span><span data-lang-only="en">Alt text (Arabic)</span></label>
+          <input class="input" type="text" id="block-image-alt-ar">
+          <span class="hint"><span data-lang-only="ar">إلزامي — صورة معروضة بلا وصف لا يستفيد منها الطالب ضعيف البصر</span><span data-lang-only="en">Required — a projected image with no description is unusable for a visually impaired student</span></span>
+        </div>
+        <div class="field">
+          <label><span data-lang-only="ar">وصف الصورة (إنجليزي)</span><span data-lang-only="en">Alt text (English)</span></label>
+          <input class="input" type="text" id="block-image-alt-en">
+        </div>
+      </div>
+
+      <div id="block-fields-embed" class="hidden">
+        <div class="field">
+          <label><span data-lang-only="ar">رابط المحتوى المضمّن</span><span data-lang-only="en">Embed URL</span></label>
+          <input class="input" type="url" id="block-embed-url" placeholder="https://wordwall.net/embed/...">
+          <span class="hint"><span data-lang-only="ar">المنصات المعتمدة: يوتيوب، فيميو، Google Drive، Genially، Wordwall، H5P</span><span data-lang-only="en">Approved: YouTube, Vimeo, Google Drive, Genially, Wordwall, H5P</span></span>
+        </div>
+        <div class="field">
+          <label><span data-lang-only="ar">بديل دون إنترنت</span><span data-lang-only="en">Offline alternative</span></label>
+          <input class="input" type="text" id="block-embed-fallback">
+          <span class="hint"><span data-lang-only="ar">ماذا يفعل الميسّر إن لم يعمل التضمين؟</span><span data-lang-only="en">What does the facilitator do if the embed fails?</span></span>
+        </div>
+      </div>
+
+      <div id="block-fields-quiz" class="hidden">
+        <p class="caption text-muted mt-3"><span data-lang-only="ar">حدد الإجابة الصحيحة لكل سؤال بالنقطة المشعّة.</span><span data-lang-only="en">Mark the correct answer for each question with the radio button.</span></p>
+        <div id="quiz-questions" class="mt-2"></div>
+        <button type="button" class="btn btn-secondary btn-sm mt-2" id="add-question-btn">+ <span data-lang-only="ar">إضافة سؤال</span><span data-lang-only="en">Add question</span></button>
+      </div>
+
+      <div id="block-fields-flashcards" class="hidden">
+        <p class="caption text-muted mt-3"><span data-lang-only="ar">كل بطاقة لها وجه (سؤال/مصطلح) وظهر (إجابة/تعريف).</span><span data-lang-only="en">Each card has a front (question/term) and a back (answer/definition).</span></p>
+        <div id="flashcard-list" class="mt-2"></div>
+        <button type="button" class="btn btn-secondary btn-sm mt-2" id="add-flashcard-btn">+ <span data-lang-only="ar">إضافة بطاقة</span><span data-lang-only="en">Add card</span></button>
+      </div>
+
+      <p id="block-form-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="block-form-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="block-form-submit-btn"><span data-lang-only="ar">حفظ العنصر</span><span data-lang-only="en">Save block</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- SCHEDULE MODAL -->
+<div class="modal-backdrop" id="schedule-modal-backdrop">
+  <div class="modal">
+    <h3><span data-lang-only="ar">جدولة النشر</span><span data-lang-only="en">Schedule publish</span></h3>
+    <form id="schedule-form" class="mt-4">
+      <div class="field">
+        <label><span data-lang-only="ar">وقت النشر</span><span data-lang-only="en">Publish at</span></label>
+        <input class="input" type="datetime-local" id="schedule-datetime" required>
+      </div>
+      <p id="schedule-error" class="caption mt-2 hidden" style="color:#c0392b;"></p>
+      <div class="flex gap-2 mt-4">
+        <button type="button" class="btn btn-tertiary btn-block" id="schedule-cancel"><span data-lang-only="ar">إلغاء</span><span data-lang-only="en">Cancel</span></button>
+        <button type="submit" class="btn btn-primary btn-block" id="schedule-submit-btn"><span data-lang-only="ar">جدولة</span><span data-lang-only="en">Schedule</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- PREVIEW MODAL -->
+<div class="modal-backdrop" id="preview-modal-backdrop">
+  <div class="modal" style="max-width:720px; max-height:85vh; overflow-y:auto;">
+    <div class="flex justify-between items-start">
+      <h3><span data-lang-only="ar">معاينة</span><span data-lang-only="en">Preview</span></h3>
+      <button type="button" class="btn btn-tertiary btn-sm" id="preview-close"><span data-lang-only="ar">إغلاق</span><span data-lang-only="en">Close</span></button>
+    </div>
+    <div id="preview-content" class="mt-4"></div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/permissions.js"></script>
+<script>
+  document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str == null ? '' : String(str);
+    return div.innerHTML;
+  }
+  function escapeAttr(str) {
+    return escapeHtml(str).replace(/"/g, '&quot;');
+  }
+
+  const BLOCK_TYPES = [
+    { type: 'video', icon: '🎬', ar: 'فيديو', en: 'Video', descAr: 'أضف فيديو تعليمي من رابط خارجي (يوتيوب، فيميو، ...)', descEn: 'Add a teaching video from an external link (YouTube, Vimeo, ...)' },
+    { type: 'article', icon: '📄', ar: 'مقالة', en: 'Article', descAr: 'أضف نصاً تعليمياً مقروءاً', descEn: 'Add readable text content' },
+    { type: 'audio', icon: '🎧', ar: 'صوت', en: 'Audio', descAr: 'أضف ملف صوتي أو بودكاست تعليمي', descEn: 'Add an audio file or teaching podcast' },
+    { type: 'quiz', icon: '❓', ar: 'اختبار قصير', en: 'Quiz', descAr: 'اختبار سريع لقياس الفهم والتقدم', descEn: 'A quick quiz to measure understanding and progress' },
+    { type: 'flashcards', icon: '🃏', ar: 'بطاقات تعليمية', en: 'Flash Cards', descAr: 'بطاقات لمراجعة المصطلحات والمفاهيم بسرعة', descEn: 'Cards for quickly reviewing terms and concepts' },
+    { type: 'assignment', icon: '📝', ar: 'واجب', en: 'Assignment', descAr: 'واجب يسلّم الطالب إجابته عليه', descEn: 'An assignment the student submits their own answer to' },
+    { type: 'image', icon: '🖼️', ar: 'صورة', en: 'Image', descAr: 'ارفع صورة أو مشهداً من جهازك — لا حاجة لاستضافتها في مكان آخر', descEn: 'Upload an image or scenario picture from your device — no external hosting needed' },
+    { type: 'embed', icon: '🧩', ar: 'محتوى مضمّن', en: 'Embed', descAr: 'ضمّن نشاطاً تفاعلياً من منصة معتمدة (فيميو، Wordwall، H5P، Genially)', descEn: 'Embed an interactive activity from an approved platform (Vimeo, Wordwall, H5P, Genially)' },
+  ];
+  const BLOCK_ICONS = Object.fromEntries(BLOCK_TYPES.map((t) => [t.type, t.icon]));
+  const BLOCK_LABELS = Object.fromEntries(BLOCK_TYPES.map((t) => [t.type, { ar: t.ar, en: t.en }]));
+  const BLOCK_COLORS = { video: 'warning', article: 'primary', audio: 'success', quiz: 'error', flashcards: 'blue', assignment: 'success', image: 'blue', embed: 'warning' };
+  // Mirrors EMBED_ALLOWED_HOSTS in backend/app/routers/skills.py. A projected
+  // page in a room of 20 adolescents is not a place for arbitrary third-party
+  // HTML, so the API rejects anything off this list — checked here too, to
+  // fail before the upload rather than after.
+  const EMBED_HOSTS = ['youtube.com','youtu.be','youtube-nocookie.com','player.vimeo.com','vimeo.com','drive.google.com','docs.google.com','view.genially.com','wordwall.net','h5p.org'];
+
+  let currentMe = null;
+  let gradeBands = [];
+  let allSkills = [];
+  let currentSkill = null; // full detail incl. blocks, when in builder view
+  let editingSkillId = null; // set when the skill-form modal is editing (vs creating)
+  let editingBlockId = null; // set when the block-form modal is editing (vs creating)
+  let currentBlockType = null;
+  let quizQuestions = [];
+  let flashCards = [];
+
+  let currentSkillSessions = []; // sessions list shown inside the skill builder view
+  let currentSession = null; // full detail incl. blocks, when in the session builder view
+  let editingSessionId = null; // set when the session-form modal is editing (vs creating)
+  let pendingSessionSkillId = null; // which skill the session-form modal's target session belongs to
+  // Where "add/edit/delete block" operations go — either a skill's own flat
+  // list ({ skillId }) or a session's list ({ skillId, sessionId }). The
+  // block-type-picker/block-form modals are shared by both builder views.
+  let activeBlockContext = null;
+
+  function statusBadgeHTML(skill) {
+    const status = skill.effective_status || skill.status;
+    if (status === 'published') {
+      return '<span class="badge badge-success"><span data-lang-only="ar">منشورة</span><span data-lang-only="en">Published</span></span>';
+    }
+    if (status === 'scheduled') {
+      const when = formatDateTime(skill.scheduled_publish_at);
+      return `<span class="badge badge-warning"><span data-lang-only="ar">مجدولة — ${when}</span><span data-lang-only="en">Scheduled — ${when}</span></span>`;
+    }
+    return '<span class="badge badge-error"><span data-lang-only="ar">مسودة</span><span data-lang-only="en">Draft</span></span>';
+  }
+
+  function skillNameHTML(s) {
+    return `<span data-lang-only="ar">${escapeHtml(s.title_ar)}</span><span data-lang-only="en">${escapeHtml(s.title_en)}</span>`;
+  }
+
+  function sessionNameHTML(sess) {
+    return `<span data-lang-only="ar">${escapeHtml(sess.title_ar)}</span><span data-lang-only="en">${escapeHtml(sess.title_en)}</span>`;
+  }
+
+  // ---------- LIST VIEW ----------
+
+  /* Authoring the same twelve sessions once per grade band is the largest
+     avoidable cost in the content workflow. The copy lands as a draft on
+     purpose: activities must be adapted to the new age group, not merely
+     relabelled. */
+  async function duplicateSkill(id, title) {
+    const bandList = gradeBands.map((b) => `${b.id} — ${getLang() === 'ar' ? b.label_ar : b.label_en}`).join('\n');
+    const target = window.prompt(
+      (getLang() === 'ar'
+        ? `نسخ «${title}» إلى أي مرحلة؟ اكتب المعرّف:\n\n`
+        : `Duplicate "${title}" to which grade band? Type the id:\n\n`) + bandList);
+    if (!target) return;
+    const band = gradeBands.find((b) => b.id === target.trim());
+    if (!band) {
+      alert(getLang() === 'ar' ? 'معرّف مرحلة غير معروف.' : 'Unknown grade band id.');
+      return;
+    }
+    try {
+      const res = await apiFetch(`/admin/skills/${id}/duplicate`, {
+        method: 'POST',
+        body: JSON.stringify({ grade_band_ids: [band.id] }),
+      });
+      alert(getLang() === 'ar'
+        ? `تم النسخ كمسودة — ${res.copied_sessions} جلسة و${res.copied_blocks} بطاقة. عدّل اللغة والأنشطة لتناسب المرحلة قبل النشر.`
+        : `Copied as a draft — ${res.copied_sessions} sessions, ${res.copied_blocks} cards. Adapt the language and activities for the new age group before publishing.`);
+      await loadSkills();
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  function renderSkillsGrid() {
+    const grid = document.getElementById('skills-grid');
+    grid.innerHTML = '';
+    if (!allSkills.length) {
+      grid.innerHTML = '<div class="card text-muted"><span data-lang-only="ar">لا توجد مهارات بعد.</span><span data-lang-only="en">No skills yet.</span></div>';
+      applyLanguage(getLang());
+      return;
+    }
+    allSkills.forEach((s) => {
+      const bandLabel = s.grade_bands.length
+        ? `<span data-lang-only="ar">${s.grade_bands.map((b) => b.label_ar).join('، ')}</span><span data-lang-only="en">${s.grade_bands.map((b) => b.label_en).join(', ')}</span>`
+        : '';
+      const status = s.effective_status || s.status;
+      const fillClass = status === 'published' ? 'success' : 'warning';
+      // This track shows publication status, not completion — but it is drawn
+      // with the progress-bar component, so a full green one on a skill whose
+      // own caption reads "0 content blocks" says "finished" when nothing has
+      // been authored. An empty skill can never show a full track.
+      const hasContent = (s.block_count || 0) + (s.session_count || 0) > 0;
+      const fillWidth = !hasContent ? 0 : (status === 'published' ? 100 : 20);
+      const div = document.createElement('div');
+      div.className = 'card card-hover';
+      div.innerHTML = `
+        <div class="flex justify-between items-start">
+          <h3>${skillNameHTML(s)}</h3>
+          ${statusBadgeHTML(s)}
+        </div>
+        <p class="caption text-muted mt-1">${bandLabel} · <span class="num">${s.block_count}</span> <span data-lang-only="ar">عنصر محتوى</span><span data-lang-only="en">content block(s)</span> · <span class="num">${s.session_count}</span> <span data-lang-only="ar">جلسة</span><span data-lang-only="en">session(s)</span></p>
+        <div class="progress-bar mt-3" aria-hidden="true"><div class="progress-bar__fill ${fillClass}" style="width:${fillWidth}%"></div></div>
+        <div class="flex gap-2 mt-3">
+          <div class="flex gap-2">
+            <button type="button" class="btn btn-secondary btn-sm btn-block manage-skill-btn" data-id="${s.id}"><span data-lang-only="ar">إدارة</span><span data-lang-only="en">Manage</span></button>
+            <button type="button" class="btn btn-tertiary btn-sm duplicate-skill-btn" data-id="${s.id}" data-title="${s.title_en}" data-aria-ar="نسخ إلى مرحلة أخرى" data-aria-en="Duplicate to another grade band">⧉</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-sm btn-block create-session-btn" data-id="${s.id}" data-requires-permission="content.create"><span data-lang-only="ar">إنشاء جلسة</span><span data-lang-only="en">Create a Session</span></button>
+        </div>
+      `;
+      grid.appendChild(div);
+    });
+    document.querySelectorAll('.duplicate-skill-btn').forEach((btn) => {
+      btn.addEventListener('click', () => duplicateSkill(btn.dataset.id, btn.dataset.title));
+    });
+    document.querySelectorAll('.manage-skill-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openBuilder(btn.dataset.id));
+    });
+    document.querySelectorAll('.create-session-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openCreateSessionModal(btn.dataset.id));
+    });
+    applyLanguage(getLang());
+    gateNav(currentMe);
+  }
+
+  async function loadSkills() {
+    allSkills = await apiFetch('/admin/skills');
+    renderSkillsGrid();
+  }
+
+  async function populateGradeBandCheckboxes(selectedIds) {
+    if (!gradeBands.length) gradeBands = await apiFetch('/catalog/grade-bands');
+    const container = document.getElementById('skill-grade-bands');
+    container.innerHTML = '';
+    gradeBands.forEach((b) => {
+      const label = document.createElement('label');
+      label.className = 'flex items-center gap-2';
+      label.innerHTML = `
+        <input type="checkbox" value="${b.id}" ${selectedIds.includes(b.id) ? 'checked' : ''}>
+        <span data-lang-only="ar">${b.label_ar}</span><span data-lang-only="en">${b.label_en}</span>
+      `;
+      container.appendChild(label);
+    });
+  }
+
+  // ---------- CREATE/EDIT SKILL MODAL ----------
+
+  async function openCreateSkillModal() {
+    editingSkillId = null;
+    document.getElementById('skill-modal-title').innerHTML = '<span data-lang-only="ar">إنشاء مهارة جديدة</span><span data-lang-only="en">Create a new skill</span>';
+    document.getElementById('skill-title-ar').value = '';
+    document.getElementById('skill-title-en').value = '';
+    document.getElementById('skill-description-ar').value = '';
+    document.getElementById('skill-description-en').value = '';
+    document.getElementById('skill-form-error').classList.add('hidden');
+    await populateGradeBandCheckboxes([]);
+    applyLanguage(getLang());
+    document.getElementById('skill-modal-backdrop').classList.add('open');
+  }
+
+  async function openEditSkillModal() {
+    editingSkillId = currentSkill.id;
+    document.getElementById('skill-modal-title').innerHTML = '<span data-lang-only="ar">تعديل المهارة</span><span data-lang-only="en">Edit skill</span>';
+    document.getElementById('skill-title-ar').value = currentSkill.title_ar;
+    document.getElementById('skill-title-en').value = currentSkill.title_en;
+    document.getElementById('skill-description-ar').value = currentSkill.description_ar || '';
+    document.getElementById('skill-description-en').value = currentSkill.description_en || '';
+    document.getElementById('skill-form-error').classList.add('hidden');
+    await populateGradeBandCheckboxes(currentSkill.grade_bands.map((b) => b.id));
+    applyLanguage(getLang());
+    document.getElementById('skill-modal-backdrop').classList.add('open');
+  }
+
+  function closeSkillModal() {
+    document.getElementById('skill-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('create-skill-btn').addEventListener('click', openCreateSkillModal);
+  document.getElementById('edit-skill-btn').addEventListener('click', openEditSkillModal);
+  document.getElementById('skill-form-cancel').addEventListener('click', closeSkillModal);
+  document.getElementById('skill-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const grade_band_ids = Array.from(
+      document.querySelectorAll('#skill-grade-bands input:checked')
+    ).map((cb) => cb.value);
+    const submitBtn = document.getElementById('skill-form-submit-btn');
+    const errorEl = document.getElementById('skill-form-error');
+    if (!grade_band_ids.length) {
+      errorEl.textContent = getLang() === 'ar' ? 'اختر مرحلة دراسية واحدة على الأقل.' : 'Select at least one grade band.';
+      errorEl.classList.remove('hidden');
+      return;
+    }
+    const payload = {
+      grade_band_ids,
+      title_ar: document.getElementById('skill-title-ar').value.trim(),
+      title_en: document.getElementById('skill-title-en').value.trim(),
+      description_ar: document.getElementById('skill-description-ar').value.trim() || null,
+      description_en: document.getElementById('skill-description-en').value.trim() || null,
+    };
+    submitBtn.disabled = true;
+    try {
+      if (editingSkillId) {
+        await apiFetch(`/admin/skills/${editingSkillId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+        closeSkillModal();
+        announce('تم حفظ المهارة', 'Skill saved');
+        await openBuilder(editingSkillId);
+      } else {
+        const created = await apiFetch('/admin/skills', { method: 'POST', body: JSON.stringify(payload) });
+        closeSkillModal();
+        await loadSkills();
+        await openBuilder(created.id);
+      }
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- BUILDER VIEW ----------
+
+  function renderBlocksList(blocks, containerId) {
+    const list = document.getElementById(containerId);
+    list.innerHTML = '';
+    if (!blocks.length) {
+      list.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد عناصر محتوى بعد.</span><span data-lang-only="en">No content blocks yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    blocks.forEach((b) => {
+      const div = document.createElement('div');
+      div.className = 'card card-hover mt-2';
+      div.innerHTML = `
+        <div class="flex justify-between items-center gap-3">
+          <div class="flex items-center gap-3">
+            <span class="icon-chip sm ${BLOCK_COLORS[b.block_type] || 'primary'}">${BLOCK_ICONS[b.block_type]}</span>
+            <div>
+              <strong>${escapeHtml(b.title_ar)} / ${escapeHtml(b.title_en)}</strong>
+              <div class="caption text-muted"><span data-lang-only="ar">${BLOCK_LABELS[b.block_type].ar}</span><span data-lang-only="en">${BLOCK_LABELS[b.block_type].en}</span></div>
+            </div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="badge badge-neutral"><span data-lang-only="ar">${BLOCK_LABELS[b.block_type].ar}</span><span data-lang-only="en">${BLOCK_LABELS[b.block_type].en}</span></span>
+            <button type="button" class="btn btn-tertiary btn-sm edit-block-btn" data-id="${b.id}" data-requires-permission="content.edit"><span data-lang-only="ar">تعديل</span><span data-lang-only="en">Edit</span></button>
+            <button type="button" class="btn btn-tertiary btn-sm delete-block-btn" data-id="${b.id}" data-requires-permission="content.edit">🗑️</button>
+          </div>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+    list.querySelectorAll('.edit-block-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openEditBlockModal(btn.dataset.id));
+    });
+    list.querySelectorAll('.delete-block-btn').forEach((btn) => {
+      btn.addEventListener('click', () => deleteBlock(btn.dataset.id));
+    });
+    applyLanguage(getLang());
+    gateNav(currentMe);
+  }
+
+  function renderBuilderHeader() {
+    document.getElementById('builder-skill-title').innerHTML = skillNameHTML(currentSkill);
+    const bandLabel = currentSkill.grade_bands.length
+      ? `<span data-lang-only="ar">${currentSkill.grade_bands.map((b) => b.label_ar).join('، ')}</span><span data-lang-only="en">${currentSkill.grade_bands.map((b) => b.label_en).join(', ')}</span>`
+      : '';
+    document.getElementById('builder-skill-meta').innerHTML = bandLabel;
+    document.getElementById('builder-skill-description').innerHTML =
+      `<span data-lang-only="ar">${escapeHtml(currentSkill.description_ar || '')}</span><span data-lang-only="en">${escapeHtml(currentSkill.description_en || '')}</span>`;
+    document.getElementById('skill-status-badge').innerHTML = statusBadgeHTML(currentSkill);
+    const status = currentSkill.effective_status || currentSkill.status;
+    document.getElementById('unpublish-btn').classList.toggle(
+      'hidden', status === 'draft' || !hasPermission(currentMe, 'content.publish')
+    );
+    applyLanguage(getLang());
+  }
+
+  async function openBuilder(skillId) {
+    document.getElementById('skill-list-view').classList.add('hidden');
+    document.getElementById('session-builder-view').classList.add('hidden');
+    document.getElementById('skill-builder-view').classList.remove('hidden');
+    currentSkill = await apiFetch(`/admin/skills/${skillId}`);
+    activeBlockContext = { skillId: currentSkill.id };
+    renderBuilderHeader();
+    await loadSessionsForCurrentSkill();
+  }
+
+  function backToList() {
+    document.getElementById('skill-builder-view').classList.add('hidden');
+    document.getElementById('skill-list-view').classList.remove('hidden');
+    currentSkill = null;
+    currentSkillSessions = [];
+    activeBlockContext = null;
+    loadSkills();
+  }
+  document.getElementById('back-to-list-link').addEventListener('click', (e) => { e.preventDefault(); backToList(); });
+
+  // ---------- SESSIONS ----------
+
+  function renderSessionsList() {
+    const list = document.getElementById('sessions-list');
+    list.innerHTML = '';
+    if (!currentSkillSessions.length) {
+      list.innerHTML = '<p class="text-muted"><span data-lang-only="ar">لا توجد جلسات بعد.</span><span data-lang-only="en">No sessions yet.</span></p>';
+      applyLanguage(getLang());
+      return;
+    }
+    currentSkillSessions.forEach((sess) => {
+      const ready = sess.block_count > 0;
+      const div = document.createElement('div');
+      div.className = 'card card-hover mt-2';
+      div.innerHTML = `
+        <div class="flex justify-between items-center">
+          <div>
+            <strong>${sessionNameHTML(sess)}</strong>
+            <div class="caption text-muted mt-1"><span class="num">${sess.block_count}</span> <span data-lang-only="ar">عنصر محتوى</span><span data-lang-only="en">content block(s)</span></div>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="badge ${ready ? 'badge-success' : 'badge-warning'}">${ready ? '<span data-lang-only="ar">جاهزة</span><span data-lang-only="en">Ready</span>' : '<span data-lang-only="ar">فارغة</span><span data-lang-only="en">Empty</span>'}</span>
+            <button type="button" class="btn btn-secondary btn-sm manage-session-btn" data-id="${sess.id}"><span data-lang-only="ar">إدارة</span><span data-lang-only="en">Manage</span></button>
+          </div>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+    list.querySelectorAll('.manage-session-btn').forEach((btn) => {
+      btn.addEventListener('click', () => openSessionBuilder(currentSkill.id, btn.dataset.id));
+    });
+    applyLanguage(getLang());
+    gateNav(currentMe);
+  }
+
+  async function loadSessionsForCurrentSkill() {
+    currentSkillSessions = await apiFetch(`/admin/skills/${currentSkill.id}/sessions`);
+    renderSessionsList();
+  }
+
+  function renderSessionBuilderHeader() {
+    document.getElementById('builder-session-title').innerHTML = sessionNameHTML(currentSession);
+    applyLanguage(getLang());
+  }
+
+  async function openSessionBuilder(skillId, sessionId) {
+    document.getElementById('skill-list-view').classList.add('hidden');
+    document.getElementById('skill-builder-view').classList.add('hidden');
+    document.getElementById('session-builder-view').classList.remove('hidden');
+    if (!currentSkill || currentSkill.id !== skillId) {
+      currentSkill = await apiFetch(`/admin/skills/${skillId}`);
+    }
+    activeBlockContext = { skillId, sessionId };
+    currentSession = await apiFetch(`/admin/skills/${skillId}/sessions/${sessionId}`);
+    renderSessionBuilderHeader();
+    renderBlocksList(currentSession.blocks, 'session-blocks-list');
+  }
+
+  function backToSkillBuilder() {
+    document.getElementById('session-builder-view').classList.add('hidden');
+    document.getElementById('skill-builder-view').classList.remove('hidden');
+    activeBlockContext = { skillId: currentSkill.id };
+    currentSession = null;
+    // The session builder may have been entered straight from the skill
+    // list's shortcut button, skipping openBuilder() — so the skill header
+    // may never have been rendered yet. Render it now.
+    renderBuilderHeader();
+    loadSessionsForCurrentSkill();
+  }
+  document.getElementById('back-to-skill-builder-link').addEventListener('click', (e) => { e.preventDefault(); backToSkillBuilder(); });
+
+  function openCreateSessionModal(skillId) {
+    editingSessionId = null;
+    pendingSessionSkillId = skillId;
+    document.getElementById('session-modal-title').innerHTML = '<span data-lang-only="ar">إنشاء جلسة جديدة</span><span data-lang-only="en">Create a new session</span>';
+    document.getElementById('session-title-ar').value = '';
+    document.getElementById('session-title-en').value = '';
+    document.getElementById('session-form-error').classList.add('hidden');
+    applyLanguage(getLang());
+    document.getElementById('session-modal-backdrop').classList.add('open');
+  }
+
+  function openEditSessionModal() {
+    editingSessionId = currentSession.id;
+    pendingSessionSkillId = currentSkill.id;
+    document.getElementById('session-modal-title').innerHTML = '<span data-lang-only="ar">تعديل عنوان الجلسة</span><span data-lang-only="en">Edit session title</span>';
+    document.getElementById('session-title-ar').value = currentSession.title_ar;
+    document.getElementById('session-title-en').value = currentSession.title_en;
+    document.getElementById('session-form-error').classList.add('hidden');
+    applyLanguage(getLang());
+    document.getElementById('session-modal-backdrop').classList.add('open');
+  }
+
+  function closeSessionModal() {
+    document.getElementById('session-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('create-session-in-builder-btn').addEventListener('click', () => openCreateSessionModal(currentSkill.id));
+  document.getElementById('edit-session-btn').addEventListener('click', openEditSessionModal);
+  document.getElementById('session-form-cancel').addEventListener('click', closeSessionModal);
+  document.getElementById('session-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const payload = {
+      title_ar: document.getElementById('session-title-ar').value.trim(),
+      title_en: document.getElementById('session-title-en').value.trim(),
+    };
+    const submitBtn = document.getElementById('session-form-submit-btn');
+    const errorEl = document.getElementById('session-form-error');
+    submitBtn.disabled = true;
+    try {
+      if (editingSessionId) {
+        await apiFetch(`/admin/skills/${pendingSessionSkillId}/sessions/${editingSessionId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+        closeSessionModal();
+        announce('تم حفظ الجلسة', 'Session saved');
+        await openSessionBuilder(pendingSessionSkillId, editingSessionId);
+      } else {
+        const created = await apiFetch(`/admin/skills/${pendingSessionSkillId}/sessions`, { method: 'POST', body: JSON.stringify(payload) });
+        closeSessionModal();
+        await openSessionBuilder(pendingSessionSkillId, created.id);
+      }
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- PUBLISH CONTROLS ----------
+
+  document.getElementById('publish-now-btn').addEventListener('click', async () => {
+    try {
+      await apiFetch(`/admin/skills/${currentSkill.id}/publish`, { method: 'POST' });
+      currentSkill = await apiFetch(`/admin/skills/${currentSkill.id}`);
+      renderBuilderHeader();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  document.getElementById('unpublish-btn').addEventListener('click', async () => {
+    try {
+      await apiFetch(`/admin/skills/${currentSkill.id}/unpublish`, { method: 'POST' });
+      currentSkill = await apiFetch(`/admin/skills/${currentSkill.id}`);
+      renderBuilderHeader();
+    } catch (err) {
+      alert(err.message);
+    }
+  });
+
+  function openScheduleModal() {
+    document.getElementById('schedule-datetime').value = '';
+    document.getElementById('schedule-error').classList.add('hidden');
+    document.getElementById('schedule-modal-backdrop').classList.add('open');
+  }
+  function closeScheduleModal() {
+    document.getElementById('schedule-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('schedule-btn').addEventListener('click', openScheduleModal);
+  document.getElementById('schedule-cancel').addEventListener('click', closeScheduleModal);
+  document.getElementById('schedule-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const localValue = document.getElementById('schedule-datetime').value;
+    const errorEl = document.getElementById('schedule-error');
+    const submitBtn = document.getElementById('schedule-submit-btn');
+    if (!localValue) return;
+    submitBtn.disabled = true;
+    try {
+      const publish_at = new Date(localValue).toISOString();
+      await apiFetch(`/admin/skills/${currentSkill.id}/schedule`, { method: 'POST', body: JSON.stringify({ publish_at }) });
+      closeScheduleModal();
+      currentSkill = await apiFetch(`/admin/skills/${currentSkill.id}`);
+      renderBuilderHeader();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  // ---------- QUIZ BUILDER ----------
+
+  function renderQuizBuilder() {
+    const container = document.getElementById('quiz-questions');
+    container.innerHTML = quizQuestions.map((q, qi) => `
+      <div class="card mt-2">
+        <div class="flex justify-between items-center">
+          <strong><span data-lang-only="ar">سؤال ${qi + 1}</span><span data-lang-only="en">Question ${qi + 1}</span></strong>
+          <button type="button" class="btn btn-tertiary btn-sm remove-question-btn" data-qi="${qi}">🗑️</button>
+        </div>
+        <div class="field mt-2">
+          <input class="input question-ar-input" data-qi="${qi}" data-ph-ar="السؤال (عربي)" data-ph-en="Question (Arabic)" value="${escapeAttr(q.question_ar)}">
+        </div>
+        <div class="field mt-2">
+          <input class="input question-en-input" data-qi="${qi}" data-ph-ar="السؤال (إنجليزي)" data-ph-en="Question (English)" value="${escapeAttr(q.question_en)}">
+        </div>
+        <div class="mt-2">
+          ${q.choices.map((c, ci) => `
+            <div class="flex items-center gap-2 mt-1">
+              <input type="radio" name="correct-${qi}" class="correct-radio" data-qi="${qi}" data-ci="${ci}" ${q.correct_index === ci ? 'checked' : ''}>
+              <input class="input choice-ar-input" data-qi="${qi}" data-ci="${ci}" data-ph-ar="خيار (عربي)" data-ph-en="Choice (Arabic)" value="${escapeAttr(c.text_ar)}" style="flex:1;">
+              <input class="input choice-en-input" data-qi="${qi}" data-ci="${ci}" data-ph-ar="خيار (إنجليزي)" data-ph-en="Choice (English)" value="${escapeAttr(c.text_en)}" style="flex:1;">
+              <button type="button" class="btn btn-tertiary btn-sm remove-choice-btn" data-qi="${qi}" data-ci="${ci}">×</button>
+            </div>
+          `).join('')}
+          <button type="button" class="btn btn-secondary btn-sm mt-2 add-choice-btn" data-qi="${qi}">+ <span data-lang-only="ar">إضافة خيار</span><span data-lang-only="en">Add choice</span></button>
+        </div>
+      </div>
+    `).join('');
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('add-question-btn').addEventListener('click', () => {
+    quizQuestions.push({ question_ar: '', question_en: '', choices: [{ text_ar: '', text_en: '' }, { text_ar: '', text_en: '' }], correct_index: 0 });
+    renderQuizBuilder();
+  });
+
+  document.getElementById('quiz-questions').addEventListener('input', (e) => {
+    const qi = Number(e.target.dataset.qi);
+    const ci = e.target.dataset.ci !== undefined ? Number(e.target.dataset.ci) : null;
+    if (e.target.classList.contains('question-ar-input')) quizQuestions[qi].question_ar = e.target.value;
+    else if (e.target.classList.contains('question-en-input')) quizQuestions[qi].question_en = e.target.value;
+    else if (e.target.classList.contains('choice-ar-input')) quizQuestions[qi].choices[ci].text_ar = e.target.value;
+    else if (e.target.classList.contains('choice-en-input')) quizQuestions[qi].choices[ci].text_en = e.target.value;
+  });
+
+  document.getElementById('quiz-questions').addEventListener('change', (e) => {
+    if (e.target.classList.contains('correct-radio')) {
+      quizQuestions[Number(e.target.dataset.qi)].correct_index = Number(e.target.dataset.ci);
+    }
+  });
+
+  document.getElementById('quiz-questions').addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-question-btn')) {
+      quizQuestions.splice(Number(e.target.dataset.qi), 1);
+      renderQuizBuilder();
+    } else if (e.target.classList.contains('add-choice-btn')) {
+      quizQuestions[Number(e.target.dataset.qi)].choices.push({ text_ar: '', text_en: '' });
+      renderQuizBuilder();
+    } else if (e.target.classList.contains('remove-choice-btn')) {
+      const qi = Number(e.target.dataset.qi), ci = Number(e.target.dataset.ci);
+      if (quizQuestions[qi].choices.length <= 2) { alert(getLang() === 'ar' ? 'يجب أن يبقى خياران على الأقل.' : 'At least 2 choices are required.'); return; }
+      quizQuestions[qi].choices.splice(ci, 1);
+      if (quizQuestions[qi].correct_index >= quizQuestions[qi].choices.length) quizQuestions[qi].correct_index = 0;
+      renderQuizBuilder();
+    }
+  });
+
+  // ---------- FLASHCARD BUILDER ----------
+
+  function renderFlashcardBuilder() {
+    const container = document.getElementById('flashcard-list');
+    container.innerHTML = flashCards.map((c, ci) => `
+      <div class="card mt-2">
+        <div class="flex justify-between items-center">
+          <strong><span data-lang-only="ar">بطاقة ${ci + 1}</span><span data-lang-only="en">Card ${ci + 1}</span></strong>
+          <button type="button" class="btn btn-tertiary btn-sm remove-card-btn" data-ci="${ci}">🗑️</button>
+        </div>
+        <div class="input-row mt-2">
+          <div class="field">
+            <label class="caption text-muted"><span data-lang-only="ar">الوجه (عربي)</span><span data-lang-only="en">Front (Arabic)</span></label>
+            <input class="input card-front-ar-input" data-ci="${ci}" value="${escapeAttr(c.front_ar)}">
+          </div>
+          <div class="field">
+            <label class="caption text-muted"><span data-lang-only="ar">الوجه (إنجليزي)</span><span data-lang-only="en">Front (English)</span></label>
+            <input class="input card-front-en-input" data-ci="${ci}" value="${escapeAttr(c.front_en)}">
+          </div>
+        </div>
+        <div class="input-row mt-2">
+          <div class="field">
+            <label class="caption text-muted"><span data-lang-only="ar">الظهر (عربي)</span><span data-lang-only="en">Back (Arabic)</span></label>
+            <input class="input card-back-ar-input" data-ci="${ci}" value="${escapeAttr(c.back_ar)}">
+          </div>
+          <div class="field">
+            <label class="caption text-muted"><span data-lang-only="ar">الظهر (إنجليزي)</span><span data-lang-only="en">Back (English)</span></label>
+            <input class="input card-back-en-input" data-ci="${ci}" value="${escapeAttr(c.back_en)}">
+          </div>
+        </div>
+      </div>
+    `).join('');
+    applyLanguage(getLang());
+  }
+
+  document.getElementById('add-flashcard-btn').addEventListener('click', () => {
+    flashCards.push({ front_ar: '', front_en: '', back_ar: '', back_en: '' });
+    renderFlashcardBuilder();
+  });
+
+  document.getElementById('flashcard-list').addEventListener('input', (e) => {
+    const ci = Number(e.target.dataset.ci);
+    if (ci === undefined || Number.isNaN(ci)) return;
+    if (e.target.classList.contains('card-front-ar-input')) flashCards[ci].front_ar = e.target.value;
+    else if (e.target.classList.contains('card-front-en-input')) flashCards[ci].front_en = e.target.value;
+    else if (e.target.classList.contains('card-back-ar-input')) flashCards[ci].back_ar = e.target.value;
+    else if (e.target.classList.contains('card-back-en-input')) flashCards[ci].back_en = e.target.value;
+  });
+
+  document.getElementById('flashcard-list').addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove-card-btn')) {
+      flashCards.splice(Number(e.target.dataset.ci), 1);
+      renderFlashcardBuilder();
+    }
+  });
+
+  // ---------- BLOCK FORM (add/edit) ----------
+
+  function showBlockFieldsFor(type) {
+    BLOCK_TYPES.forEach((t) => {
+      document.getElementById(`block-fields-${t.type}`).classList.toggle('hidden', t.type !== type);
+    });
+  }
+
+  function renderBlockTypeGrid() {
+    const grid = document.getElementById('block-type-grid');
+    grid.innerHTML = BLOCK_TYPES.map((t) => `
+      <button type="button" class="block-type-card block-type-btn" data-type="${t.type}">
+        <span class="block-type-card__icon">${t.icon}</span>
+        <span class="block-type-card__title"><span data-lang-only="ar">${t.ar}</span><span data-lang-only="en">${t.en}</span></span>
+        <span class="block-type-card__desc"><span data-lang-only="ar">${t.descAr}</span><span data-lang-only="en">${t.descEn}</span></span>
+      </button>
+    `).join('');
+    document.querySelectorAll('.block-type-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        closeBlockTypeModal();
+        openBlockForm(btn.dataset.type, null);
+      });
+    });
+    applyLanguage(getLang());
+  }
+
+  function openAddBlockTypeModal() {
+    renderBlockTypeGrid();
+    document.getElementById('block-type-modal-backdrop').classList.add('open');
+  }
+  function closeBlockTypeModal() {
+    document.getElementById('block-type-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('session-add-block-btn').addEventListener('click', openAddBlockTypeModal);
+  document.getElementById('block-type-cancel').addEventListener('click', closeBlockTypeModal);
+  document.getElementById('block-type-close').addEventListener('click', closeBlockTypeModal);
+  function openBlockForm(type, block) {
+    editingBlockId = block ? block.id : null;
+    currentBlockType = type;
+    document.getElementById('block-form-title').innerHTML = block
+      ? `${BLOCK_ICONS[type]} <span data-lang-only="ar">تعديل عنصر</span><span data-lang-only="en">Edit block</span>`
+      : `${BLOCK_ICONS[type]} <span data-lang-only="ar">إضافة</span><span data-lang-only="en">Add</span> <span data-lang-only="ar">${BLOCK_LABELS[type].ar}</span><span data-lang-only="en">${BLOCK_LABELS[type].en}</span>`;
+    document.getElementById('block-title-ar').value = block ? block.title_ar : '';
+    document.getElementById('block-title-en').value = block ? block.title_en : '';
+    document.getElementById('block-form-error').classList.add('hidden');
+
+    const content = block ? block.content : {};
+    document.getElementById('block-body-ar').value = content.body_ar || '';
+    document.getElementById('block-body-en').value = content.body_en || '';
+    document.getElementById('block-video-url').value = type === 'video' ? (content.url || '') : '';
+    document.getElementById('block-video-duration').value = type === 'video' && content.duration_seconds ? (content.duration_seconds / 60) : '';
+    document.getElementById('block-audio-url').value = type === 'audio' ? (content.url || '') : '';
+    document.getElementById('block-instructions-ar').value = content.instructions_ar || '';
+    document.getElementById('block-instructions-en').value = content.instructions_en || '';
+    quizQuestions = type === 'quiz' && content.questions
+      ? JSON.parse(JSON.stringify(content.questions))
+      : [];
+    if (type === 'quiz') renderQuizBuilder();
+
+    flashCards = type === 'flashcards' && content.cards
+      ? JSON.parse(JSON.stringify(content.cards))
+      : [];
+    if (type === 'flashcards') renderFlashcardBuilder();
+
+    showBlockFieldsFor(type);
+    applyLanguage(getLang());
+    document.getElementById('block-form-modal-backdrop').classList.add('open');
+  }
+
+  function blocksApiBase() {
+    return `/admin/skills/${activeBlockContext.skillId}/sessions/${activeBlockContext.sessionId}/blocks`;
+  }
+
+  async function refreshActiveContent() {
+    currentSession = await apiFetch(`/admin/skills/${activeBlockContext.skillId}/sessions/${activeBlockContext.sessionId}`);
+    renderBlocksList(currentSession.blocks, 'session-blocks-list');
+  }
+
+  function openEditBlockModal(blockId) {
+    const block = currentSession.blocks.find((b) => b.id === blockId);
+    if (block) openBlockForm(block.block_type, block);
+  }
+
+  function closeBlockForm() {
+    document.getElementById('block-form-modal-backdrop').classList.remove('open');
+  }
+  document.getElementById('block-form-cancel').addEventListener('click', closeBlockForm);
+  /* Upload as soon as a file is chosen, so the author sees the image and any
+     failure immediately rather than on submit. The API stores it in the same
+     Supabase bucket the teacher materials already use. */
+  const imgFile = document.getElementById('block-image-file');
+  if (imgFile) imgFile.addEventListener('change', async () => {
+    const file = imgFile.files[0];
+    const preview = document.getElementById('block-image-preview');
+    const errorEl = document.getElementById('block-form-error');
+    if (!file) return;
+    preview.classList.remove('hidden');
+    preview.innerHTML = `<span class="caption text-muted">${getLang() === 'ar' ? 'جارٍ الرفع…' : 'Uploading…'}</span>`;
+    try {
+      const fd = new FormData();
+      fd.append('file', file);
+      const res = await fetch(API_BASE + '/admin/skills/assets', { method: 'POST', credentials: 'include', body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Upload failed');
+      document.getElementById('block-image-url').value = data.url;
+      preview.innerHTML = `<img src="${data.url}" alt="" style="max-width:100%;max-height:220px;border-radius:var(--radius-md);border:1px solid var(--border);">`
+        + `<div class="caption text-muted mt-2">${data.file_name} · ${Math.round(data.size_bytes / 1024)} KB</div>`;
+      errorEl.classList.add('hidden');
+    } catch (err) {
+      preview.innerHTML = '';
+      preview.classList.add('hidden');
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    }
+  });
+
+  document.getElementById('block-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorEl = document.getElementById('block-form-error');
+    const submitBtn = document.getElementById('block-form-submit-btn');
+
+    let content = {};
+    if (currentBlockType === 'article') {
+      content = { body_ar: document.getElementById('block-body-ar').value.trim(), body_en: document.getElementById('block-body-en').value.trim() };
+    } else if (currentBlockType === 'video') {
+      const minutes = parseFloat(document.getElementById('block-video-duration').value);
+      if (!minutes || minutes <= 0) {
+        errorEl.textContent = getLang() === 'ar' ? 'أدخل طول الفيديو التقريبي بالدقائق.' : 'Enter the video\'s approximate length in minutes.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { url: document.getElementById('block-video-url').value.trim(), duration_seconds: Math.round(minutes * 60) };
+    } else if (currentBlockType === 'audio') {
+      const audioUrl = document.getElementById('block-audio-url').value.trim();
+      const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.ogg', '.m4a', '.aac', '.webm', '.flac', '.wma'];
+      let audioPath = '';
+      try { audioPath = new URL(audioUrl).pathname.toLowerCase(); } catch { audioPath = audioUrl.toLowerCase(); }
+      if (!AUDIO_EXTENSIONS.some((ext) => audioPath.endsWith(ext))) {
+        errorEl.textContent = getLang() === 'ar'
+          ? 'رابط الصوت يجب أن يشير مباشرة إلى ملف صوتي (مثل .mp3)، وليس صفحة تحرير أو معاينة.'
+          : 'The audio URL must point directly to an audio file (e.g. .mp3), not an editor or preview page.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { url: audioUrl };
+    } else if (currentBlockType === 'assignment') {
+      content = {
+        instructions_ar: document.getElementById('block-instructions-ar').value.trim(),
+        instructions_en: document.getElementById('block-instructions-en').value.trim(),
+      };
+    } else if (currentBlockType === 'image') {
+      const url = document.getElementById('block-image-url').value.trim();
+      const altAr = document.getElementById('block-image-alt-ar').value.trim();
+      const altEn = document.getElementById('block-image-alt-en').value.trim();
+      if (!url) {
+        errorEl.textContent = getLang() === 'ar' ? 'ارفع صورة أولاً.' : 'Upload an image first.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      if (!altAr || !altEn) {
+        errorEl.textContent = getLang() === 'ar'
+          ? 'أدخل وصف الصورة بالعربية والإنجليزية — إلزامي لإتاحة المحتوى.'
+          : 'Enter the image description in both languages — required for accessibility.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { url, alt_ar: altAr, alt_en: altEn };
+    } else if (currentBlockType === 'embed') {
+      const url = document.getElementById('block-embed-url').value.trim();
+      let host = '';
+      try { host = new URL(url).hostname.toLowerCase(); } catch { host = ''; }
+      if (!EMBED_HOSTS.some((h) => host === h || host.endsWith('.' + h))) {
+        errorEl.textContent = getLang() === 'ar'
+          ? 'هذه المنصة غير معتمدة. المسموح: ' + EMBED_HOSTS.join('، ')
+          : 'That platform is not approved. Allowed: ' + EMBED_HOSTS.join(', ');
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { url, fallback: document.getElementById('block-embed-fallback').value.trim() || null };
+    } else if (currentBlockType === 'quiz') {
+      if (!quizQuestions.length) {
+        errorEl.textContent = getLang() === 'ar' ? 'أضف سؤالاً واحداً على الأقل.' : 'Add at least one question.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { questions: quizQuestions };
+    } else if (currentBlockType === 'flashcards') {
+      if (!flashCards.length) {
+        errorEl.textContent = getLang() === 'ar' ? 'أضف بطاقة واحدة على الأقل.' : 'Add at least one card.';
+        errorEl.classList.remove('hidden');
+        return;
+      }
+      content = { cards: flashCards };
+    }
+
+    const payload = {
+      block_type: currentBlockType,
+      title_ar: document.getElementById('block-title-ar').value.trim(),
+      title_en: document.getElementById('block-title-en').value.trim(),
+      content,
+    };
+
+    submitBtn.disabled = true;
+    try {
+      if (editingBlockId) {
+        await apiFetch(`${blocksApiBase()}/${editingBlockId}`, { method: 'PATCH', body: JSON.stringify(payload) });
+      } else {
+        await apiFetch(blocksApiBase(), { method: 'POST', body: JSON.stringify(payload) });
+      }
+      closeBlockForm();
+      await refreshActiveContent();
+    } catch (err) {
+      errorEl.textContent = err.message;
+      errorEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+
+  async function deleteBlock(blockId) {
+    if (!confirm(getLang() === 'ar' ? 'حذف هذا العنصر؟' : 'Delete this block?')) return;
+    await apiFetch(`${blocksApiBase()}/${blockId}`, { method: 'DELETE' });
+    await refreshActiveContent();
+  }
+
+  // ---------- PREVIEW ----------
+
+  function renderBlockPreviewHTML(b) {
+    const title = `<h4>${BLOCK_ICONS[b.block_type]} <span data-lang-only="ar">${escapeHtml(b.title_ar)}</span><span data-lang-only="en">${escapeHtml(b.title_en)}</span></h4>`;
+    if (b.block_type === 'article') {
+      return `${title}<p class="mt-2"><span data-lang-only="ar">${escapeHtml(b.content.body_ar)}</span><span data-lang-only="en">${escapeHtml(b.content.body_en)}</span></p>`;
+    }
+    if (b.block_type === 'video') {
+      return `${title}<p class="caption mt-2" dir="ltr"><a href="${escapeAttr(b.content.url)}" target="_blank">${escapeHtml(b.content.url)}</a></p>`;
+    }
+    if (b.block_type === 'audio') {
+      return `${title}<audio class="mt-2" controls style="width:100%;" src="${escapeAttr(b.content.url)}"></audio>`;
+    }
+    if (b.block_type === 'assignment') {
+      return `${title}<p class="mt-2"><span data-lang-only="ar">${escapeHtml(b.content.instructions_ar)}</span><span data-lang-only="en">${escapeHtml(b.content.instructions_en)}</span></p>`;
+    }
+    if (b.block_type === 'quiz') {
+      const questions = (b.content.questions || []).map((q, qi) => `
+        <div class="mt-3">
+          <strong><span data-lang-only="ar">${qi + 1}. ${escapeHtml(q.question_ar)}</span><span data-lang-only="en">${qi + 1}. ${escapeHtml(q.question_en)}</span></strong>
+          <div class="mt-1">
+            ${q.choices.map((c, ci) => `
+              <div class="caption ${ci === q.correct_index ? 'text-primary' : 'text-muted'}">
+                ${ci === q.correct_index ? '✓ ' : '· '}<span data-lang-only="ar">${escapeHtml(c.text_ar)}</span><span data-lang-only="en">${escapeHtml(c.text_en)}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+      return `${title}${questions}`;
+    }
+    if (b.block_type === 'flashcards') {
+      const cards = (b.content.cards || []).map((c, ci) => `
+        <div class="card mt-2">
+          <div class="caption text-muted"><span data-lang-only="ar">بطاقة ${ci + 1}</span><span data-lang-only="en">Card ${ci + 1}</span></div>
+          <div class="mt-1"><strong><span data-lang-only="ar">${escapeHtml(c.front_ar)}</span><span data-lang-only="en">${escapeHtml(c.front_en)}</span></strong></div>
+          <div class="mt-1 text-muted">→ <span data-lang-only="ar">${escapeHtml(c.back_ar)}</span><span data-lang-only="en">${escapeHtml(c.back_en)}</span></div>
+        </div>
+      `).join('');
+      return `${title}${cards}`;
+    }
+    return title;
+  }
+
+  document.getElementById('preview-skill-btn').addEventListener('click', () => {
+    const content = document.getElementById('preview-content');
+    const header = `
+      <h2>${skillNameHTML(currentSkill)}</h2>
+      <p class="caption text-muted mt-1"><span data-lang-only="ar">${escapeHtml(currentSkill.description_ar || '')}</span><span data-lang-only="en">${escapeHtml(currentSkill.description_en || '')}</span></p>
+      <hr class="mt-3" style="border-color:var(--border);">
+    `;
+    const blocksHTML = currentSkill.blocks.length
+      ? currentSkill.blocks.map((b) => `<div class="mt-4">${renderBlockPreviewHTML(b)}</div>`).join('')
+      : '<p class="text-muted mt-3"><span data-lang-only="ar">لا توجد عناصر محتوى بعد.</span><span data-lang-only="en">No content blocks yet.</span></p>';
+    content.innerHTML = header + blocksHTML;
+    applyLanguage(getLang());
+    document.getElementById('preview-modal-backdrop').classList.add('open');
+  });
+  document.getElementById('preview-close').addEventListener('click', () => {
+    document.getElementById('preview-modal-backdrop').classList.remove('open');
+  });
+  // ---------- INIT ----------
+
+  (async () => {
+    const me = await requireAuth('admin');
+    if (!me) return;
+    if (!requirePermission(me, 'content.view')) return;
+    currentMe = me;
+    gateNav(me);
+    document.getElementById('admin-avatar').textContent = (me.email || '?').trim().charAt(0).toUpperCase();
+    try {
+      await loadSkills();
+    } catch (err) {
+      document.querySelector('.dashboard-content').insertAdjacentHTML(
+        'afterbegin',
+        `<div class="card" style="border-color:#c0392b;"><p style="color:#c0392b;">${err.message}</p></div>`
+      );
+    }
+  })();
+</script>
+</body>
+</html>

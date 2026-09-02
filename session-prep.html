@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | تجهيز الجلسة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* Prep is a reading-and-checking task, not a dashboard. One column,
+     generous measure, everything checkable. */
+  .prep-wrap{max-width:60rem;margin-inline:auto}
+  .prep-check{
+    display:flex;align-items:flex-start;gap:var(--space-3);
+    padding:var(--space-3) var(--space-4);border:1px solid var(--border);
+    border-radius:var(--radius-md);background:var(--surface);cursor:pointer;
+    transition:var(--transition-fast);width:100%;text-align:start;font-family:inherit;
+  }
+  .prep-check:hover{border-color:var(--color-primary-light);background:var(--color-primary-50)}
+  .prep-check .box{
+    flex:0 0 auto;width:22px;height:22px;border:2px solid var(--color-neutral-400);
+    border-radius:6px;display:grid;place-items:center;font-size:.8rem;color:#fff;
+  }
+  .prep-check.is-done .box{background:var(--color-success);border-color:var(--color-success)}
+  .prep-check.is-done .txt{color:var(--text-muted);text-decoration:line-through}
+  .prep-check .txt{font-weight:600;font-size:.95rem}
+  .prep-check .sub{display:block;font-weight:400;font-size:.82rem;color:var(--text-muted);margin-top:2px;text-decoration:none}
+
+  .timeline{display:grid;gap:2px}
+  .tl-row{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-3);border-radius:var(--radius-sm)}
+  .tl-row:nth-child(odd){background:var(--color-neutral-50)}
+  .tl-row .t{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted);min-width:3.5rem}
+  .tl-row .bar{height:8px;border-radius:var(--radius-full);background:var(--color-primary);opacity:.85}
+  .tl-row .nm{font-size:.9rem;font-weight:600;min-width:7rem}
+  .tl-row .ttl{font-size:.85rem;color:var(--text-muted);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .behav{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-3) 0;border-bottom:1px solid var(--border)}
+  .behav:last-child{border-bottom:0}
+  .behav .n{
+    width:26px;height:26px;border-radius:50%;background:var(--color-primary-50);
+    color:var(--color-primary-dark);display:grid;place-items:center;
+    font-family:var(--font-mono);font-size:.78rem;font-weight:700;flex:0 0 auto;
+  }
+  .sticky-cta{position:sticky;bottom:0;background:var(--surface);border-top:1px solid var(--border);padding:var(--space-4);margin-top:var(--space-8);border-radius:var(--radius-lg) var(--radius-lg) 0 0;box-shadow:var(--shadow-md)}
+  .pre{white-space:pre-wrap}
+  .stagebox{display:flex;gap:var(--space-2);align-items:baseline;font-size:.9rem;padding:var(--space-2) 0;border-bottom:1px solid var(--border)}
+  .stagebox:last-child{border-bottom:0}
+  .stagebox .k{font-weight:700;color:var(--color-primary-dark);min-width:6.5rem}
+  .stagebox .v{color:var(--text-muted)}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="index.html" class="brand">
+      <span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar"> مهارات الحياة</span><span data-lang-only="en">Life Skills </span></span>
+    </a>
+    <div class="nav-links">
+      <a href="teacher-dashboard.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="#" class="active"><span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare Session</span></a>
+      <a href="classroom-mode.html" id="navCockpit"><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom Mode</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+      <a href="classroom-mode.html" class="btn btn-primary btn-sm" id="navStart">
+        <span data-lang-only="ar">ابدأ العرض</span><span data-lang-only="en">Start</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<div class="container prep-wrap" style="padding-block:var(--space-8);" data-main>
+
+  <!-- header -->
+  <div class="flex items-start gap-4 wrap">
+    <span class="icon-chip circle primary" style="font-size:1.4rem;">📋</span>
+    <div style="flex:1;min-width:16rem;">
+      <span class="hero-eyebrow" id="eyebrow">—</span>
+      <h1 class="mt-2" id="title">—</h1>
+      <div class="flex items-center gap-2 mt-3 wrap" id="badges"></div>
+    </div>
+    <div class="card" style="min-width:13rem;">
+      <div class="flex items-center justify-between">
+        <span class="caption text-muted"><span data-lang-only="ar">جاهزيتك</span><span data-lang-only="en">Your readiness</span></span>
+        <strong class="num" id="prepPct">0%</strong>
+      </div>
+      <div class="progress-bar mt-2"><div class="progress-bar__fill" id="prepFill" style="width:0"></div></div>
+      <p class="caption text-muted mt-2" id="prepLeft">—</p>
+    </div>
+  </div>
+
+  <!-- objective + observable behaviours -->
+  <div class="grid grid-2 mt-8">
+    <div class="card">
+      <h3><span data-lang-only="ar">هدف التعلّم</span><span data-lang-only="en">Learning objective</span></h3>
+      <p class="mt-2 pre" id="objective">—</p>
+      <div class="mt-4 card-flat" style="background:var(--color-warning-50);border-radius:var(--radius-md);padding:var(--space-3);" id="beforeBox">
+        <strong class="caption"><span data-lang-only="ar">⚠️ قبل الجلسة</span><span data-lang-only="en">⚠️ Before the session</span></strong>
+        <p class="caption mt-1 pre" id="before">—</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span data-lang-only="ar">المؤشرات التي سترصدها</span><span data-lang-only="en">What you will observe</span></h3>
+      <p class="caption text-muted mt-1">
+        <span data-lang-only="ar">ارصد مؤشراً أو مؤشرين فقط لكل طالب — لا الكل.</span>
+        <span data-lang-only="en">Record one or two per student — not all of them.</span>
+      </p>
+      <div class="mt-3" id="indicators"></div>
+    </div>
+  </div>
+
+  <!-- timeline -->
+  <div class="section-head mt-8">
+    <h2><span data-lang-only="ar">مسار الجلسة</span><span data-lang-only="en">Session timeline</span></h2>
+    <span class="caption text-muted" id="totalMin">—</span>
+  </div>
+  <div class="card"><div class="timeline" id="timeline"></div></div>
+
+  <!-- preparation checklist -->
+  <div class="section-head mt-8">
+    <h2><span data-lang-only="ar">قائمة التجهيز</span><span data-lang-only="en">Preparation checklist</span></h2>
+    <span class="caption text-muted"><span data-lang-only="ar">اضغط لتعليم كل بند</span><span data-lang-only="en">Tap to tick each item</span></span>
+  </div>
+  <div class="flex-col gap-2" id="checklist"></div>
+
+  <!-- room + risks -->
+  <div class="grid grid-2 mt-6">
+    <div class="card">
+      <h3><span data-lang-only="ar">الدعم والإثراء داخل القاعة</span><span data-lang-only="en">Adaptation in the room</span></h3>
+      <div class="mt-2" id="adaptation"></div>
+    </div>
+    <div class="card" style="border-color:var(--color-warning-light);">
+      <h3><span data-lang-only="ar">تنبيه حماية الطفل</span><span data-lang-only="en">Safeguarding</span></h3>
+      <div class="mt-2" id="safety"></div>
+    </div>
+  </div>
+
+  <!-- offline + evidence -->
+  <div class="grid grid-2 mt-6">
+    <div class="card">
+      <h3><span data-lang-only="ar">إن تعطّلت التقنية</span><span data-lang-only="en">If the technology fails</span></h3>
+      <p class="caption text-muted mt-1"><span data-lang-only="ar">لكل بطاقة بديل ورقي — وحزمة الجلسة المطبوعة هي خطتك الكاملة.</span><span data-lang-only="en">Every card has a paper fallback — and the printed session pack is your complete plan.</span></p>
+      <div class="mt-3" id="offline"></div>
+      <button class="btn btn-secondary btn-sm mt-4" id="printPack">
+        🖨️ <span data-lang-only="ar">اطبع حزمة الجلسة</span><span data-lang-only="en">Print session pack</span>
+      </button>
+    </div>
+    <div class="card">
+      <h3><span data-lang-only="ar">الشواهد المطلوبة</span><span data-lang-only="en">Evidence to collect</span></h3>
+      <div class="flex-col gap-3 mt-3" id="evidence"></div>
+    </div>
+  </div>
+
+  <!-- confidence check -->
+  <div class="card mt-6">
+    <h3><span data-lang-only="ar">هل أنت مطمئن لتنفيذ هذه الجلسة؟</span><span data-lang-only="en">How confident do you feel delivering this?</span></h3>
+    <p class="caption text-muted mt-1">
+      <span data-lang-only="ar">إجابتك تصل إلى مشرف البرنامج، ولا تظهر للمدرسة.</span>
+      <span data-lang-only="en">This goes to your programme supervisor, not to the school.</span>
+    </p>
+    <div class="flex gap-2 mt-3 wrap" id="confidence"></div>
+    <p class="caption mt-3 hidden" id="confMsg"></p>
+  </div>
+
+  <div class="sticky-cta flex items-center gap-3 wrap">
+    <div style="flex:1;min-width:12rem;">
+      <strong id="ctaState">—</strong>
+      <div class="caption text-muted" id="ctaSub">—</div>
+    </div>
+    <a href="teacher-dashboard.html" class="btn btn-tertiary"><span data-lang-only="ar">لاحقاً</span><span data-lang-only="en">Later</span></a>
+    <a href="classroom-mode.html" class="btn btn-primary btn-lg" id="ctaStart">
+      <span data-lang-only="ar">ابدأ وضع العرض</span><span data-lang-only="en">Start Classroom Mode</span>
+    </a>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script src="js/cm-cards.js"></script>
+<script src="js/session-fixtures.js"></script>
+<script>
+window.PAGE_TITLES={ar:'نادي مهارات الحياة | تجهيز الجلسة',en:'Life Skills Club | Prepare Session'};
+
+/* Everything on this page is derived from the session's cards — the same
+   payload Classroom Mode and the print pack use (GET /teacher/sessions/{id},
+   or the Session 4 fixture with no id / in fixture mode). Nothing here is
+   authored twice. */
+const L=(a,e)=>getLang()==='ar'?a:e;
+const $=id=>document.getElementById(id);
+const esc=CM.esc;
+const params=new URLSearchParams(location.search);
+const SESSION_ID=params.get('session')||'c5100000-0000-4000-8000-000000000004';
+let SESSION=null, CHECKS=[];
+const state=JSON.parse(localStorage.getItem('lsc_prep_'+SESSION_ID)||'{}');
+const save=()=>localStorage.setItem('lsc_prep_'+SESSION_ID,JSON.stringify(state));
+const CONF=[['غير مطمئن','Not confident'],['أحتاج مراجعة','Need a review'],['مطمئن','Confident'],['أستطيع تدريب غيري','Could coach others']];
+const P=(c,k)=>L(c[k+'_ar'],c[k+'_en'])||'';
+const stageName=s=>{const st=CM.STAGES[s]||['','']; return L(st[0],st[1])};
+
+async function load(){
+  const fixtures=localStorage.getItem('dev_fixtures')==='1';
+  if(params.get('session')&&!fixtures){
+    try{ SESSION=CM.fromSession(await apiFetch(`/teacher/sessions/${SESSION_ID}`)); }
+    catch(e){ console.warn('Session load failed — using the fixture.',e); }
+  }
+  if(!SESSION) SESSION=JSON.parse(JSON.stringify((window.SESSION_FIXTURES&&SESSION_FIXTURES[SESSION_ID])||SESSION4_FIXTURE));
+  buildChecks();
+  renderAll();
+}
+
+/* The checklist is generated: read the briefing, every distinct material,
+   the pack, the projector, then the room. Minutes are estimates. */
+function buildChecks(){
+  const briefing=SESSION.cards.find(c=>c.type==='teacher_briefing');
+  const materials=[...new Set(SESSION.cards.map(c=>getLang()==='ar'?c.m_ar:c.m_en).filter(Boolean))];
+  CHECKS=[];
+  if(briefing) CHECKS.push([L('اقرأ إحاطة الميسّر','Read the facilitator briefing'),'3']);
+  materials.forEach(m=>CHECKS.push([L('جهّز: ','Prepare: ')+m,'2']));
+  CHECKS.push([L('اطبع حزمة الجلسة — أوراق التأمل وبطاقة الرصد وأوراق الأنشطة','Print the session pack — reflection slips, observation card, activity sheets'),'2']);
+  CHECKS.push([L('شاشة العرض: اضبط الجهاز على «تمديد الشاشة» لا «النسخ»، ثم افتح نافذة العرض من وضع العرض الصفّي واسحبها إلى شاشة العرض','Projector: set the laptop display to Extend (not Mirror), then open the projector window from Classroom Mode and drag it to the projector screen'),'1']);
+  CHECKS.push([L('رتّب المقاعد بحيث يمكن تحويلها إلى ثنائيات ومجموعات','Arrange seating so it can become pairs and groups'),'2']);
+}
+
+function renderHeader(){
+  $('eyebrow').textContent=L(SESSION.skill_title_ar,SESSION.skill_title_en)||L('مختبر مهارات الحياة','Life Skills Lab');
+  $('title').textContent=L(SESSION.title_ar,SESSION.title_en);
+  const total=SESSION.cards.reduce((a,c)=>a+(c.dur||0),0);
+  $('badges').innerHTML=`<span class="badge badge-neutral">${Math.round(total/60)} ${L('دقيقة','min')}</span><span class="badge badge-neutral">${SESSION.cards.length} ${L('بطاقات','cards')}</span>`+(SESSION.next_ar?`<span class="badge badge-primary">${L('التالية','Next')}: ${esc(L(SESSION.next_ar,SESSION.next_en))}</span>`:'');
+  $('totalMin').textContent=Math.round(total/60)+' '+L('دقيقة','minutes');
+  const href=`classroom-mode.html?session=${encodeURIComponent(SESSION.id||SESSION_ID)}`;
+  ['navCockpit','navStart','ctaStart'].forEach(id=>$(id).href=href);
+  $('ctaSub').textContent=L(SESSION.title_ar,SESSION.title_en);
+}
+
+function renderObjective(){
+  const b=SESSION.cards.find(c=>c.type==='teacher_briefing')||SESSION.cards[0];
+  $('objective').textContent=P(b,'lead')||P(b,'statement')||'—';
+  const before=P(b,'i');
+  $('beforeBox').hidden=!before; $('before').textContent=before;
+  const ev=SESSION.cards.find(c=>c.type==='evidence'&&c.checks_ar)||b;
+  const checks=(getLang()==='ar'?ev.checks_ar:ev.checks_en)||[];
+  $('indicators').innerHTML=checks.map((k,n)=>`<div class="behav"><span class="n">${n+1}</span><span>${esc(k)}</span></div>`).join('')||`<p class="caption text-muted">${L('لا مؤشرات محددة لهذه الجلسة.','No indicators set for this session.')}</p>`;
+}
+
+function renderTimeline(){
+  const timed=SESSION.cards.filter(c=>c.dur);
+  const total=timed.reduce((a,c)=>a+c.dur,0);
+  $('timeline').innerHTML=timed.map(c=>
+    `<div class="tl-row">
+       <span class="t">${Math.round(c.dur/60)} ${L('د','min')}</span>
+       <span class="nm">${esc(stageName(c.stage))}</span>
+       <span class="ttl">${esc(P(c,'t'))}</span>
+       <span class="bar" style="width:${(c.dur/total*100).toFixed(1)}%;max-width:30%"></span>
+     </div>`).join('');
+}
+
+function renderChecks(){
+  $('checklist').innerHTML=CHECKS.map((c,n)=>
+    `<button class="prep-check ${state['c'+n]?'is-done':''}" data-n="${n}">
+       <span class="box">${state['c'+n]?'✓':''}</span>
+       <span class="txt">${esc(c[0])}<span class="sub">${c[1]} ${L('دقيقة','min')}</span></span>
+     </button>`).join('');
+  $('checklist').querySelectorAll('.prep-check').forEach(b=>b.onclick=()=>{
+    const k='c'+b.dataset.n; state[k]=!state[k]; save(); renderChecks(); renderProgress();
+  });
+}
+
+function renderProgress(){
+  const done=CHECKS.filter((_,n)=>state['c'+n]).length;
+  const pct=CHECKS.length?Math.round(done/CHECKS.length*100):0;
+  if(state.done!==done||state.total!==CHECKS.length){ state.done=done; state.total=CHECKS.length; save(); }
+  $('prepPct').textContent=pct+'%';
+  $('prepFill').style.width=pct+'%';
+  const left=CHECKS.filter((_,n)=>!state['c'+n]).reduce((a,c)=>a+(+c[1]||0),0);
+  $('prepLeft').textContent=left?L(`≈ ${left} دقائق متبقية`,`≈ ${left} min remaining`):L('جاهز للتنفيذ','Ready to deliver');
+  $('ctaState').textContent=pct===100?L('كل شيء جاهز','Everything ready'):L(`${done} من ${CHECKS.length} بنود جاهزة`,`${done} of ${CHECKS.length} items ready`);
+}
+
+function renderLists(){
+  const rows=(pick,empty)=>{
+    const items=SESSION.cards.map(c=>[c,pick(c)]).filter(([,v])=>v);
+    return items.length
+      ? items.map(([c,v])=>`<div class="stagebox"><span class="k">${esc(stageName(c.stage))}</span><span class="v">${esc(v)}</span></div>`).join('')
+      : `<p class="caption text-muted">${empty}</p>`;
+  };
+  $('adaptation').innerHTML=rows(c=>P(c,'a'),L('لا تعديلات خاصة في هذه الجلسة.','No specific adaptations in this session.'));
+  $('safety').innerHTML=rows(c=>P(c,'s'),L('لا تنبيهات خاصة — تنطبق سياسة المدرسة العامة.','No specific notes — the school\'s general policy applies.'));
+  $('offline').innerHTML=rows(c=>P(c,'off'),L('—','—'));
+  const ev=SESSION.cards.filter(c=>c.ev);
+  const ICON={observation:['✍️','primary'],response:['💭','success']};
+  $('evidence').innerHTML=ev.length?ev.map(c=>{const [ic,cls]=ICON[c.ev]||['📎','blue'];
+    return `<div class="flex items-center gap-3"><span class="icon-chip sm ${cls}">${ic}</span><div><strong class="caption">${esc(P(c,'t'))}</strong><div class="caption text-muted">${esc(stageName(c.stage))} · ${c.ev==='observation'?L('رصد مستوى لسلوك أو سلوكين لكل طالب','A level for one or two behaviours per student'):L('إجابة مكتوبة من كل طالب','A written answer from every student')}</div></div></div>`;
+  }).join(''):`<p class="caption text-muted">${L('لا شواهد مطلوبة في هذه الجلسة.','No evidence required in this session.')}</p>`;
+}
+
+function renderConfidence(){
+  $('confidence').innerHTML=CONF.map((c,n)=>
+    `<button class="btn ${state.conf===n?'btn-primary':'btn-secondary'} btn-sm" data-n="${n}">${L(c[0],c[1])}</button>`).join('');
+  $('confidence').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    state.conf=+b.dataset.n; save(); renderConfidence();
+    const m=$('confMsg'); m.classList.remove('hidden');
+    m.textContent=state.conf<=1
+      ? L('سيتواصل معك مشرف البرنامج قبل الجلسة.','Your programme supervisor will reach out before the session.')
+      : L('شكراً — سُجّلت إجابتك.','Thank you — recorded.');
+  });
+}
+
+$('printPack').onclick=()=>window.open(`print-pack.html?session=${encodeURIComponent(SESSION_ID)}`,'_blank');
+
+let rendering=false;
+function renderAll(){
+  if(!SESSION||rendering) return;
+  rendering=true;
+  try{ buildChecks(); renderHeader(); renderObjective(); renderTimeline(); renderChecks(); renderProgress(); renderLists(); renderConfidence(); applyLanguage(getLang()); }
+  finally{ rendering=false; }
+}
+document.addEventListener('langchange',renderAll);
+window.addEventListener('langchange',renderAll);
+document.addEventListener('DOMContentLoaded',load);
+</script>
+</body>
+</html>
