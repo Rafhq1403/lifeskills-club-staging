@@ -13,6 +13,13 @@
     return localStorage.getItem(STORAGE_KEY) || 'ar';
   }
 
+  // Re-entrancy guard. Several pages listen for `langchange` and re-render,
+  // and a render often calls applyLanguage() itself — which would dispatch
+  // `langchange` again and recurse until the stack overflows. When we're
+  // already inside a dispatch, still apply the DOM attributes (cheap, correct)
+  // but don't fire a second event.
+  let dispatching = false;
+
   function applyLanguage(lang) {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
@@ -43,7 +50,13 @@
       btn.classList.toggle('active', btn.dataset.lang === lang);
     });
 
-    document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+    if (dispatching) return;   // called from within a langchange handler — don't recurse
+    dispatching = true;
+    try {
+      document.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+    } finally {
+      dispatching = false;
+    }
   }
 
   document.addEventListener('DOMContentLoaded', () => {
