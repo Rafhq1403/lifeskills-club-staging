@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | جدول الجلسات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  .sc-wrap{max-width:56rem;margin-inline:auto}
+  .sc-row{display:flex;align-items:center;gap:var(--space-4);padding:var(--space-4) var(--space-5);
+    border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--surface);margin-bottom:var(--space-2)}
+  .sc-row.is-next{border-color:var(--color-primary);box-shadow:0 0 0 3px var(--color-primary-50)}
+  .sc-row.is-done{opacity:.72}
+  .sc-when{min-width:8.5rem}
+  .sc-when .d{font-weight:700}
+  .sc-when .t{font-family:var(--font-mono);font-size:.8rem;color:var(--text-muted)}
+  .sc-idx{width:2.2rem;height:2.2rem;border-radius:50%;background:var(--color-primary-50);color:var(--color-primary-dark);
+    display:grid;place-items:center;font-family:var(--font-mono);font-weight:700;flex:none}
+  .sc-row.is-done .sc-idx{background:var(--color-success-50);color:var(--color-success-dark)}
+  .sc-title{flex:1;min-width:8rem}
+  .sc-title strong{display:block}
+  .sc-actions{display:flex;gap:var(--space-2);flex-wrap:wrap}
+  .weekday-pick{display:flex;gap:var(--space-2);flex-wrap:wrap}
+  .weekday-pick button{border:1px solid var(--border);background:var(--surface);border-radius:var(--radius-md);
+    padding:.5rem .8rem;font-weight:600;cursor:pointer;font-family:inherit;transition:var(--transition-fast)}
+  .weekday-pick button.on{background:var(--color-primary);color:#fff;border-color:var(--color-primary)}
+  .sc-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:var(--space-4);align-items:end}
+  .sc-banner{background:var(--color-warning-50);border:1px solid var(--color-warning-light);border-radius:var(--radius-md);
+    padding:var(--space-3) var(--space-4);font-size:.85rem;color:var(--color-warning-dark);margin-bottom:var(--space-4)}
+  .sc-metrics{display:flex;gap:var(--space-3);flex-wrap:wrap;margin-top:var(--space-2)}
+  .sc-metric{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-full);padding:.3rem .9rem;font-size:.85rem}
+  .sc-metric b{font-family:var(--font-mono)}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="teacher-dashboard.html" class="brand"><span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">مهارات الحياة</span><span data-lang-only="en">Life Skills</span></span></a>
+    <div class="nav-links">
+      <a href="teacher-dashboard.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="#" class="active"><span data-lang-only="ar">الجدول</span><span data-lang-only="en">Schedule</span></a>
+      <a href="student-growth.html"><span data-lang-only="ar">نمو الطلاب</span><span data-lang-only="en">Student growth</span></a>
+    </div>
+    <div class="nav-actions">
+      <div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div>
+    </div>
+  </div>
+</nav>
+
+<div class="container sc-wrap" style="padding-block:var(--space-8);" data-main>
+  <div class="sc-banner" id="scDemo" hidden>
+    <span data-lang-only="ar">بيانات تجريبية — الجدول الحقيقي يُنشأ ويُحفظ عند تسجيل دخول الميسّر.</span>
+    <span data-lang-only="en">Demo data — a real schedule is created and saved once a facilitator signs in.</span>
+  </div>
+
+  <div class="flex items-start justify-between wrap gap-4">
+    <div>
+      <span class="hero-eyebrow">🗓️ <span data-lang-only="ar">جدول الجلسات</span><span data-lang-only="en">Session schedule</span></span>
+      <h1 class="mt-2" id="scClassName">—</h1>
+      <div class="sc-metrics" id="scMetrics"></div>
+    </div>
+    <a href="#setup" class="btn btn-secondary btn-sm" id="scSetupToggle">
+      <span data-lang-only="ar">إعداد الجدول</span><span data-lang-only="en">Set up schedule</span>
+    </a>
+  </div>
+
+  <!-- Setup form -->
+  <div class="card mt-6" id="setup" hidden>
+    <h3><span data-lang-only="ar">وزّع جلسات الموسم على التقويم</span><span data-lang-only="en">Lay the season's sessions onto the calendar</span></h3>
+    <p class="caption text-muted mt-1">
+      <span data-lang-only="ar">اختر يوم البداية والأيام الأسبوعية والوقت — يُوزَّع الموسم كله تلقائياً، جلستان في الأسبوع.</span>
+      <span data-lang-only="en">Choose the start date, the weekdays, and the time — the whole season is laid out automatically, two sessions a week.</span>
+    </p>
+    <div class="sc-form-grid mt-4">
+      <label>
+        <span class="caption text-muted"><span data-lang-only="ar">يبدأ في</span><span data-lang-only="en">Start date</span></span>
+        <input type="date" id="scStart" class="input mt-1">
+      </label>
+      <label>
+        <span class="caption text-muted"><span data-lang-only="ar">الوقت</span><span data-lang-only="en">Time</span></span>
+        <input type="time" id="scTime" class="input mt-1" value="16:00">
+      </label>
+      <div>
+        <span class="caption text-muted"><span data-lang-only="ar">أيام الأسبوع</span><span data-lang-only="en">Weekdays</span></span>
+        <div class="weekday-pick mt-1" id="scDays"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary mt-5" id="scGenerate">
+      <span data-lang-only="ar">أنشئ الجدول</span><span data-lang-only="en">Create schedule</span>
+    </button>
+    <p class="caption mt-2 hidden" id="scGenMsg"></p>
+  </div>
+
+  <!-- Calendar list -->
+  <div class="section-head mt-8">
+    <h2><span data-lang-only="ar">الموسم</span><span data-lang-only="en">The season</span></h2>
+    <span class="caption text-muted" id="scRange"></span>
+  </div>
+  <div id="scList">
+    <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
+  </div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script>
+window.PAGE_TITLES={ar:'نادي مهارات الحياة | جدول الجلسات',en:'Life Skills Club | Schedule'};
+const L=(a,e)=>getLang()==='ar'?a:e;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const API=`http://${location.hostname}:8090`;
+const SEASON1='c5000000-0000-4000-8000-000000000001';
+const DAYS=[['الأحد','Sun'],['الاثنين','Mon'],['الثلاثاء','Tue'],['الأربعاء','Wed'],['الخميس','Thu'],['الجمعة','Fri'],['السبت','Sat']];
+const STATUS={planned:['مجدوَلة','Planned','badge-neutral'],in_progress:['جارية','In progress','badge-primary'],
+  delivered:['نُفِّذت','Delivered','badge-success'],cancelled:['ملغاة','Cancelled','badge-error']};
+
+let CLASS=null,demo=false,picked=new Set([0,2]);  // Sun & Tue default
+
+const fmtDate=iso=>{const d=new Date(iso);
+  return d.toLocaleDateString(getLang()==='ar'?'ar-SA':'en-GB',{weekday:'short',day:'numeric',month:'short'});};
+const fmtTime=iso=>{const d=new Date(iso);
+  return d.toLocaleTimeString(getLang()==='ar'?'ar-SA':'en-GB',{hour:'2-digit',minute:'2-digit'});};
+
+/* Demo schedule — a believable Season 1 calendar, two delivered, so staging
+   shows the page working with no backend. */
+function demoSchedule(){
+  const titles=[['اعرف قوّتك','Know Your Strength'],['توقّف ثم اختر','Pause, Then Choose'],
+    ['ابدأ صغيراً','Start Small'],['استمع كالمحقّق','Listen Like a Detective'],
+    ['أوصِل فكرتك','Make Your Point'],['كلمة تبني','Words That Build'],
+    ['لكل دور وزنه','Every Role Counts'],['قرّروا معاً','Decide Together']];
+  const base=new Date(); base.setDate(base.getDate()-10);
+  const days=[];let d=new Date(base);
+  while(days.length<8){if([0,2].includes(d.getDay()))days.push(new Date(d));d.setDate(d.getDate()+1);}
+  return titles.map((t,i)=>({id:'demo-'+i,session_id:'s'+i,order_index:i+1,title_ar:t[0],title_en:t[1],
+    scheduled_at:new Date(days[i].setHours(16,0,0,0)).toISOString(),
+    status:i<2?'delivered':'planned'}));
+}
+
+async function boot(){
+  renderDays();
+  const today=new Date();$('scStart').value=today.toISOString().slice(0,10);
+  try{
+    const cls=await (await fetch(`${API}/teacher/classes`,{credentials:'include'})).json();
+    if(Array.isArray(cls)&&cls.length){CLASS=cls[0];}
+  }catch(e){/* not signed in */}
+  if(!CLASS||localStorage.getItem('dev_fixtures')==='1'){demo=true;CLASS={id:'demo',name_ar:'قادة الغد',name_en:"Tomorrow's Leaders"};}
+  $('scDemo').hidden=!demo;
+  $('scClassName').textContent=L(CLASS.name_ar,CLASS.name_en);
+  $('scSetupToggle').onclick=e=>{e.preventDefault();$('setup').hidden=!$('setup').hidden;};
+  $('scGenerate').onclick=generate;
+  await loadSchedule();
+  applyLanguage(getLang());
+}
+
+function renderDays(){
+  $('scDays').innerHTML=DAYS.map((d,n)=>
+    `<button type="button" data-d="${n}" class="${picked.has(n)?'on':''}">${L(d[0],d[1])}</button>`).join('');
+  $('scDays').querySelectorAll('button').forEach(b=>b.onclick=()=>{
+    const n=+b.dataset.d;picked.has(n)?picked.delete(n):picked.add(n);renderDays();});
+}
+
+async function loadSchedule(){
+  let rows=[];
+  if(demo){rows=demoSchedule();}
+  else{
+    try{rows=await (await fetch(`${API}/teacher/classes/${CLASS.id}/schedule`,{credentials:'include'})).json();}
+    catch(e){rows=[];}
+    if(!Array.isArray(rows))rows=[];
+  }
+  render(rows);
+}
+
+let lastRows=[];
+function render(rows){
+  lastRows=rows;
+  const done=rows.filter(r=>r.status==='delivered').length;
+  $('scMetrics').innerHTML=rows.length
+    ? `<span class="sc-metric"><b>${rows.length}</b> ${L('جلسة','sessions')}</span>
+       <span class="sc-metric"><b>${done}</b> ${L('نُفِّذت','delivered')}</span>
+       <span class="sc-metric"><b>${rows.length-done}</b> ${L('قادمة','to come')}</span>`
+    : '';
+  if(rows.length){
+    $('scRange').textContent=L(`${fmtDate(rows[0].scheduled_at)} — ${fmtDate(rows[rows.length-1].scheduled_at)}`,
+      `${fmtDate(rows[0].scheduled_at)} — ${fmtDate(rows[rows.length-1].scheduled_at)}`);
+  }
+  const nextId=(rows.find(r=>r.status==='planned'||r.status==='in_progress')||{}).id;
+  $('scList').innerHTML=rows.length?rows.map(r=>{
+    const st=STATUS[r.status]||STATUS.planned;
+    const isNext=r.id===nextId;
+    return `<div class="sc-row ${isNext?'is-next':''} ${r.status==='delivered'?'is-done':''}">
+      <span class="sc-idx">${r.order_index||''}</span>
+      <div class="sc-when"><div class="d">${esc(fmtDate(r.scheduled_at))}</div><div class="t">${esc(fmtTime(r.scheduled_at))}</div></div>
+      <div class="sc-title"><strong>${esc(L(r.title_ar,r.title_en))}</strong>
+        <span class="badge ${st[2]}">${L(st[0],st[1])}</span>
+        ${isNext?`<span class="badge badge-primary">${L('التالية','Next')}</span>`:''}</div>
+      <div class="sc-actions">
+        ${r.status!=='delivered'?`<a class="btn btn-secondary btn-sm" href="session-prep.html?session=${esc(r.session_id)}${r.id&&!demo?'&cohort='+esc(r.id):''}">${L('تجهيز','Prepare')}</a>
+          <a class="btn btn-primary btn-sm" href="classroom-mode.html?session=${esc(r.session_id)}${r.id&&!demo?'&cohort='+esc(r.id):''}">${L('ابدأ','Start')}</a>`
+        :`<button class="btn btn-tertiary btn-sm" disabled>✓ ${L('تمّت','Done')}</button>`}
+        ${r.status!=='delivered'&&!demo?`<button class="btn btn-tertiary btn-sm" data-done="${esc(r.id)}">${L('تعليم كمنفّذة','Mark delivered')}</button>`:''}
+      </div>
+    </div>`;
+  }).join('')
+    :`<div class="card text-center"><p class="text-muted">${L('لا جدول بعد. استخدم «إعداد الجدول» لتوزيع جلسات الموسم.','No schedule yet. Use “Set up schedule” to lay out the season.')}</p></div>`;
+  $('scList').querySelectorAll('[data-done]').forEach(b=>b.onclick=()=>markDelivered(b.dataset.done));
+}
+
+async function generate(){
+  if(demo){$('scGenMsg').classList.remove('hidden');$('scGenMsg').textContent=L('وضع تجريبي — لم يُحفَظ.','Demo mode — not saved.');return;}
+  if(!picked.size){$('scGenMsg').classList.remove('hidden');$('scGenMsg').textContent=L('اختر يوماً واحداً على الأقل.','Pick at least one weekday.');return;}
+  const btn=$('scGenerate');btn.disabled=true;
+  try{
+    const res=await fetch(`${API}/teacher/classes/${CLASS.id}/schedule`,{method:'POST',credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({skill_id:SEASON1,start_date:$('scStart').value,weekdays:[...picked],time:$('scTime').value})});
+    const j=await res.json();
+    $('scGenMsg').classList.remove('hidden');
+    $('scGenMsg').textContent=res.ok?L(`تمّ جدولة ${j.scheduled} جلسات.`,`Scheduled ${j.scheduled} sessions.`):L('تعذّر الإنشاء.','Could not create.');
+    if(res.ok){$('setup').hidden=true;await loadSchedule();applyLanguage(getLang());}
+  }catch(e){$('scGenMsg').classList.remove('hidden');$('scGenMsg').textContent=L('تعذّر الاتصال.','Could not connect.');}
+  btn.disabled=false;
+}
+
+async function markDelivered(id){
+  try{
+    await fetch(`${API}/teacher/cohort-sessions/${id}/status`,{method:'POST',credentials:'include',
+      headers:{'Content-Type':'application/json'},body:JSON.stringify({status:'delivered'})});
+    await loadSchedule();applyLanguage(getLang());
+  }catch(e){}
+}
+
+/* Re-render on language switch: dates and titles are language-dependent, and
+   render() never calls applyLanguage, so this cannot recurse. */
+document.addEventListener('langchange',()=>{renderDays();if(lastRows.length)render(lastRows);});
+document.addEventListener('DOMContentLoaded',boot);
+</script>
+</body>
+</html>

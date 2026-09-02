@@ -20,6 +20,7 @@
     <nav class="sidebar-nav">
       <div class="sidebar-section-label"><span data-lang-only="ar">التدريس</span><span data-lang-only="en">Teaching</span></div>
       <a href="teacher-dashboard.html" class="active"><span class="ic">🏠</span><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Dashboard</span></a>
+      <a href="schedule.html"><span class="ic">🗓️</span><span data-lang-only="ar">الجدول</span><span data-lang-only="en">Schedule</span></a>
       <a href="session-prep.html"><span class="ic">📋</span><span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare Session</span></a>
       <a href="classroom-mode.html"><span class="ic">🎧</span><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom Mode</span></a>
       <a href="#classes"><span class="ic">👥</span><span data-lang-only="ar">مجموعاتي</span><span data-lang-only="en">My Cohorts</span></a>
@@ -273,15 +274,29 @@
     title_ar: 'استمع كالمحقّق', title_en: 'Listen Like a Detective',
     skill_title_ar: 'مختبر مهارات الحياة — الموسم الأول', skill_title_en: 'Life Skills Lab — Season 1',
   };
-  let nextSession = null;
+  let nextSession = null, nextCohort = null;
 
   async function renderNextSession(cls) {
     const L = (a, e) => (getLang() === 'ar' ? a : e);
     if (!nextSession) {
+      // Prefer the real schedule (a session with a date); fall back to the
+      // lowest-numbered live session when nothing is scheduled yet.
       try {
-        const list = await apiFetch('/teacher/sessions');
-        nextSession = (list || []).slice().sort((a, b) => a.order_index - b.order_index)[0] || FALLBACK_SESSION;
-      } catch (e) { console.warn('Sessions unavailable — showing the Season 1 anchor.', e); nextSession = FALLBACK_SESSION; }
+        const sched = await apiFetch('/teacher/schedule');
+        if (sched && sched.next) {
+          const n = sched.next;
+          nextSession = { id: n.session_id, order_index: n.order_index, title_ar: n.title_ar, title_en: n.title_en,
+            skill_title_ar: 'مختبر مهارات الحياة — الموسم الأول', skill_title_en: 'Life Skills Lab — Season 1',
+            scheduled_at: n.scheduled_at, cohort_id: n.id };
+          nextCohort = n.id;
+        }
+      } catch (e) { /* no schedule endpoint / not scheduled */ }
+      if (!nextSession) {
+        try {
+          const list = await apiFetch('/teacher/sessions');
+          nextSession = (list || []).slice().sort((a, b) => a.order_index - b.order_index)[0] || FALLBACK_SESSION;
+        } catch (e) { console.warn('Sessions unavailable — showing the Season 1 anchor.', e); nextSession = FALLBACK_SESSION; }
+      }
     }
     const ns = nextSession;
     document.getElementById('ns-title').textContent =
@@ -289,8 +304,9 @@
     document.getElementById('ns-domain').textContent = L(ns.skill_title_ar, ns.skill_title_en) || '—';
     document.getElementById('ns-length').textContent = 90 + L(' دقيقة', ' min');
 
-    const prepHref = `session-prep.html?session=${encodeURIComponent(ns.id)}`;
-    const startHref = `classroom-mode.html?session=${encodeURIComponent(ns.id)}`;
+    const q = ns.cohort_id ? `&cohort=${encodeURIComponent(ns.cohort_id)}` : '';
+    const prepHref = `session-prep.html?session=${encodeURIComponent(ns.id)}${q}`;
+    const startHref = `classroom-mode.html?session=${encodeURIComponent(ns.id)}${q}`;
     document.querySelector('#next-session a[href^="session-prep"]').href = prepHref;
     document.querySelector('#next-session a[href^="classroom-mode"]').href = startHref;
 
@@ -305,11 +321,18 @@
       ? `<span class="caption text-muted">✓ ${L('قائمة التجهيز مكتملة', 'Preparation checklist complete')}</span>`
       : `<a class="caption" href="${prepHref}">${total ? L('أكمل قائمة التجهيز →', 'Finish the checklist →') : L('افتح قائمة التجهيز →', 'Open the preparation checklist →')}</a>`;
 
-    // No schedule model yet — say so instead of fabricating a date.
-    document.getElementById('ns-when').innerHTML = cls
-      ? L('لم يُجدول بعد — المجموعة: ', 'Not scheduled yet — cohort: ') +
-        `<strong>${getLang() === 'ar' ? cls.name_ar : cls.name_en}</strong>`
-      : L('لم يُجدول بعد', 'Not scheduled yet');
+    // A real date when the cohort is scheduled; otherwise a link to set one up.
+    if (ns.scheduled_at) {
+      const d = new Date(ns.scheduled_at);
+      const when = d.toLocaleDateString(getLang() === 'ar' ? 'ar-SA' : 'en-GB',
+        { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' +
+        d.toLocaleTimeString(getLang() === 'ar' ? 'ar-SA' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('ns-when').innerHTML = `🗓️ <strong>${when}</strong>`;
+    } else {
+      document.getElementById('ns-when').innerHTML =
+        (cls ? L('لم يُجدول بعد — ', 'Not scheduled yet — ') : L('لم يُجدول بعد — ', 'Not scheduled yet — ')) +
+        `<a class="caption" href="schedule.html">${L('أنشئ الجدول →', 'Set up the schedule →')}</a>`;
+    }
 
     if (cls) {
       document.getElementById('ns-cohort').textContent = getLang() === 'ar' ? cls.name_ar : cls.name_en;
