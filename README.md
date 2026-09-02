@@ -1,4 +1,4 @@
 # Life Skills Club — staging preview
 
 Static frontend of the private After-School-Project repository, published for
-review. Demo data only, no backend. Source commit: 45c1ced.
+review. Demo data only, no backend. Source commit: e3557f5.
