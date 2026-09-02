@@ -204,7 +204,10 @@ html[lang="en"] .cm-qs{max-width:58ch}
 .cm-mission .v{font-size:clamp(1.2rem,1.7vw,1.6rem);line-height:1.6;white-space:pre-wrap}
 .cm-next-up{display:flex;align-items:center;gap:var(--space-3);color:var(--text-muted);font-size:0.95rem}
 
-.cm-blank{
+/* :not([hidden]) so the display rule never outranks the `hidden` attribute —
+   a bare `.cm-blank{display:flex}` beats [hidden]{display:none} (same
+   specificity, later in the cascade) and pins the overlay on permanently. */
+.cm-blank:not([hidden]){
   position:absolute;inset:0;z-index:9;background:var(--color-neutral-900);
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--space-2);
   color:var(--color-neutral-400);
