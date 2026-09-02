@@ -162,13 +162,17 @@
     publish_at: null,
   };
 
+  // The real Season 1, matching the authored content (authoring/sessions/*.yaml).
+  const sid = (n) => `c5100000-0000-4000-8000-0000000000${String(n).padStart(2, '0')}`;
   const SESSIONS = [
-    { id: 'ses-1', skill_id: SEASON_1.id, title_ar: 'من أنا؟', title_en: 'Who am I?', order_index: 1, strand_id: STRANDS[0].id },
-    { id: 'ses-2', skill_id: SEASON_1.id, title_ar: 'نقاط قوتي', title_en: 'My strengths', order_index: 2, strand_id: STRANDS[0].id },
-    { id: 'ses-3', skill_id: SEASON_1.id, title_ar: 'كيف أعبّر عن رأيي', title_en: 'Saying what I think', order_index: 3, strand_id: STRANDS[1].id },
-    { id: 'c5100000-0000-4000-8000-000000000004', skill_id: SEASON_1.id, title_ar: 'استمع كالمحقّق', title_en: 'Listen Like a Detective', order_index: 4, strand_id: STRANDS[1].id },
-    { id: 'ses-5', skill_id: SEASON_1.id, title_ar: 'الخلاف دون خصام', title_en: 'Disagreeing well', order_index: 5, strand_id: STRANDS[6].id },
-    { id: 'ses-6', skill_id: SEASON_1.id, title_ar: 'قرار الفريق', title_en: 'The team decides', order_index: 6, strand_id: STRANDS[7].id },
+    { id: sid(1), skill_id: SEASON_1.id, title_ar: 'اعرف قوّتك', title_en: 'Know Your Strength', order_index: 1, strand_id: STRANDS[0].id },
+    { id: sid(2), skill_id: SEASON_1.id, title_ar: 'توقّف ثم اختر', title_en: 'Pause, Then Choose', order_index: 2, strand_id: STRANDS[5].id },
+    { id: sid(3), skill_id: SEASON_1.id, title_ar: 'ابدأ صغيراً', title_en: 'Start Small', order_index: 3, strand_id: STRANDS[8].id },
+    { id: sid(4), skill_id: SEASON_1.id, title_ar: 'استمع كالمحقّق', title_en: 'Listen Like a Detective', order_index: 4, strand_id: STRANDS[1].id },
+    { id: sid(5), skill_id: SEASON_1.id, title_ar: 'أوصِل فكرتك', title_en: 'Make Your Point', order_index: 5, strand_id: STRANDS[1].id },
+    { id: sid(6), skill_id: SEASON_1.id, title_ar: 'كلمة تبني', title_en: 'Words That Build', order_index: 6, strand_id: STRANDS[6].id },
+    { id: sid(7), skill_id: SEASON_1.id, title_ar: 'لكل دور وزنه', title_en: 'Every Role Counts', order_index: 7, strand_id: STRANDS[6].id },
+    { id: sid(8), skill_id: SEASON_1.id, title_ar: 'قرّروا معاً', title_en: 'Decide Together', order_index: 8, strand_id: STRANDS[7].id },
   ];
 
   const BADGES = [
@@ -546,11 +550,11 @@
 
     // Authoring
     'GET /admin/skills': () => db.skills.map((s) => ({
-      ...s, grade_bands: [GRADE_BANDS[2]], block_count: 0, session_count: SESSIONS.length, effective_status: s.status,
+      ...s, grade_bands: [GRADE_BANDS[1]], block_count: SESSIONS.length * 10, session_count: SESSIONS.length, effective_status: s.status,
     })),
     'GET /admin/skills/:id': (_b, p) => {
       const s = db.skills.find((x) => x.id === p.id) || db.skills[0];
-      return { ...s, grade_bands: [GRADE_BANDS[2]], effective_status: s.status, blocks: [] };
+      return { ...s, grade_bands: [GRADE_BANDS[1]], effective_status: s.status, blocks: [] };
     },
     'GET /admin/skills/:id/sessions': () => SESSIONS.map((s) => ({ ...s, block_count: 10 })),
     'GET /admin/skills/:skillId/sessions/:sessionId': (_b, p) => ({
