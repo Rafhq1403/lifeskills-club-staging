@@ -7,11 +7,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000001",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 1,
-  "title_ar": "اعرف قوّتك",
+  "title_ar": "ماهي نقاط قوتي",
   "title_en": "Know Your Strength",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "ما الذي يهمّني",
+  "next_ar": "ماهي اهتماماتي",
   "next_en": "What I Value",
   "cards": [
    {
@@ -20,7 +20,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — اعرف قوّتك",
+    "t_ar": "إحاطة الميسّر — ماهي نقاط قوتي",
     "t_en": "Facilitator briefing — Know Your Strength",
     "lead_ar": "الهدف: أن يحكي الطالب موقفاً محدداً نجح فيه، ويسمّي قوّته فيه بدليل، ثم يسمّي قوة زميله بدليل مثلها.",
     "checks_ar": [
@@ -335,11 +335,11 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "اسأل اثنين من أهلك أو أصدقائك:\nما القوة التي ترونها فيّ؟\n\nواكتب ما سمعت، وقارنه بما كتبتَه اليوم عن نفسك.",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها لترسلها المدرسة في قناتها المعتادة. الجلسة القادمة: توقّف ثم اختر.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها لترسلها المدرسة في قناتها المعتادة. الجلسة القادمة: ماهي اهتماماتي.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "بدأ أبناؤكم هذا الأسبوع أولى جلسات نادي مهارات الحياة، وتعلّموا أن القوة فعلٌ يتكرّر وله دليل، لا كلمة تُقال.\n\nسيسألكم ابنكم: ما القوة التي ترونها فيّ؟ أجيبوه بقوة واحدة، واذكروا موقفاً رأيتموها فيه.",
     "mission_en": "Ask two people — family or friends:\nwhat strength do you see in me?\n\nWrite down what you hear, and compare it with what you wrote about yourself today.",
-    "i_en": "Read the mission aloud and ask a student to restate it in their own words. Then review and approve the family message for the school to send through its usual channel. Next session: Pause, Then Choose.",
+    "i_en": "Read the mission aloud and ask a student to restate it in their own words. Then review and approve the family message for the school to send through its usual channel. Next session: What I Value.",
     "off_en": "Write the mission on the board and hand it out printed.",
     "fam_en": "This week your child began the Life Skills Club and learned that a strength is a repeated action with evidence, not a label.\n\nThey will ask you: what strength do you see in me? Answer with one strength, and tell them a moment you saw it."
    }
@@ -349,11 +349,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000009",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 2,
-  "title_ar": "ما الذي يهمّني",
+  "title_ar": "ماهي اهتماماتي",
   "title_en": "What I Value",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "مشاعري بالاسم",
+  "next_ar": "أكتشف مشاعري",
   "next_en": "Naming My Feelings",
   "cards": [
    {
@@ -362,7 +362,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — ما الذي يهمّني",
+    "t_ar": "إحاطة الميسّر — ماهي اهتماماتي",
     "t_en": "Facilitator briefing — What I Value",
     "lead_ar": "الهدف: أن يسمّي الطالب قيمة تهمّه، ويقرنها باختيار حقيقي فضّل فيه شيئاً على شيء، ثم يتعرّف على قيمة خلف قصّة زميله.",
     "checks_ar": [
@@ -677,7 +677,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "لاحظ هذا الأسبوع اختياراً واحداً اخترته،\nواسأل نفسك: أيّ قيمة ظهرت فيه؟\n\nواكتبه لتحكيه في الجلسة القادمة.",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: مشاعري بالاسم.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: أكتشف مشاعري.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن القيمة تظهر في الاختيار لا في الكلام: ما نفضّله حين لا نستطيع أن نأخذ كل شيء.\n\nاسألوهم في البيت: ما القيمة التي تظنّها الأهمّ عندك؟ واحكوا لهم عن قيمة تحرصون عليها أنتم، وموقف غلّبتموها فيه.",
     "mission_en": "This week, notice one choice you made,\nand ask yourself: which value showed in it?\n\nWrite it down to share next session.",
@@ -691,11 +691,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000010",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 3,
-  "title_ar": "مشاعري بالاسم",
+  "title_ar": "أكتشف مشاعري",
   "title_en": "Naming My Feelings",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "قصّتي",
+  "next_ar": "مواقف مهمة في حياتي",
   "next_en": "My Story",
   "cards": [
    {
@@ -704,7 +704,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — مشاعري بالاسم",
+    "t_ar": "إحاطة الميسّر — أكتشف مشاعري",
     "t_en": "Facilitator briefing — Naming My Feelings",
     "lead_ar": "الهدف: أن يسمّي الطالب شعوره باسم دقيق لا بـ«جيّد/سيّئ»، ويحدّد أين يظهر في جسده، ويميّز بين شعورين متقاربين.",
     "checks_ar": [
@@ -713,7 +713,7 @@ window.SESSION_FIXTURES = {
      "يميّز بين شعورين متقاربين",
      "يتقبّل شعور غيره دون حكم"
     ],
-    "i_ar": "اقرأ هذه البطاقة قبل الجلسة بعشر دقائق. أشيع الأخطاء أن يكتفي الطالب بـ«زعلان» أو «تمام»؛ فادفعه إلى الكلمة الأدقّ: أمحبَط أم خائف أم محرَج؟ الاسم الدقيق يهدّئ لأنه يفهم. ولا تصحّح شعوراً؛ الشعور ليس صواباً ولا خطأً، إنما الفعل بعده. هذه الجلسة تمهّد لجلسة «توقّف ثم اختر».",
+    "i_ar": "اقرأ هذه البطاقة قبل الجلسة بعشر دقائق. أشيع الأخطاء أن يكتفي الطالب بـ«زعلان» أو «تمام»؛ فادفعه إلى الكلمة الأدقّ: أمحبَط أم خائف أم محرَج؟ الاسم الدقيق يهدّئ لأنه يفهم. ولا تصحّح شعوراً؛ الشعور ليس صواباً ولا خطأً، إنما الفعل بعده. هذه الجلسة تمهّد لجلسة «فكر قبل أن تختار».",
     "m_ar": "لوحة أسماء المشاعر المطبوعة (نسخة لكل مجموعة)، بطاقات المواقف، أوراق، أقلام، بطاقة الرصد",
     "lead_en": "Objective: a student can name a feeling with a precise word, not 'good/bad', locate it in the body, and tell two close feelings apart.",
     "checks_en": [
@@ -926,7 +926,7 @@ window.SESSION_FIXTURES = {
      "أيّ المشاعر يصعب على المرء أن يعترف بها لنفسه؟ ولماذا؟",
      "كيف تساعد معرفة علامة الجسد على التقاط الشعور مبكراً؟"
     ],
-    "i_ar": "رسالة الجلسة: من سمّى شعوره ملك أن يتصرّف فيه. قلها صراحة، واربطها بالجلسة القادمة «توقّف ثم اختر»: علامة الجسد التي عرفتموها اليوم هي التي تنبّهك متى تتوقّف.",
+    "i_ar": "رسالة الجلسة: من سمّى شعوره ملك أن يتصرّف فيه. قلها صراحة، واربطها بالجلسة القادمة «فكر قبل أن تختار»: علامة الجسد التي عرفتموها اليوم هي التي تنبّهك متى تتوقّف.",
     "off_ar": "نقاش شفهي، لا يحتاج تقنية.",
     "p_ar": [
      "التسمية لا تُلغي الشعور، لكنها تعيد إليك زمام الأمر.",
@@ -1019,7 +1019,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "مرة واحدة هذا الأسبوع، حين يأتيك شعور قويّ:\nقف لحظة، وسمِّه باسمه الأدقّ قبل أن تتصرّف.\n\nولاحظ: هل تغيّر شيء؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: قصّتي.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: مواقف مهمة في حياتي.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن يسمّوا الشعور باسمه الدقيق: لا «زعلان» فقط، بل محبَط أو محرَج أو خائف؛ لأن الاسم الدقيق يهدّئ.\n\nحين تلاحظون على ابنكم شعوراً، جرّبوا أن تسمّوه بلطف: «تبدو محبَطاً» بدل «ما بك؟»؛ التسمية تفتح الباب.",
     "mission_en": "Once this week, when a strong feeling comes:\npause a moment and name it precisely before you act.\n\nNotice: did anything change?",
@@ -1033,7 +1033,7 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000011",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 4,
-  "title_ar": "قصّتي",
+  "title_ar": "مواقف مهمة في حياتي",
   "title_en": "My Story",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
@@ -1046,7 +1046,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — قصّتي",
+    "t_ar": "إحاطة الميسّر — مواقف مهمة في حياتي",
     "t_en": "Facilitator briefing — My Story",
     "lead_ar": "الهدف: أن يحكي الطالب موقفاً حقيقياً قصيراً من حياته شكّل شيئاً فيه، ويسمّي ما تعلّمه منه، ثم يلتقط الدرس خلف قصّة زميله.",
     "checks_ar": [
@@ -1056,7 +1056,7 @@ window.SESSION_FIXTURES = {
      "يلتقط ما تكشفه قصّة زميله"
     ],
     "i_ar": "اقرأ هذه البطاقة قبل الجلسة بعشر دقائق. القصّة تكشف صاحبها، فاجعل القاعة آمنة: لا سخرية، ولا مقاطعة، ولا مقارنة قصّة بقصّة. أكثر خطأ أن تتحوّل القصّة إلى تباهٍ أو إلى شكوى؛ أعِد الطالب إلى: ماذا حدث، وماذا تعلّمت. وليست القصّة درجاتٍ ولا إنجازات، بل لحظة عاشها وغيّرت فيه شيئاً.",
-    "m_ar": "بطاقة «قصّتي» الفارغة لكل طالب، أوراق ملوّنة، أقلام، شريط لاصق للعرض، بطاقة الرصد",
+    "m_ar": "بطاقة «مواقف مهمة في حياتي» الفارغة لكل طالب، أوراق ملوّنة، أقلام، شريط لاصق للعرض، بطاقة الرصد",
     "lead_en": "Objective: a student can tell a short true moment from their life that shaped them, name what it taught them, then catch the lesson behind a classmate's story.",
     "checks_en": [
      "Tells a specific moment from their life",
@@ -1201,7 +1201,7 @@ window.SESSION_FIXTURES = {
      ]
     ],
     "i_ar": "جولة المرآة هي قلب الجلسة، وهي تمرين على الإصغاء أيضاً (تمهيد للوحدة القادمة). تنقّل وتأكد أن المستمع يعيد الدرس لا يحكي قصّته هو. وإن أخطأ في فهم الدرس، فذلك فرصة ليوضّح صاحب القصّة نفسه.",
-    "m_ar": "بطاقة «قصّتي» الفارغة لكل طالب، أقلام",
+    "m_ar": "بطاقة «مواقف مهمة في حياتي» الفارغة لكل طالب، أقلام",
     "a_ar": "لمن يعسر عليه الحكي شفهياً: يكتب لحظته على البطاقة ويقرؤها زميله.",
     "off_ar": "النشاط ورقي بالكامل، ولا يحتاج شاشة بعد الشرح.",
     "lead_en": "In pairs. Each of you tells your moment in the four parts; the other listens, then reflects back what they understood.",
@@ -1379,7 +1379,7 @@ window.SESSION_FIXTURES = {
   "title_en": "Our Group Charter",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "توقّف ثم اختر",
+  "next_ar": "فكر قبل أن تختار",
   "next_en": "Pause, Then Choose",
   "cards": [
    {
@@ -1703,7 +1703,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "لاحظ هذا الأسبوع مرة عاش فيها الصف ميثاقه،\nومرة احتاجه ونسيه.\n\nوفكّر: كيف كنت سأذكّر بلطف؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. أنهيتم وحدة «اعرف نفسك»؛ الوحدة القادمة: «أدِر نفسك»، تبدأ بجلسة «توقّف ثم اختر».",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. أنهيتم وحدة «اعرف نفسك»؛ الوحدة القادمة: «أدِر نفسك»، تبدأ بجلسة «فكر قبل أن تختار».",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "أنهى أبناؤكم هذا الأسبوع أولى وحدات البرنامج «اعرف نفسك»: تعرّفوا على قوّتهم وقيمهم ومشاعرهم وقصصهم، ثم اتّفقوا مع صفّهم على ميثاق يجمعهم.\n\nجرّبوا في البيت فكرة الميثاق: اتفقوا على قاعدة أو اثنتين تلتزمها الأسرة، إيجابية ومربوطة بقيمة تقدّرونها. الأطفال يحفظون ما شاركوا في صنعه.",
     "mission_en": "This week, notice one time the class lived its charter,\nand one time it needed it and forgot.\n\nThink: how would I have reminded, kindly?",
@@ -1717,11 +1717,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000002",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 6,
-  "title_ar": "توقّف ثم اختر",
+  "title_ar": "فكر قبل أن تختار",
   "title_en": "Pause, Then Choose",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "ابدأ صغيراً",
+  "next_ar": "ابدأ بما يمكن إنجازه",
   "next_en": "Start Small",
   "cards": [
    {
@@ -1730,7 +1730,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — توقّف ثم اختر",
+    "t_ar": "إحاطة الميسّر — فكر قبل أن تختار",
     "t_en": "Facilitator briefing — Pause, Then Choose",
     "lead_ar": "الهدف: أن يسمّي الطالب علامة جسده حين يغضب أو يتوتر، ويتوقّف قبل الردّ، ويسمّي شعوره، ثم يختار ردّه من بين أكثر من ردّ ممكن.",
     "checks_ar": [
@@ -2045,7 +2045,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "مرة واحدة هذا الأسبوع، حين تشعر بعلامة جسدك:\nتوقّف، وتنفّس ثلاثاً، وسمِّ شعورك،\nثم اختر ردّك.\n\nولاحظ ما الذي تغيّر.",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: ابدأ صغيراً.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: ابدأ بما يمكن إنجازه.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع لحظة الاختيار: أن يعرف الواحد علامة جسده حين يغضب، فيتوقّف ويتنفّس ثلاثاً ويسمّي شعوره، ثم يختار ردّه.\n\nاسألوهم في البيت: ما علامة جسدك؟ وشاركوهم علامتكم أنتم؛ فلكل واحد منا إنذاره.",
     "mission_en": "Once this week, when you feel your body's sign:\npause, take three breaths, name the feeling,\nthen choose your response.\n\nNotice what changes.",
@@ -2059,11 +2059,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000003",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 7,
-  "title_ar": "ابدأ صغيراً",
+  "title_ar": "ابدأ بما يمكن إنجازه",
   "title_en": "Start Small",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "ركّز في زحمة المشتّتات",
+  "next_ar": "تجاهل المشتّتات",
   "next_en": "Focus in the Noise",
   "cards": [
    {
@@ -2072,7 +2072,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — ابدأ صغيراً",
+    "t_ar": "إحاطة الميسّر — ابدأ بما يمكن إنجازه",
     "t_en": "Facilitator briefing — Start Small",
     "lead_ar": "الهدف: أن يحوّل الطالب أمنية إلى خطوة أولى صغيرة تُنجَز في يوم واحد، ويحدّد لها وقتاً ومكاناً، ويسمّي شاهداً يخبره بها.",
     "checks_ar": [
@@ -2387,11 +2387,11 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "نفّذ خطوتك الصغيرة في وقتها ومكانها،\nوأخبر شاهدك قبلها وبعدها.\n\nوفي الجلسة القادمة سنسأل: من بدأ؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. وسجّل لنفسك أن تفتتح الجلسة القادمة بسؤال: من بدأ؟ ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: استمع كالمحقّق.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. وسجّل لنفسك أن تفتتح الجلسة القادمة بسؤال: من بدأ؟ ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: تجاهل المشتّتات.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع تحويل الأمنية إلى خطوة صغيرة تُنجَز في يوم واحد، لها وقت ومكان وشاهد.\n\nقد يختاركم ابنكم شاهداً على خطته؛ فإن فعل، فاسألوه بعد يومها: هل فعلت؟ سؤالكم هذا هو كل المطلوب.",
     "mission_en": "Do your small step at its time and place,\nand tell your witness before and after.\n\nNext session we will ask: who started?",
-    "i_en": "Read the mission aloud and ask a student to restate it in their own words. Note for yourself to open the next session by asking: who started? Then review and approve the family message. Next session: Listen Like a Detective.",
+    "i_en": "Read the mission aloud and ask a student to restate it in their own words. Note for yourself to open the next session by asking: who started? Then review and approve the family message. Next session: Focus in the Noise.",
     "off_en": "Write the mission on the board and hand it out printed.",
     "fam_en": "This week your child learned to turn a wish into a step small enough for a single day, with a time, a place and a witness.\n\nThey may choose you as their witness. If they do, ask them after the day: did you do it? That question is all it takes."
    }
@@ -2401,11 +2401,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000013",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 8,
-  "title_ar": "ركّز في زحمة المشتّتات",
+  "title_ar": "تجاهل المشتّتات",
   "title_en": "Focus in the Noise",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "عادة صغيرة تدوم",
+  "next_ar": "بناء العادات",
   "next_en": "A Small Habit That Lasts",
   "cards": [
    {
@@ -2414,7 +2414,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — ركّز في زحمة المشتّتات",
+    "t_ar": "إحاطة الميسّر — تجاهل المشتّتات",
     "t_en": "Facilitator briefing — Focus in the Noise",
     "lead_ar": "الهدف: أن يسمّي الطالب أكبر ما يشتّته، ويزيل مشتّتاً واحداً قبل أن يبدأ، ويعود إلى مهمته كلما شرد ذهنه، ويحمي مدة قصيرة من التركيز المتصل.",
     "checks_ar": [
@@ -2723,7 +2723,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "اختر هذا الأسبوع مهمة واحدة كل يوم،\nوأبعِد مشتّتك الأكبر قبل أن تبدأها،\nوركّز فيها عشر دقائق محميّة.\n\nلاحظ: هل صار الأمر أسهل يوماً بعد يوم؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: عادة صغيرة تدوم.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: بناء العادات.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن التركيز عادة تُدرَّب: يُبعدون المشتّت قبل أن يبدؤوا، ويعودون إلى مهمتهم بهدوء كلما شرد ذهنهم.\n\nساعدوهم في البيت بأن تتفقوا على وقت قصير هادئ بلا شاشات، ولو عشر دقائق، يجرّبون فيه هذه العادة.",
     "mission_en": "This week, pick one task each day,\nput your biggest distraction away before you start,\nand give it ten protected minutes.\n\nNotice: did it get easier day by day?",
@@ -2737,11 +2737,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000014",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 9,
-  "title_ar": "عادة صغيرة تدوم",
+  "title_ar": "بناء العادات",
   "title_en": "A Small Habit That Lasts",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "حين أخطئ",
+  "next_ar": "ماذا لو أخطأت",
   "next_en": "When I Slip",
   "cards": [
    {
@@ -2750,7 +2750,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — عادة صغيرة تدوم",
+    "t_ar": "إحاطة الميسّر — بناء العادات",
     "t_en": "Facilitator briefing — A Small Habit That Lasts",
     "lead_ar": "الهدف: أن يحوّل الطالب هدفاً إلى عادة صغيرة جداً، ويربطها بعادة قائمة عنده، ويتابعها يوماً بيوم، ويعيدها في يومها التالي إن انقطعت دون أن يتخلّى عنها.",
     "checks_ar": [
@@ -2759,7 +2759,7 @@ window.SESSION_FIXTURES = {
      "يتابع عادته يوماً بيوم",
      "يعيدها في يومها التالي إن انقطعت"
     ],
-    "i_ar": "اقرأ هذه البطاقة قبل الجلسة بعشر دقائق. أكبر خطأ يقتل العادة أن تبدأ كبيرة: «سأقرأ ساعة كل يوم» تنهار في ثلاثة أيام. المهارة أن تصغّرها حتى تصير أصغر من أن تُرفض: صفحة واحدة، تمرين واحد، سطر واحد. الثبات أهمّ من الكمّ، والصغير المتصل يكبر وحده. اربط الجلسة بجلسة «ابدأ صغيراً»: خطوتَ فيها أول خطوة، واليوم تجعلها تتكرّر.",
+    "i_ar": "اقرأ هذه البطاقة قبل الجلسة بعشر دقائق. أكبر خطأ يقتل العادة أن تبدأ كبيرة: «سأقرأ ساعة كل يوم» تنهار في ثلاثة أيام. المهارة أن تصغّرها حتى تصير أصغر من أن تُرفض: صفحة واحدة، تمرين واحد، سطر واحد. الثبات أهمّ من الكمّ، والصغير المتصل يكبر وحده. اربط الجلسة بجلسة «ابدأ بما يمكن إنجازه»: خطوتَ فيها أول خطوة، واليوم تجعلها تتكرّر.",
     "m_ar": "بطاقة «عادتي» الفارغة لكل طالب، لوحة متابعة صغيرة (سبعة مربّعات)، أقلام، بطاقة الرصد",
     "lead_en": "Objective: a student can turn a goal into a very small habit, anchor it to a routine they already have, track it day by day, and restart it the next day if it breaks — without giving it up.",
     "checks_en": [
@@ -3059,7 +3059,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "ابدأ عادتك الصغيرة اليوم،\nواملأ مربّعاً في لوحتك كل يوم تفعلها فيه.\n\nوإن فاتك يوم، لا تبدأ من الصفر؛\nأكمِل في اليوم التالي.",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية: حين أخطئ.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية: ماذا لو أخطأت.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن العادة تدوم حين تكون صغيرة ومربوطة بشيء يفعلونه أصلاً، وأن انقطاع يوم لا يعني الفشل.\n\nساعدوهم بأن تسألوهم كل مساء سؤالاً واحداً: هل ملأت مربّع اليوم؟ ولا تلوموهم على يوم فائت؛ شجّعوهم على العودة في الغد.",
     "mission_en": "Start your small habit today,\nand fill a box in your tracker each day you do it.\n\nAnd if you miss a day, don't restart from zero;\njust continue the next day.",
@@ -3073,11 +3073,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000015",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 10,
-  "title_ar": "حين أخطئ",
+  "title_ar": "ماذا لو أخطأت",
   "title_en": "When I Slip",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "استمع كالمحقّق",
+  "next_ar": "الاستماع الفعال",
   "next_en": "Listen Like a Detective",
   "cards": [
    {
@@ -3086,7 +3086,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — حين أخطئ",
+    "t_ar": "إحاطة الميسّر — ماذا لو أخطأت",
     "t_en": "Facilitator briefing — When I Slip",
     "lead_ar": "الهدف: أن يصف الطالب زلّةً وقع فيها بصدق ودون قسوة على نفسه، ويستخرج منها درساً واحداً، ويخطو خطوة إصلاح واحدة، ثم يكمل بدل أن يستسلم.",
     "checks_ar": [
@@ -3413,11 +3413,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000004",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 11,
-  "title_ar": "استمع كالمحقّق",
+  "title_ar": "الاستماع الفعال",
   "title_en": "Listen Like a Detective",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "أوصِل فكرتك",
+  "next_ar": "حدد وجهة نظرك",
   "next_en": "Make Your Point",
   "cards": [
    {
@@ -3426,7 +3426,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — استمع كالمحقّق",
+    "t_ar": "إحاطة الميسّر — الاستماع الفعال",
     "t_en": "Facilitator briefing — Listen Like a Detective",
     "lead_ar": "الهدف: أن يُعيد الطالب صياغة رأي زميله بدقة، ثم يسأل سؤالاً توضيحياً ذا صلة.",
     "checks_ar": [
@@ -3765,11 +3765,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000005",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 12,
-  "title_ar": "أوصِل فكرتك",
+  "title_ar": "حدد وجهة نظرك",
   "title_en": "Make Your Point",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "كلمة تبني",
+  "next_ar": "التغذية الراجعة البناءة",
   "next_en": "Words That Build",
   "cards": [
    {
@@ -3778,7 +3778,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — أوصِل فكرتك",
+    "t_ar": "إحاطة الميسّر — حدد وجهة نظرك",
     "t_en": "Facilitator briefing — Make Your Point",
     "lead_ar": "الهدف: أن يقول الطالب فكرته في جملة واحدة، ويسندها بسبب واحد قوي، ويقرّبها بمثال محسوس، ثم يختمها بطلب محدد.",
     "checks_ar": [
@@ -4093,7 +4093,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "اطلب هذا الأسبوع شيئاً تريده حقاً،\nبالأجزاء الأربعة: فكرة، وسبب، ومثال، وطلب.\n\nولاحظ: ماذا فهم سامعك من أول مرة؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: كلمة تبني.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من أحد الطلاب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة: التغذية الراجعة البناءة.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع إيصال الفكرة بأربعة أجزاء: فكرة في جملة، وسبب واحد قوي، ومثال محسوس، وطلب محدد.\n\nسيجرّب ابنكم طلباً بهذه الطريقة؛ فأنصتوا له حتى يتمّ أجزاءه الأربعة، ثم أجيبوه أيّاً كان جوابكم: التجربة نفسها هي المكسب.",
     "mission_en": "This week, ask for something you really want,\nwith the four parts: idea, reason, example, ask.\n\nNotice: what did your listener understand first time?",
@@ -4107,11 +4107,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000006",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 13,
-  "title_ar": "كلمة تبني",
+  "title_ar": "التغذية الراجعة البناءة",
   "title_en": "Words That Build",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "اسأل سؤالاً أفضل",
+  "next_ar": "اسأل السؤال الصحيح",
   "next_en": "Ask a Better Question",
   "cards": [
    {
@@ -4120,7 +4120,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — كلمة تبني",
+    "t_ar": "إحاطة الميسّر — التغذية الراجعة البناءة",
     "t_en": "Facilitator briefing — Words That Build",
     "lead_ar": "الهدف: أن يعطي الطالب زميله ملاحظة تبني: يشير إلى العمل لا إلى الشخص، ويسمّي أمراً واحداً يبقى وأمراً واحداً يتغيّر، ويصوغ التغيير خطوةً تالية.",
     "checks_ar": [
@@ -4309,7 +4309,7 @@ window.SESSION_FIXTURES = {
     "stage": "challenge",
     "t_ar": "ملاحظة على خطة حقيقية",
     "t_en": "Feedback on a Real Plan",
-    "lead_ar": "يتبادل كل طالب بطاقة خطته من جلسة «ابدأ صغيراً» مع زميله. يقرأ كلٌّ خطة الآخر، ثم يكتب له بطاقة ملاحظة: شيء يبقى، وشيء يتغيّر، وخطوة تالية، بلا كلمة عن الشخص.",
+    "lead_ar": "يتبادل كل طالب بطاقة خطته من جلسة «ابدأ بما يمكن إنجازه» مع زميله. يقرأ كلٌّ خطة الآخر، ثم يكتب له بطاقة ملاحظة: شيء يبقى، وشيء يتغيّر، وخطوة تالية، بلا كلمة عن الشخص.",
     "lead2_ar": "ومن تلقّى ملاحظة، شكر قائلها بجملة: ماذا سيأخذ منها؟",
     "rule_k_ar": "القاعدة الوحيدة",
     "rule_ar": "تكلّم عن الخطة لا عن صاحبها،\nوأعطِه خطوة تالية يمشيها، لا حكماً عليه.",
@@ -4449,11 +4449,11 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000016",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 14,
-  "title_ar": "اسأل سؤالاً أفضل",
+  "title_ar": "اسأل السؤال الصحيح",
   "title_en": "Ask a Better Question",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "لغة الجسد",
+  "next_ar": "افهم لغة الجسد",
   "next_en": "What Bodies Say",
   "cards": [
    {
@@ -4462,7 +4462,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — اسأل سؤالاً أفضل",
+    "t_ar": "إحاطة الميسّر — اسأل السؤال الصحيح",
     "t_en": "Facilitator briefing — Ask a Better Question",
     "lead_ar": "الهدف: أن يطرح الطالب سؤالاً مفتوحاً يفتح المتحدّث لا يغلقه، ويتبعه بسؤال يعمّق الفهم، ويميّز السؤال الحقيقي من الرأي المُقنَّع، ويسأل ليفهم لا ليثبت رأيه.",
     "checks_ar": [
@@ -4771,7 +4771,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "اسأل هذا الأسبوع شخصاً واحداً سؤالاً مفتوحاً حقيقياً،\nثم اصمت وأصغِ، واتبعه بسؤالٍ عمّا قاله.\n\nولاحظ: كم عرفت عنه لم تكن تعرفه؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية للوحدة: لغة الجسد.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية للوحدة: افهم لغة الجسد.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن السؤال المفتوح («حدّثني عن…») يفتح الناس، وأن أفضل سؤال هو المتابعة التي تُظهر أنهم أصغوا.\n\nجرّبوا في البيت على العشاء: بدل «كيف كان يومك؟» (تُجاب بـ«عادي»)، اسألوهم «ما أكثر لحظة ضحكت فيها اليوم؟» وانظروا كيف يتغيّر الحديث.",
     "mission_en": "This week, ask one person a real open question,\nthen go quiet and listen, and follow it with a question about what they said.\n\nNotice: how much did you learn that you didn't know before?",
@@ -4785,7 +4785,7 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000017",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 15,
-  "title_ar": "لغة الجسد",
+  "title_ar": "افهم لغة الجسد",
   "title_en": "What Bodies Say",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
@@ -4798,7 +4798,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — لغة الجسد",
+    "t_ar": "إحاطة الميسّر — افهم لغة الجسد",
     "t_en": "Facilitator briefing — What Bodies Say",
     "lead_ar": "الهدف: أن يقرأ الطالب إشارة جسدية بسيطة، ويوائم جسده مع رسالته، ويلاحظ حين يتناقض الكلام مع الجسد، ويعدّل تواصله حين تتغيّر إشارات المستمع.",
     "checks_ar": [
