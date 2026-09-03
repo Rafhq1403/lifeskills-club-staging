@@ -10,6 +10,23 @@
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
 <link rel="stylesheet" href="css/pages.css">
+<style>
+  /* Journey hero — carries the path's spectrum signature onto the dashboard and
+     drives to the flagship. Warm surface, an eight-domain spectrum edge. */
+  .journey-banner{display:flex;align-items:center;justify-content:space-between;gap:var(--space-5);flex-wrap:wrap;
+    background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
+    padding:var(--space-6) var(--space-7);position:relative;overflow:hidden;box-shadow:var(--shadow-sm);
+    text-decoration:none;color:inherit;transition:var(--transition-base)}
+  .journey-banner:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)}
+  .journey-banner::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:6px;
+    background:linear-gradient(180deg,var(--domain-self),var(--domain-manage),var(--domain-comm),var(--domain-rel),
+      var(--domain-collab),var(--domain-think),var(--domain-decide),var(--domain-init))}
+  .journey-banner .jb-kick{font-family:var(--font-en);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted)}
+  .journey-banner h2{font-size:1.35rem;letter-spacing:-.01em;margin:.25rem 0 var(--space-3)}
+  .jb-dots{display:flex;gap:6px}
+  .jb-dots i{width:26px;height:7px;border-radius:999px;display:block}
+  .journey-banner .jb-go{font-weight:600;color:var(--color-primary);white-space:nowrap;font-size:.95rem}
+</style>
 </head>
 <body>
 
@@ -48,7 +65,21 @@
 
     <div class="dashboard-content">
 
-      <div class="card" id="program" style="background:linear-gradient(135deg, var(--color-primary-50), var(--surface));">
+      <a class="journey-banner" href="student-path.html">
+        <div>
+          <div class="jb-kick"><span data-lang-only="ar" style="font-family:var(--font-ar)">رحلة المهارات · السنة الأولى</span><span data-lang-only="en">Skills journey · Year 1</span></div>
+          <h2><span data-lang-only="ar">تابع رحلتك</span><span data-lang-only="en">Continue your journey</span></h2>
+          <div class="jb-dots">
+            <i style="background:var(--domain-self)"></i><i style="background:var(--domain-manage)"></i>
+            <i style="background:var(--domain-comm)"></i><i style="background:var(--domain-rel)"></i>
+            <i style="background:var(--domain-collab)"></i><i style="background:var(--domain-think)"></i>
+            <i style="background:var(--domain-decide)"></i><i style="background:var(--domain-init)"></i>
+          </div>
+        </div>
+        <span class="jb-go"><span data-lang-only="ar">افتح رحلتي ←</span><span data-lang-only="en">Open my journey →</span></span>
+      </a>
+
+      <div class="card mt-6" id="program" style="background:linear-gradient(135deg, var(--color-primary-50), var(--surface));">
         <div id="program-body">
           <p class="text-muted"><span data-lang-only="ar">جاري التحميل…</span><span data-lang-only="en">Loading…</span></p>
         </div>
