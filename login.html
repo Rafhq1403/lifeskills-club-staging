@@ -154,7 +154,7 @@
     admin: { type: 'email', phAr: 'you@example.com', phEn: 'you@example.com' },
     student: { type: 'text', phAr: 'مثال: salma482', phEn: 'e.g. salma482' },
   };
-  const ROLE_DASHBOARD = { teacher: 'teacher-dashboard.html', student: 'student-dashboard.html', admin: 'admin-dashboard.html' };
+  const DEMO_DASHBOARD = { teacher: 'teacher-dashboard.html', student: 'student-dashboard.html', admin: 'admin-dashboard.html' };
 
   let role = 'teacher';
   const params = new URLSearchParams(location.search);
@@ -209,7 +209,7 @@
       localStorage.setItem('dev_fixtures', '1');
       localStorage.setItem('dev_fixtures_role', role);
     } catch (e) {}
-    window.location.href = (ROLE_DASHBOARD[role] || 'student-dashboard.html') + '?fixtures=1&as=' + role;
+    window.location.href = (DEMO_DASHBOARD[role] || 'student-dashboard.html') + '?fixtures=1&as=' + role;
   });
 
   // The "Dev quick login" panel that used to live here shipped three seeded
