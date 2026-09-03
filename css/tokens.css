@@ -44,17 +44,37 @@
   --color-neutral-900: #16181D;
 
   --surface: #FFFFFF;
-  --surface-alt: #F3F4F9;          /* page canvas — replaces the old cream texture */
-  --border: #E5E7EB;
+  --surface-alt: #F6F1E9;          /* page canvas — warm sand (design-language, Sep 2026) */
+  --surface-warm: #FBF8F3;         /* softer inner fill on the warm ground */
+  --border: #E7DFD1;               /* warm hairline to match the sand ground */
+  --border-cool: #E5E7EB;          /* the old cool border, kept for legacy components */
   --text: var(--color-ink);
-  --text-muted: #6B7280;
+  --text-muted: #6B6154;           /* warm secondary ink */
 
-  /* Typography — Inter (English) / Tajawal (Arabic), single family at
-     weight-driven hierarchy instead of a separate decorative display face */
-  --font-display-ar: 'Tajawal', sans-serif;
-  --font-display-en: 'Inter', sans-serif;
-  --font-ar: 'Tajawal', 'Cairo', sans-serif;
-  --font-en: 'Inter', sans-serif;
+  /* The eight-domain spectrum — the product's identity. Each skill domain owns
+     a hue (mirrors curriculum.js); a surface borrows the colour of the domain
+     it is about, so colour carries meaning rather than decoration. */
+  --domain-self:   #6366F1;        /* الوعي بالذات — Self-awareness */
+  --domain-manage: #0D9488;        /* إدارة الذات — Self-management */
+  --domain-comm:   #2563EB;        /* التواصل — Communication */
+  --domain-rel:    #DB2777;        /* العلاقات — Relationships */
+  --domain-collab: #D97706;        /* التعاون والقيادة — Collaboration */
+  --domain-think:  #7C3AED;        /* التفكير النقدي — Critical thinking */
+  --domain-decide: #0891B2;        /* اتخاذ القرار — Decision-making */
+  --domain-init:   #16A34A;        /* المبادرة والتنفيذ — Initiative */
+
+  /* Growth mastery scale (four levels — matches the rubric) */
+  --mastery-1: #D8D0C2;            /* مبتدئ — Beginning */
+  --mastery-2: #F0B429;            /* متطوّر — Developing */
+  --mastery-3: #0D9488;            /* مطبِّق — Applying */
+  --mastery-4: #4F46E5;            /* ناقل للأثر — Transferring */
+
+  /* Typography — IBM Plex Sans Arabic + IBM Plex Sans: one coherent bilingual
+     family, weight-driven hierarchy, AR and EN drawn together (design-language) */
+  --font-display-ar: 'IBM Plex Sans Arabic', sans-serif;
+  --font-display-en: 'IBM Plex Sans', sans-serif;
+  --font-ar: 'IBM Plex Sans Arabic', sans-serif;
+  --font-en: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 
   --h1-size: 2rem;      --h1-lh: 2.5rem;
