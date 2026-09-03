@@ -57,7 +57,7 @@
         { id: S(5), title_ar: 'حدد وجهة نظرك', title_en: 'Make Your Point' },
         { id: S(6), title_ar: 'التغذية الراجعة البناءة', title_en: 'Words That Build' },
         { id: S(16), title_ar: 'اسأل السؤال الصحيح', title_en: 'Ask a Better Question' },
-        { id: S(17), title_ar: 'افهم لغة الجسد', title_en: 'What Bodies Say' },
+        { id: S(17), title_ar: 'لغة الجسد', title_en: 'What Bodies Say' },
       ] },
     { order: 4, semester: 1, domain: 'rel',
       name_ar: 'ابنِ علاقاتك', name_en: 'Build Relationships',

@@ -4453,7 +4453,7 @@ window.SESSION_FIXTURES = {
   "title_en": "Ask a Better Question",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
-  "next_ar": "افهم لغة الجسد",
+  "next_ar": "لغة الجسد",
   "next_en": "What Bodies Say",
   "cards": [
    {
@@ -4771,7 +4771,7 @@ window.SESSION_FIXTURES = {
     "t_ar": "مهمة الأسبوع",
     "t_en": "This week's mission",
     "mission_ar": "اسأل هذا الأسبوع شخصاً واحداً سؤالاً مفتوحاً حقيقياً،\nثم اصمت وأصغِ، واتبعه بسؤالٍ عمّا قاله.\n\nولاحظ: كم عرفت عنه لم تكن تعرفه؟",
-    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية للوحدة: افهم لغة الجسد.",
+    "i_ar": "اقرأ المهمة بصوت مسموع واطلب من طالب أن يعيدها بكلماته. ثم راجع رسالة ولي الأمر واعتمدها. الجلسة القادمة الختامية للوحدة: لغة الجسد.",
     "off_ar": "اكتب المهمة على السبورة وسلّمها مطبوعة.",
     "fam_ar": "تعلّم أبناؤكم هذا الأسبوع أن السؤال المفتوح («حدّثني عن…») يفتح الناس، وأن أفضل سؤال هو المتابعة التي تُظهر أنهم أصغوا.\n\nجرّبوا في البيت على العشاء: بدل «كيف كان يومك؟» (تُجاب بـ«عادي»)، اسألوهم «ما أكثر لحظة ضحكت فيها اليوم؟» وانظروا كيف يتغيّر الحديث.",
     "mission_en": "This week, ask one person a real open question,\nthen go quiet and listen, and follow it with a question about what they said.\n\nNotice: how much did you learn that you didn't know before?",
@@ -4785,7 +4785,7 @@ window.SESSION_FIXTURES = {
   "id": "c5100000-0000-4000-8000-000000000017",
   "skill_id": "c5000000-0000-4000-8000-000000000001",
   "order_index": 15,
-  "title_ar": "افهم لغة الجسد",
+  "title_ar": "لغة الجسد",
   "title_en": "What Bodies Say",
   "skill_title_ar": "مختبر مهارات الحياة — الموسم الأول: قُد نفسك، ابنِ فريقك",
   "skill_title_en": "Life Skills Lab — Season 1: Lead Yourself, Build Your Team",
@@ -4798,7 +4798,7 @@ window.SESSION_FIXTURES = {
     "aud": "facilitator",
     "dur": null,
     "stage": "prep",
-    "t_ar": "إحاطة الميسّر — افهم لغة الجسد",
+    "t_ar": "إحاطة الميسّر — لغة الجسد",
     "t_en": "Facilitator briefing — What Bodies Say",
     "lead_ar": "الهدف: أن يقرأ الطالب إشارة جسدية بسيطة، ويوائم جسده مع رسالته، ويلاحظ حين يتناقض الكلام مع الجسد، ويعدّل تواصله حين تتغيّر إشارات المستمع.",
     "checks_ar": [
