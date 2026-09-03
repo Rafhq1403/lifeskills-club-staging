@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نادي مهارات الحياة | رحلة المهارات</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/pages.css">
+<style>
+  /* The journey: units as stations on one spine. Completed stations are
+     filled and behind you; the current one is open and shows its sessions;
+     later ones wait, dimmed. The spine reads as progress, not decoration. */
+  .path-wrap{max-width:52rem;margin-inline:auto}
+  .jp-head{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);
+    padding:var(--space-6) var(--space-7);display:flex;flex-wrap:wrap;gap:var(--space-5);align-items:center;justify-content:space-between}
+  .jp-head .who .caption{color:var(--text-muted)}
+  .jp-head h1{font-size:1.5rem;margin:.15rem 0 0}
+  .jp-metrics{display:flex;gap:var(--space-5)}
+  .jp-metric{text-align:center}
+  .jp-metric .n{font-family:var(--font-mono);font-size:1.7rem;font-weight:700;line-height:1}
+  .jp-metric .n small{font-size:.9rem;color:var(--text-muted)}
+  .jp-metric .l{font-size:.72rem;color:var(--text-muted);margin-top:3px}
+  .jp-bar{height:8px;border-radius:999px;background:var(--color-neutral-100);overflow:hidden;margin-top:var(--space-5)}
+  .jp-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--color-primary-light),var(--color-primary));transition:width .6s ease}
+
+  /* the spine */
+  .journey{position:relative;margin-top:var(--space-8);display:flex;flex-direction:column;gap:var(--space-4)}
+  .journey::before{content:"";position:absolute;inset-inline-start:23px;top:24px;bottom:24px;width:3px;
+    background:var(--color-neutral-200);border-radius:999px}
+  .stn{position:relative;display:grid;grid-template-columns:48px 1fr;gap:var(--space-4);align-items:start}
+  .node{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;z-index:1;
+    background:var(--surface);border:3px solid var(--color-neutral-200);
+    font-family:var(--font-mono);font-weight:700;color:var(--text-muted);font-size:1.05rem}
+  .stn.done .node{background:var(--u);border-color:var(--u);color:#fff}
+  .stn.now .node{border-color:var(--color-primary);color:var(--color-primary);
+    box-shadow:0 0 0 5px var(--color-primary-50)}
+  .stn.locked .node{opacity:.55}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:var(--space-4) var(--space-5);position:relative;overflow:hidden}
+  .card::before{content:"";position:absolute;inset-block:0;inset-inline-start:0;width:4px;background:var(--u)}
+  .stn.locked .card{background:var(--surface-alt);border-style:dashed}
+  .stn.locked .card::before{opacity:.4}
+  .stn.now .card{border-color:var(--color-primary-light);box-shadow:0 8px 24px -14px var(--color-primary)}
+  .c-top{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px var(--space-3)}
+  .c-top h3{margin:0;font-size:1.1rem}
+  .stn.locked .c-top h3{color:var(--text-muted)}
+  .c-en{font-size:.82rem;color:var(--text-muted);font-family:var(--font-en)}
+  .domain{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.04em;text-transform:uppercase;
+    font-weight:600;color:var(--u);background:color-mix(in srgb,var(--u) 12%,transparent);
+    padding:3px 9px;border-radius:999px;margin-inline-start:auto}
+  .c-out{color:var(--text-muted);font-size:.9rem;margin:.5rem 0 0}
+  .c-meta{display:flex;flex-wrap:wrap;gap:6px var(--space-4);margin-top:var(--space-3);align-items:center}
+  .c-meta .m{font-family:var(--font-mono);font-size:.75rem;color:var(--text-muted)}
+  .c-meta .m b{color:var(--text)}
+  .status{font-size:.72rem;font-weight:700;padding:3px 10px;border-radius:999px;display:inline-flex;gap:6px;align-items:center}
+  .status.done{color:var(--color-success-dark);background:var(--color-success-50)}
+  .status.now{color:var(--color-primary-dark);background:var(--color-primary-50)}
+  .status.locked{color:var(--text-muted);background:var(--color-neutral-100)}
+  .uprog{height:6px;border-radius:999px;background:var(--color-neutral-100);overflow:hidden;margin-top:var(--space-3);flex-basis:100%}
+  .uprog i{display:block;height:100%;background:var(--u);border-radius:999px}
+
+  /* sessions inside the current unit */
+  .sess{margin-top:var(--space-4);border-top:1px solid var(--border);padding-top:var(--space-3);display:grid;gap:2px}
+  .sr{display:flex;align-items:center;gap:var(--space-3);padding:var(--space-2) var(--space-2);border-radius:var(--radius-sm)}
+  .sr .dot{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;font-size:.7rem;
+    border:2px solid var(--color-neutral-300);color:var(--text-muted);font-family:var(--font-mono)}
+  .sr.done .dot{background:var(--color-success);border-color:var(--color-success);color:#fff}
+  .sr.next .dot{border-color:var(--color-primary);color:var(--color-primary);font-weight:700}
+  .sr .t{font-size:.92rem;font-weight:500}
+  .sr .te{font-size:.76rem;color:var(--text-muted)}
+  .sr.done .t{color:var(--text-muted)}
+  .sr.next .t{font-weight:700}
+  .sr .tag{margin-inline-start:auto;font-size:.68rem;font-weight:700;color:var(--color-primary)}
+  .sr .tag.soon{color:var(--text-muted);font-weight:500}
+
+  .locked-hint{font-size:.8rem;color:var(--text-muted);margin-top:.4rem;display:flex;align-items:center;gap:6px}
+</style>
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="container flex items-center justify-between">
+    <a href="student-dashboard.html" class="brand"><span class="logo-mark">🌱</span>
+      <span><span data-lang-only="ar">مهارات الحياة</span><span data-lang-only="en">Life Skills</span></span></a>
+    <div class="nav-links">
+      <a href="student-dashboard.html"><span data-lang-only="ar">الرئيسية</span><span data-lang-only="en">Home</span></a>
+      <a href="#" class="active"><span data-lang-only="ar">رحلتي</span><span data-lang-only="en">My journey</span></a>
+    </div>
+    <div class="nav-actions"><div class="lang-toggle"><button data-lang="ar">AR</button><button data-lang="en">EN</button></div></div>
+  </div>
+</nav>
+
+<div class="container path-wrap" style="padding-block:var(--space-8);" data-main>
+  <div class="jp-head">
+    <div class="who">
+      <div class="caption"><span data-lang-only="ar">رحلة المهارات · السنة الأولى</span><span data-lang-only="en">Skills journey · Year 1</span></div>
+      <h1 id="jpName">—</h1>
+    </div>
+    <div class="jp-metrics">
+      <div class="jp-metric"><div class="n" id="mUnits">—</div><div class="l"><span data-lang-only="ar">وحدات أُنجزت</span><span data-lang-only="en">units done</span></div></div>
+      <div class="jp-metric"><div class="n" id="mSess">—</div><div class="l"><span data-lang-only="ar">جلسة من ٤٨</span><span data-lang-only="en">of 48 sessions</span></div></div>
+    </div>
+    <div style="flex-basis:100%">
+      <div class="jp-bar"><i id="jpBar" style="width:0"></i></div>
+    </div>
+  </div>
+
+  <div class="journey" id="journey"></div>
+</div>
+
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+<script src="js/curriculum.js"></script>
+<script>
+window.PAGE_TITLES={ar:'نادي مهارات الحياة | رحلة المهارات',en:'Life Skills Club | Skills journey'};
+const L=(a,e)=>getLang()==='ar'?a:e;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* Progress model. Live, this comes from the cohort's delivered sessions
+   (GET /student/path). For the demo it's a believable mid-year state:
+   two units finished, the third under way. Units before `current` are
+   complete; the current unit shows session-level progress; later units
+   are locked until their turn. */
+const PROGRESS = { current: 3, done: { 1: 6, 2: 6, 3: 2 } };
+const STUDENT = { name_ar: 'سارة القحطاني', name_en: 'Sara Al-Qahtani' };
+
+function unitState(u){
+  if(u.order < PROGRESS.current) return 'done';
+  if(u.order === PROGRESS.current) return 'now';
+  return 'locked';
+}
+function unitDone(u){ return u.order < PROGRESS.current ? u.total : (PROGRESS.done[u.order]||0); }
+
+function render(){
+  const units=CURRICULUM.units;
+  $('jpName').textContent=L(STUDENT.name_ar,STUDENT.name_en);
+  const unitsDone=units.filter(u=>u.order<PROGRESS.current).length;
+  const sessDone=units.reduce((a,u)=>a+unitDone(u),0);
+  $('mUnits').innerHTML=`${unitsDone}<small> / 8</small>`;
+  $('mSess').textContent=sessDone;
+  $('jpBar').style.width=(sessDone/CURRICULUM.sessionsPerYear*100)+'%';
+
+  $('journey').innerHTML=units.map(u=>{
+    const st=unitState(u), done=unitDone(u), di=u.domain_info;
+    const statusTxt=st==='done'?L('اكتملت','Complete'):st==='now'?L('جارية الآن','In progress')
+      :L('تُفتح لاحقاً','Locks until earlier units are done');
+    const statusIcon=st==='done'?'✓':st==='now'?'●':'🔒';
+    const nodeInner=st==='done'?'✓':st==='locked'?'🔒':u.order;
+    const sessionsHtml = st==='now' ? `<div class="sess">${u.sessions.map((s,i)=>{
+        const sdone=i<done, snext=i===done;
+        return `<div class="sr ${sdone?'done':''} ${snext?'next':''}">
+          <span class="dot">${sdone?'✓':snext?'▸':(i+1)}</span>
+          <span><span class="t">${esc(L(s.title_ar,s.title_en))}</span>
+            ${getLang()==='ar'?'':''}</span>
+          ${snext?`<span class="tag">${L('التالية','Up next')}</span>`
+                 :sdone?`<span class="tag" style="color:var(--color-success-dark)">${L('تمّت','Done')}</span>`
+                 :`<span class="tag soon">${L('قريباً','Soon')}</span>`}
+        </div>`;}).join('')}</div>` : '';
+    const lockedHint = st==='locked'
+      ? `<div class="locked-hint">🔒 ${L('تُفتح بعد إتمام الوحدة','Unlocks after Unit')} ${u.order-1}</div>` : '';
+    return `<div class="stn ${st}" style="--u:${di.color}">
+      <div class="node">${nodeInner}</div>
+      <div class="card">
+        <div class="c-top">
+          <h3>${esc(L(u.name_ar,u.name_en))}</h3>
+          <span class="c-en">${esc(getLang()==='ar'?u.name_en:u.name_ar)}</span>
+          <span class="domain">${esc(L(di.ar,di.en))}</span>
+        </div>
+        <p class="c-out">${esc(L(u.outcome_ar,u.outcome_en))}</p>
+        <div class="c-meta">
+          <span class="m"><b>${done}</b> / ${u.total} ${L('جلسة','sessions')}</span>
+          <span class="m">${L('الأسابيع','weeks')} <b>${u.weeks[0]}–${u.weeks[1]}</b></span>
+          <span class="status ${st}">${statusIcon} ${statusTxt}</span>
+          ${st==='done'||st==='now'?`<div class="uprog"><i style="width:${done/u.total*100}%"></i></div>`:''}
+        </div>
+        ${sessionsHtml}${lockedHint}
+      </div>
+    </div>`;
+  }).join('');
+  applyLanguage(getLang());
+}
+
+let rendering=false;
+function safeRender(){ if(rendering)return; rendering=true; try{render();}finally{rendering=false;} }
+document.addEventListener('langchange',()=>{ if(!rendering) safeRender(); });
+document.addEventListener('DOMContentLoaded',safeRender);
+</script>
+</body>
+</html>
