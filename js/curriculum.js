@@ -44,9 +44,9 @@
       sessions: [
         { id: S(2), title_ar: 'توقّف ثم اختر', title_en: 'Pause, Then Choose' },
         { id: S(3), title_ar: 'ابدأ صغيراً', title_en: 'Start Small' },
-        { title_ar: 'ركّز في زحمة المشتّتات', title_en: 'Focus in the Noise' },
-        { title_ar: 'عادة صغيرة تدوم', title_en: 'A Small Habit That Lasts' },
-        { title_ar: 'حين أخطئ', title_en: 'When I Slip' },
+        { id: S(13), title_ar: 'ركّز في زحمة المشتّتات', title_en: 'Focus in the Noise' },
+        { id: S(14), title_ar: 'عادة صغيرة تدوم', title_en: 'A Small Habit That Lasts' },
+        { id: S(15), title_ar: 'حين أخطئ', title_en: 'When I Slip' },
       ] },
     { order: 3, semester: 1, domain: 'comm',
       name_ar: 'أنصِت وعبِّر', name_en: 'Listen & Express',
