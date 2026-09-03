@@ -103,7 +103,7 @@
     </div>
     <div class="jp-metrics">
       <div class="jp-metric"><div class="n" id="mUnits">—</div><div class="l"><span data-lang-only="ar">وحدات أُنجزت</span><span data-lang-only="en">units done</span></div></div>
-      <div class="jp-metric"><div class="n" id="mSess">—</div><div class="l"><span data-lang-only="ar">جلسة من ٤٨</span><span data-lang-only="en">of 48 sessions</span></div></div>
+      <div class="jp-metric"><div class="n" id="mSess">—</div><div class="l"><span data-lang-only="ar">جلسة من <span id="mTotalAr"></span></span><span data-lang-only="en">of <span id="mTotalEn"></span> sessions</span></div></div>
     </div>
     <div style="flex-basis:100%">
       <div class="jp-bar"><i id="jpBar" style="width:0"></i></div>
@@ -122,13 +122,41 @@ const L=(a,e)=>getLang()==='ar'?a:e;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-/* Progress model. Live, this comes from the cohort's delivered sessions
-   (GET /student/path). For the demo it's a believable mid-year state:
-   two units finished, the third under way. Units before `current` are
-   complete; the current unit shows session-level progress; later units
-   are locked until their turn. */
-const PROGRESS = { current: 3, done: { 1: 6, 2: 6, 3: 2 } };
-const STUDENT = { name_ar: 'سارة القحطاني', name_en: 'Sara Al-Qahtani' };
+/* Progress model. Units before `current` are complete; the current unit
+   shows session-level progress; later units are locked until their turn.
+   Live, it's computed from the cohort's delivered sessions
+   (GET /student/progress). With no backend it stays this believable
+   mid-year demo state: two units finished, the third under way. */
+let PROGRESS = { current: 3, done: { 1: 5, 2: 5, 3: 2 } };
+let STUDENT = { name_ar: 'سارة القحطاني', name_en: 'Sara Al-Qahtani' };
+
+/* Turn the cohort's delivered session ids into the path's progress model:
+   the current unit is the one holding the next scheduled session; earlier
+   units are complete; the current unit's bar reflects how many of its
+   sessions have been taught. */
+function progressFromDelivered(deliveredIds, currentId){
+  const inUnit = (o) => deliveredIds.filter(id => CURRICULUM.unitOfSession(id) === o).length;
+  let current = currentId ? CURRICULUM.unitOfSession(currentId) : null;
+  if(!current){
+    const u = CURRICULUM.units.find(u => inUnit(u.order) < u.total);
+    current = u ? u.order : CURRICULUM.units.length + 1;   // whole path done
+  }
+  return { current, done: { [current]: inUnit(current) } };
+}
+
+async function loadProgress(){
+  const fixtures = localStorage.getItem('dev_fixtures') === '1';
+  if(fixtures) return;                       // demo: keep the sample state
+  try{
+    const r = await fetch(`http://${location.hostname}:8090/student/progress`, {credentials:'include'});
+    if(!r.ok) return;                        // not signed in as a student — keep the sample
+    const p = await r.json();
+    if(!p.class_id) return;                  // no cohort yet — keep the sample
+    PROGRESS = progressFromDelivered(p.delivered_session_ids || [], p.current_session_id);
+    try{ const me = await (await fetch(`http://${location.hostname}:8090/auth/me`,{credentials:'include'})).json();
+      if(me && me.full_name){ STUDENT = { name_ar: me.full_name, name_en: me.full_name }; } }catch(e){}
+  }catch(e){/* offline — keep the sample state */}
+}
 
 function unitState(u){
   if(u.order < PROGRESS.current) return 'done';
@@ -144,7 +172,9 @@ function render(){
   const sessDone=units.reduce((a,u)=>a+unitDone(u),0);
   $('mUnits').innerHTML=`${unitsDone}<small> / 8</small>`;
   $('mSess').textContent=sessDone;
-  $('jpBar').style.width=(sessDone/CURRICULUM.sessionsPerYear*100)+'%';
+  const total=CURRICULUM.sessionsPerYear;
+  $('mTotalAr').textContent=total; $('mTotalEn').textContent=total;
+  $('jpBar').style.width=(sessDone/total*100)+'%';
 
   $('journey').innerHTML=units.map(u=>{
     const st=unitState(u), done=unitDone(u), di=u.domain_info;
@@ -189,7 +219,7 @@ function render(){
 let rendering=false;
 function safeRender(){ if(rendering)return; rendering=true; try{render();}finally{rendering=false;} }
 document.addEventListener('langchange',()=>{ if(!rendering) safeRender(); });
-document.addEventListener('DOMContentLoaded',safeRender);
+document.addEventListener('DOMContentLoaded',async()=>{ await loadProgress(); safeRender(); });
 </script>
 </body>
 </html>
