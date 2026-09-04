@@ -126,6 +126,9 @@
 
 <script src="js/i18n.js"></script>
 <script src="js/app.js"></script>
+<script src="js/api.js"></script>
+<script src="js/dev-fixtures.js"></script>
+<script>/* Phase C: gate this tool on a real session + role. */ requireAuth(['teacher','admin']);</script>
 <script>
 window.PAGE_TITLES={ar:'نادي مهارات الحياة | نبض المجموعة',en:'Life Skills Club | Cohort Pulse'};
 const L=(a,e)=>getLang()==='ar'?a:e;

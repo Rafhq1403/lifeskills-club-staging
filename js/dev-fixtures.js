@@ -61,11 +61,20 @@
     'teacher-dashboard.html': 'teacher',
     'student-dashboard.html': 'student',
     'student-skill.html': 'student',
+    'student-path.html': 'student',
     'admin-dashboard.html': 'admin',
     'employees.html': 'admin',
     'finance-dashboard.html': 'admin',
     'school-details.html': 'admin',
     'skills.html': 'admin',
+    // facilitator tools — teacher by default, still reachable as admin via ?as=admin
+    'curriculum.html': 'teacher',
+    'session-prep.html': 'teacher',
+    'classroom-mode.html': 'teacher',
+    'schedule.html': 'teacher',
+    'teacher-cohort.html': 'teacher',
+    'student-growth.html': 'teacher',
+    'print-pack.html': 'teacher',
   };
   const page = window.location.pathname.split('/').pop() || 'index.html';
   const role = params.has('as')

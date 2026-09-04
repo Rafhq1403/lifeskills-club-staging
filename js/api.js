@@ -44,7 +44,12 @@ const ROLE_DASHBOARD = { teacher: 'teacher-dashboard.html', student: 'student-da
 
 /* Dashboard pages call this on load: redirects to login if there's no
    session, or if the session's role doesn't match the page. Returns the
-   /auth/me payload (id, email, role, full_name) otherwise. */
+   /auth/me payload (id, email, role, full_name) otherwise.
+
+   expectedRole is a role string, or an array when a page legitimately serves
+   more than one — the facilitator tools (curriculum library, session prep,
+   classroom mode, schedule, cohort pulse) are used by teachers and reviewed
+   by admins, so gating them on a single role would lock out one of them. */
 async function requireAuth(expectedRole) {
   let me;
   try {
@@ -53,7 +58,8 @@ async function requireAuth(expectedRole) {
     window.location.href = 'login.html';
     return null;
   }
-  if (me.role !== expectedRole) {
+  const allowed = Array.isArray(expectedRole) ? expectedRole : [expectedRole];
+  if (!allowed.includes(me.role)) {
     window.location.href = ROLE_DASHBOARD[me.role] || 'login.html';
     return null;
   }
