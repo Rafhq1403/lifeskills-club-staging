@@ -90,6 +90,10 @@
   .sr.next .t{font-weight:700}
   .sr .tag{margin-inline-start:auto;font-size:.7rem;font-weight:700;color:var(--u)}
   .sr .tag.soon{color:var(--text-muted);font-weight:500}
+  a.sr{text-decoration:none;color:inherit}
+  .sr.is-open{cursor:pointer;transition:var(--transition-fast)}
+  .sr.is-open:hover{border-color:color-mix(in srgb,var(--u) 55%,var(--border));
+    box-shadow:0 4px 14px -8px var(--u);transform:translateY(-1px)}
 
   .locked-hint{font-size:.8rem;color:var(--text-muted);margin-top:.5rem;display:flex;align-items:center;gap:6px}
 </style>
@@ -203,14 +207,18 @@ function render(){
     const nodeInner=st==='done'?'✓':st==='locked'?'🔒':u.order;
     const sessionsHtml = st==='now' ? `<div class="sess">${u.sessions.map((s,i)=>{
         const sdone=i<done, snext=i===done;
-        return `<div class="sr ${sdone?'done':''} ${snext?'next':''}">
+        /* A session you've reached is openable: its recap carries what you
+           practised and the mission you took home. Later ones stay inert. */
+        const open=(sdone||snext)&&s.id;
+        const tag=open?'a':'div', href=open?` href="student-session.html?session=${encodeURIComponent(s.id)}"`:'';
+        return `<${tag}${href} class="sr ${sdone?'done':''} ${snext?'next':''} ${open?'is-open':''}">
           <span class="dot">${sdone?'✓':snext?'▸':(i+1)}</span>
           <span><span class="t">${esc(L(s.title_ar,s.title_en))}</span>
             ${getLang()==='ar'?'':''}</span>
           ${snext?`<span class="tag">${L('التالية','Up next')}</span>`
                  :sdone?`<span class="tag" style="color:var(--color-success-dark)">${L('تمّت','Done')}</span>`
                  :`<span class="tag soon">${L('قريباً','Soon')}</span>`}
-        </div>`;}).join('')}</div>` : '';
+        </${tag}>`;}).join('')}</div>` : '';
     const lockedHint = st==='locked'
       ? `<div class="locked-hint">🔒 ${L('تُفتح بعد إتمام الوحدة','Unlocks after Unit')} ${u.order-1}</div>` : '';
     return `<div class="stn ${st}" style="--u:${di.color}">
