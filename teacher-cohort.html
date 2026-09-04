@@ -139,19 +139,19 @@ const LV=[['','—'],['مبتدئ','Beginning'],['متطوّر','Developing'],['
 /* The session under review, its four rubric checks, and the class. Demo data
    so the page works with no backend — real numbers come from the observations
    a facilitator records in Classroom Mode. Levels: 0 = not yet observed, 1–4. */
-const SESSION = {
+let SESSION = {
   order: 8, title_ar:'ركّز في زحمة المشتّتات', title_en:'Focus in the Noise',
   domain_ar:'إدارة الذات', domain_en:'Self-management', domain:'var(--domain-manage)',
   cohort_ar:'المجموعة أ — الصف السابع', cohort_en:'Cohort A — Grade 7',
 };
-const CHECKS = [
+let CHECKS = [
   {ar:'يسمّي أكبر ما يشتّته', en:'Names their biggest distraction'},
   {ar:'يزيل مشتّتاً قبل أن يبدأ', en:'Clears a distraction before starting'},
   {ar:'يعود إلى مهمته بعد أن يشرد', en:'Returns to the task after drifting'},
   {ar:'يحمي مدة قصيرة من التركيز', en:'Protects a short focused stretch'},
 ];
 // name, [level per check]
-const ROSTER = [
+let ROSTER = [
   ['نورة',[4,3,3,4]],['فهد',[3,3,2,3]],['سارة',[3,4,3,3]],['ريّان',[2,2,1,2]],
   ['لمى',[4,4,4,3]],['عبدالله',[2,1,1,2]],['جود',[3,2,2,3]],['تركي',[3,3,3,2]],
   ['مي',[2,2,1,1]],['سلمان',[3,2,2,2]],['رغد',[4,3,4,4]],['يوسف',[1,1,1,2]],
@@ -174,7 +174,7 @@ function render(){
   const dom=SESSION.domain;
   const avg=classAvg(); const avgLv=Math.max(1,Math.min(4,Math.round(avg)));
   const pct=Math.round(avg/4*100);
-  const demo = localStorage.getItem('dev_fixtures')==='1' || true; // page is demo-first for now
+  const demo = !LIVE;   // truthful: the banner disappears once real observations arrive
 
   const outs = CHECKS.map((c,ci)=>{
     const {d,obs}=dist(ci);
@@ -268,7 +268,31 @@ function render(){
 
 document.getElementById('logout-link').addEventListener('click',(e)=>{e.preventDefault(); if(window.logout)logout();});
 document.addEventListener('langchange',render);
-document.addEventListener('DOMContentLoaded',render);
+/* Live data when a facilitator is signed in: GET /teacher/classes/{id}/cohort-mastery
+   returns each behaviour spread across the four mastery levels, plus a per-student
+   row. Falls back to the demo cohort above so the screen is never blank. */
+let LIVE = false;
+async function loadLive(){
+  if (localStorage.getItem('dev_fixtures') === '1') return;
+  try {
+    const cid = new URLSearchParams(location.search).get('class')
+      || ((await apiFetch('/teacher/classes'))[0] || {}).id;
+    if (!cid) return;
+    const d = await apiFetch(`/teacher/classes/${cid}/cohort-mastery`);
+    if (!d || !d.outcomes || !d.outcomes.length || !d.total_observations) return;
+    CHECKS = d.outcomes.map(o => ({ ar: o.label_ar, en: o.label_en }));
+    ROSTER = (d.students || []).map(s => [s.full_name || '—', (s.levels || []).map(l => l || 0)]);
+    if (d.session) {
+      SESSION = Object.assign({}, SESSION, {
+        order: d.session.order_index,
+        title_ar: d.session.title_ar, title_en: d.session.title_en,
+      });
+    }
+    LIVE = true;
+  } catch (e) { /* not signed in, or no data yet — keep the demo cohort */ }
+}
+
+document.addEventListener('DOMContentLoaded', async () => { await loadLive(); render(); });
 </script>
 </body>
 </html>
