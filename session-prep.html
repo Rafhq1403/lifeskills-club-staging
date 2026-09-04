@@ -198,7 +198,13 @@ const L=(a,e)=>getLang()==='ar'?a:e;
 const $=id=>document.getElementById(id);
 const esc=CM.esc;
 const params=new URLSearchParams(location.search);
-const SESSION_ID=params.get('session')||'c5100000-0000-4000-8000-000000000004';
+/* No session chosen? Send the facilitator to the library to pick one. Defaulting
+   to a hardcoded session used to open the wrong lesson silently. */
+if(!params.get('session')){
+  const q=new URLSearchParams(location.search); q.set('pick','prep');
+  location.replace('curriculum.html?'+q.toString());
+}
+const SESSION_ID=params.get('session');
 let SESSION=null, CHECKS=[];
 const state=JSON.parse(localStorage.getItem('lsc_prep_'+SESSION_ID)||'{}');
 const save=()=>localStorage.setItem('lsc_prep_'+SESSION_ID,JSON.stringify(state));

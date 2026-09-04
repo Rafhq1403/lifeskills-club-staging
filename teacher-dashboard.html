@@ -23,6 +23,7 @@
       <a href="schedule.html"><span class="ic">🗓️</span><span data-lang-only="ar">الجدول</span><span data-lang-only="en">Schedule</span></a>
       <a href="session-prep.html"><span class="ic">📋</span><span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare Session</span></a>
       <a href="classroom-mode.html"><span class="ic">🎧</span><span data-lang-only="ar">وضع العرض</span><span data-lang-only="en">Classroom Mode</span></a>
+      <a href="curriculum.html"><span class="ic">📚</span><span data-lang-only="ar">مكتبة المنهج</span><span data-lang-only="en">Curriculum</span></a>
       <a href="#classes"><span class="ic">👥</span><span data-lang-only="ar">مجموعاتي</span><span data-lang-only="en">My Cohorts</span></a>
       <a href="#materials"><span class="ic">📎</span><span data-lang-only="ar">مواد الميسّر</span><span data-lang-only="en">Facilitator Materials</span></a>
       <div class="sidebar-section-label"><span data-lang-only="ar">المتابعة</span><span data-lang-only="en">Follow-up</span></div>
@@ -78,10 +79,10 @@
           </div>
 
           <div class="flex-col gap-2" style="min-width:13rem;">
-            <a href="session-prep.html" class="btn btn-secondary btn-block">
+            <a href="curriculum.html?pick=prep" id="ns-prep-link" class="btn btn-secondary btn-block">
               <span data-lang-only="ar">تجهيز الجلسة</span><span data-lang-only="en">Prepare session</span>
             </a>
-            <a href="classroom-mode.html" class="btn btn-primary btn-block btn-lg">
+            <a href="curriculum.html?pick=teach" id="ns-teach-link" class="btn btn-primary btn-block btn-lg">
               <span data-lang-only="ar">ابدأ وضع العرض</span><span data-lang-only="en">Start Classroom Mode</span>
             </a>
           </div>
@@ -303,6 +304,13 @@
       L(`الجلسة ${ns.order_index} · ${ns.title_ar}`, `Session ${ns.order_index} · ${ns.title_en}`);
     document.getElementById('ns-domain').textContent = L(ns.skill_title_ar, ns.skill_title_en) || '—';
     document.getElementById('ns-length').textContent = 90 + L(' دقيقة', ' min');
+    /* Carry the session id into the two actions — without it they now bounce to
+       the library to pick one, even though we already know what's next. */
+    if (ns.id) {
+      const q = '?session=' + encodeURIComponent(ns.id);
+      document.getElementById('ns-prep-link').setAttribute('href', 'session-prep.html' + q);
+      document.getElementById('ns-teach-link').setAttribute('href', 'classroom-mode.html' + q);
+    }
 
     const q = ns.cohort_id ? `&cohort=${encodeURIComponent(ns.cohort_id)}` : '';
     const prepHref = `session-prep.html?session=${encodeURIComponent(ns.id)}${q}`;

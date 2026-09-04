@@ -514,6 +514,12 @@ window.PAGE_TITLES={ar:'نادي مهارات الحياة | وضع العرض',
    contents in place when ?session=<id> is given. */
 const SESSION_PARAM=new URLSearchParams(location.search).get('session');
 const COHORT_ID=new URLSearchParams(location.search).get('cohort');   // a scheduled occasion, when launched from the calendar
+/* Never open a lesson nobody asked for: with no session, go pick one. The old
+   fallback silently taught the wrong session from the sidebar link. */
+if(!SESSION_PARAM){
+  const q=new URLSearchParams(location.search); q.set('pick','teach');
+  location.replace('curriculum.html?'+q.toString());
+}
 const SESSION=JSON.parse(JSON.stringify((window.SESSION_FIXTURES&&SESSION_FIXTURES[SESSION_PARAM])||SESSION4_FIXTURE));
 
 /* Stage names, audience labels and the card renderer live in js/cm-cards.js,
