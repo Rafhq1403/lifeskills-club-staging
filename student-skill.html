@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>نادي مهارات الحياة | المهارة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -408,22 +409,38 @@
     // identical to a skill's content before sessions existed. Once sessions
     // exist, loose blocks (if any) get a generic header so every item in the
     // sidebar is still clearly grouped.
+    // A student never sees the facilitator's own cards (the briefing and the
+    // observation checklist are authored with audience 'facilitator'); the API
+    // returns every block of a session, so the filter lives here.
+    const forStudents = (blocks) => (blocks || []).filter((b) => b.audience !== 'facilitator');
+
     sections = [];
-    if (skill.blocks.length) {
+    if (forStudents(skill.blocks).length) {
       sections.push({
         title: sessionDetails.length ? { ar: 'محتوى عام', en: 'General' } : null,
-        blocks: skill.blocks,
+        blocks: forStudents(skill.blocks),
       });
     }
     sessionDetails.forEach((sess) => {
-      sections.push({ title: { ar: sess.title_ar, en: sess.title_en }, blocks: sess.blocks });
+      const blocks = forStudents(sess.blocks);
+      if (blocks.length) sections.push({ title: { ar: sess.title_ar, en: sess.title_en }, blocks });
     });
     allBlocks = sections.flatMap((s) => s.blocks);
 
     if (activeIndex >= allBlocks.length) activeIndex = Math.max(0, allBlocks.length - 1);
     if (!allBlocks.length) {
-      document.getElementById('viewer-content').innerHTML =
-        `<p class="text-muted"><span data-lang-only="ar">لا توجد عناصر محتوى بعد.</span><span data-lang-only="en">No content yet.</span></p>`;
+      // Honest empty state: the self-paced lessons are being written (Khalifa's
+      // track). "No content yet" read like a broken page; this reads like a plan.
+      document.getElementById('viewer-content').innerHTML = `
+        <div style="text-align:center;padding:var(--space-10) var(--space-6);max-width:32rem;margin-inline:auto">
+          <div style="font-size:2rem;margin-bottom:var(--space-3)">📖</div>
+          <h2 style="font-size:1.25rem;margin:0 0 var(--space-2)">
+            <span data-lang-only="ar">الدروس الذاتية قيد الإعداد</span><span data-lang-only="en">Self-paced lessons are being prepared</span></h2>
+          <p class="text-muted" style="margin:0 0 var(--space-5)">
+            <span data-lang-only="ar">ستظهر هنا درساً لكل جلسة تحضرها في الصف، لتراجعه في وقتك أو تعوّض به جلسة فاتتك.</span>
+            <span data-lang-only="en">A lesson for every classroom session will appear here — to review in your own time, or to catch up on a session you missed.</span></p>
+          <a href="student-path.html" class="btn btn-secondary"><span data-lang-only="ar">العودة إلى رحلتي</span><span data-lang-only="en">Back to my journey</span></a>
+        </div>`;
       applyLanguage(getLang());
     } else {
       renderViewerBlock(allBlocks[activeIndex]);

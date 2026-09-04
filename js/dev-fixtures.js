@@ -184,6 +184,25 @@
     { id: sid(8), skill_id: SEASON_1.id, title_ar: 'قرّروا معاً', title_en: 'Decide Together', order_index: 8, strand_id: STRANDS[7].id },
   ];
 
+  /* The list above is a fallback. When the generated session-fixtures.js loads
+     (it calls this at the end of its own file), the demo sessions are rebuilt
+     from it in place — same array, so every handler that reads or pushes to
+     SESSIONS keeps working — with the authored titles and path order. Before
+     this, the schedule and "next session" card showed names and positions from
+     before the curriculum was renamed and re-sequenced: demo data drifting from
+     the product within a week of edits. Now it cannot lag the YAML. */
+  window.__syncDemoSessions = (fx) => {
+    if (!fx) return;
+    const byId = Object.fromEntries(SESSIONS.map((s) => [s.id, s]));
+    const fresh = Object.values(fx)
+      .map((s) => ({
+        id: s.id, skill_id: s.skill_id, title_ar: s.title_ar, title_en: s.title_en,
+        order_index: s.order_index, strand_id: (byId[s.id] || {}).strand_id || null,
+      }))
+      .sort((a, b) => a.order_index - b.order_index);
+    SESSIONS.splice(0, SESSIONS.length, ...fresh);
+  };
+
   const BADGES = [
     { id: 'bdg-1', name_ar: 'المستمع النشط', name_en: 'Active Listener', icon: '👂', strand_id: STRANDS[1].id },
     { id: 'bdg-2', name_ar: 'صوت الفريق', name_en: 'Team Voice', icon: '🗣️', strand_id: STRANDS[1].id },

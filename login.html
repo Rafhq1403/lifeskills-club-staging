@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>نادي مهارات الحياة | تسجيل الدخول</title>
+<meta name="description" content="تسجيل الدخول إلى نادي مهارات الحياة للمعلمين والطلاب والإداريين. Log in to the Life Skills Club.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/tokens.css">
@@ -15,7 +17,6 @@
      domain spectrum as a ribbon — the same journey motif as the path spine —
      beside a warm, quiet form. */
   .auth-shell{min-height:100vh;display:grid;grid-template-columns:1.05fr 1fr;background:var(--surface-alt)}
-  @media(max-width:900px){.auth-shell{grid-template-columns:1fr}.auth-side{display:none}}
 
   .auth-side{position:relative;overflow:hidden;color:#fff;
     padding:var(--space-12) var(--space-12);display:flex;flex-direction:column;justify-content:space-between;
@@ -48,6 +49,16 @@
     padding:var(--space-3) var(--space-5);transition:var(--transition-fast)}
   .demo-entry .btn-demo:hover{border-color:var(--color-primary);color:var(--color-primary)}
   .demo-entry .demo-note{font-size:.78rem;color:var(--text-muted);margin-top:var(--space-2)}
+
+  /* Phones: one column, and a compact brand panel (≈150 px) above the form instead of
+     a 500 px one that pushed the form below the fold. Placed last so it wins the cascade. */
+  @media(max-width:900px){
+    .auth-shell{grid-template-columns:1fr}
+    .auth-side{padding:var(--space-5) var(--space-6);gap:var(--space-3);justify-content:flex-start}
+    .auth-side h2{font-size:1.2rem;margin-top:var(--space-2)}
+    .auth-side .blurb,.auth-side .jmini,.auth-side .foot{display:none}
+    .auth-form-side{padding:var(--space-6) var(--space-5)}
+  }
 </style>
 </head>
 <body>

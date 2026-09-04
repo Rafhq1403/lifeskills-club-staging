@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="نادي مهارات الحياة">
+  <!-- Brand mark: the seedling, drawn — two leaves in the spectrum's first and last hues on the warm ground. -->
+  <rect width="64" height="64" rx="14" fill="#F6F1E9"/>
+  <path d="M32 54V30" stroke="#1C1815" stroke-width="4" stroke-linecap="round"/>
+  <path d="M32 36c-1-9-8-15-18-15 0 10 7 16 18 15z" fill="#6366F1"/>
+  <path d="M32 30c1-9 8-15 18-15 0 10-7 16-18 15z" fill="#16A34A"/>
+  <circle cx="32" cy="55" r="3" fill="#1C1815"/>
+</svg>

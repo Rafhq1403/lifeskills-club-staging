@@ -8863,3 +8863,4 @@ window.SESSION_FIXTURES = {
  }
 };
 window.SESSION4_FIXTURE = window.SESSION_FIXTURES["c5100000-0000-4000-8000-000000000004"];
+if (window.__syncDemoSessions) window.__syncDemoSessions(window.SESSION_FIXTURES);

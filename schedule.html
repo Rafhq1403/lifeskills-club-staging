@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>نادي مهارات الحياة | جدول الجلسات</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -112,6 +113,7 @@
 <script src="js/app.js"></script>
 <script src="js/api.js"></script>
 <script src="js/dev-fixtures.js"></script>
+<script src="js/curriculum.js"></script>
 <script>/* Phase C: gate this tool on a real session + role. */ requireAuth(['teacher','admin']);</script>
 <script>
 window.PAGE_TITLES={ar:'نادي مهارات الحياة | جدول الجلسات',en:'Life Skills Club | Schedule'};
@@ -127,21 +129,23 @@ const STATUS={planned:['مجدوَلة','Planned','badge-neutral'],in_progress:[
 let CLASS=null,demo=false,picked=new Set([0,2]);  // Sun & Tue default
 
 const fmtDate=iso=>{const d=new Date(iso);
-  return d.toLocaleDateString(getLang()==='ar'?'ar-SA':'en-GB',{weekday:'short',day:'numeric',month:'short'});};
+  return d.toLocaleDateString(getLang()==='ar'?'ar-SA-u-nu-latn':'en-GB',{weekday:'short',day:'numeric',month:'short'});};
 const fmtTime=iso=>{const d=new Date(iso);
-  return d.toLocaleTimeString(getLang()==='ar'?'ar-SA':'en-GB',{hour:'2-digit',minute:'2-digit'});};
+  return d.toLocaleTimeString(getLang()==='ar'?'ar-SA-u-nu-latn':'en-GB',{hour:'2-digit',minute:'2-digit'});};
 
-/* Demo schedule — a believable Season 1 calendar, two delivered, so staging
-   shows the page working with no backend. */
+/* Demo schedule — the first eight sessions of the real path, two delivered, so
+   staging shows the page working with no backend. Titles and ids come from
+   curriculum.js, never from a list kept here: a hardcoded list had drifted to
+   names from before the curriculum was renamed, and its made-up session ids
+   ('s0'…) sent "ابدأ" to the wrong lesson. */
 function demoSchedule(){
-  const titles=[['اعرف قوّتك','Know Your Strength'],['توقّف ثم اختر','Pause, Then Choose'],
-    ['ابدأ صغيراً','Start Small'],['استمع كالمحقّق','Listen Like a Detective'],
-    ['أوصِل فكرتك','Make Your Point'],['كلمة تبني','Words That Build'],
-    ['لكل دور وزنه','Every Role Counts'],['قرّروا معاً','Decide Together']];
+  const path = window.CURRICULUM
+    ? CURRICULUM.units.flatMap(u => u.sessions).filter(s => s.id).slice(0, 8)
+    : [];
   const base=new Date(); base.setDate(base.getDate()-10);
   const days=[];let d=new Date(base);
   while(days.length<8){if([0,2].includes(d.getDay()))days.push(new Date(d));d.setDate(d.getDate()+1);}
-  return titles.map((t,i)=>({id:'demo-'+i,session_id:'s'+i,order_index:i+1,title_ar:t[0],title_en:t[1],
+  return path.map((s,i)=>({id:'demo-'+i,session_id:s.id,order_index:i+1,title_ar:s.title_ar,title_en:s.title_en,
     scheduled_at:new Date(days[i].setHours(16,0,0,0)).toISOString(),
     status:i<2?'delivered':'planned'}));
 }

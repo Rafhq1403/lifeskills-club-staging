@@ -534,6 +534,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
       observeTargets.forEach((el) => observer.observe(el));
+      // Safety net: whatever the observer decides, nothing stays hidden. The
+      // homepage hero sat at opacity 0 on phones because it was never marked
+      // visible — an animation may delay content, never withhold it.
+      setTimeout(() => observeTargets.forEach((el) => el.classList.add('in-view')), 800);
     } else {
       observeTargets.forEach((el) => el.classList.add('in-view'));
     }

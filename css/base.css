@@ -51,6 +51,13 @@ h3 { font-size: var(--h3-size); line-height: var(--h3-lh); font-weight: 700; }
 @media (prefers-reduced-motion: reduce) {
   [data-observe] { opacity: 1; transform: none; transition: none; }
 }
+/* On phones the observer never marked the homepage hero visible, so the headline
+   and both calls to action stayed at opacity 0. Content must never depend on an
+   animation to appear: no reveal at all on small screens (app.js also adds a
+   timed fallback for every other case). */
+@media (max-width: 720px) {
+  [data-observe] { opacity: 1; transform: none; transition: none; }
+}
 
 .caption { font-size: var(--caption-size); line-height: var(--caption-lh); color: var(--text-muted); }
 .mono { font-family: var(--font-mono); }

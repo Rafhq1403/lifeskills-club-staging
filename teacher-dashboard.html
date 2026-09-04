@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
 <title>نادي مهارات الحياة | لوحة المعلم</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -253,7 +254,15 @@
 <script src="js/app.js"></script>
 <script src="js/api.js"></script>
 <script src="js/dev-fixtures.js"></script>
-<script src="js/session-fixtures.js"></script>
+<script>
+/* Demo session data (≈560 KB) is read only in demo mode; a signed-in facilitator
+   must never download it. document.write keeps the include synchronous, so scripts
+   that read window.SESSION_FIXTURES at parse time still find it. */
+(function(){var q=new URLSearchParams(location.search).get('fixtures');
+var d=q!==null?(q==='0'?'0':'1'):localStorage.getItem('dev_fixtures');
+if(d===null&&/\.github\.io$/.test(location.hostname))d='1';
+if(d==='1')document.write('<script src="js/session-fixtures.js"><\/script>');})();
+</script>
 <script>
   document.getElementById('logout-link').addEventListener('click', (e) => { e.preventDefault(); logout(); });
 
@@ -332,9 +341,9 @@
     // A real date when the cohort is scheduled; otherwise a link to set one up.
     if (ns.scheduled_at) {
       const d = new Date(ns.scheduled_at);
-      const when = d.toLocaleDateString(getLang() === 'ar' ? 'ar-SA' : 'en-GB',
+      const when = d.toLocaleDateString(getLang() === 'ar' ? 'ar-SA-u-nu-latn' : 'en-GB',
         { weekday: 'long', day: 'numeric', month: 'long' }) + ' · ' +
-        d.toLocaleTimeString(getLang() === 'ar' ? 'ar-SA' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
+        d.toLocaleTimeString(getLang() === 'ar' ? 'ar-SA-u-nu-latn' : 'en-GB', { hour: '2-digit', minute: '2-digit' });
       document.getElementById('ns-when').innerHTML = `🗓️ <strong>${when}</strong>`;
     } else {
       document.getElementById('ns-when').innerHTML =
