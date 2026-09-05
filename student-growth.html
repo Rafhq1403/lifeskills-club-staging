@@ -126,7 +126,7 @@ window.PAGE_TITLES={ar:'نادي مهارات الحياة | نمو الطالب
 const L=(a,e)=>getLang()==='ar'?a:e;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const API=`http://${location.hostname}:8090`;
+const API=API_BASE;
 const LV=[['','—'],['مبتدئ','Beginning'],['متطوّر','Developing'],['مطبِّق','Applying'],['ناقل للأثر','Transferring']];
 const STRAND_OF={1:['الوعي بالذات','Self-awareness'],2:['إدارة الذات','Self-management'],3:['المبادرة','Initiative'],
   4:['التواصل','Communication'],5:['التواصل','Communication'],6:['العلاقات','Relationships'],

@@ -169,7 +169,7 @@ async function loadProgress(){
   const fixtures = localStorage.getItem('dev_fixtures') === '1';
   if(fixtures) return;                       // demo: keep the sample state
   try{
-    const r = await fetch(`http://${location.hostname}:8090/student/progress`, {credentials:'include'});
+    const r = await fetch(`${API_BASE}/student/progress`, {credentials:'include'});
     if(!r.ok) return;                        // not signed in as a student — keep the sample
     const p = await r.json();
     const caught = p.caught_up_session_ids || [];
@@ -177,7 +177,7 @@ async function loadProgress(){
     // A session the student made up on their own counts like a delivered one.
     const effective = [...new Set([...(p.delivered_session_ids || []), ...caught])];
     PROGRESS = progressFromDelivered(effective, p.current_session_id);
-    try{ const me = await (await fetch(`http://${location.hostname}:8090/auth/me`,{credentials:'include'})).json();
+    try{ const me = await (await fetch(`${API_BASE}/auth/me`,{credentials:'include'})).json();
       if(me && me.full_name){ STUDENT = { name_ar: me.full_name, name_en: me.full_name }; } }catch(e){}
   }catch(e){/* offline — keep the sample state */}
 }

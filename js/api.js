@@ -3,12 +3,20 @@
    talks to the API.
    ============================================ */
 
-// TODO: point this at the real deployed API URL once a deployment target is chosen.
-// Matches whatever host the page itself was loaded from (localhost vs 127.0.0.1)
-// rather than hardcoding one — the auth cookie is SameSite=Lax, so a mismatch
-// here (page on 127.0.0.1, API hardcoded to localhost) makes every API call
-// cross-site and silently drops the cookie, breaking login right after it succeeds.
-const API_BASE = `http://${window.location.hostname}:8090`;
+/* Where the API lives.
+   In production the API serves the frontend itself (backend/app/main.py mounts
+   frontend/ as static files), so requests are same-origin: session cookies work
+   under SameSite=lax and CORS never enters the picture. Only in local
+   development — a static server on :5500/:5501 beside uvicorn on :8090 — are the
+   two on different origins, and then the API host must match the page's own
+   (localhost vs 127.0.0.1): the cookie is SameSite=lax, so a mismatch makes every
+   call cross-site and silently drops it, breaking login right after it succeeds.
+   A page may pin the base explicitly by setting window.__API_BASE__ before this
+   script loads. */
+const API_BASE = (window.__API_BASE__ !== undefined)
+  ? window.__API_BASE__
+  : (['5500', '5501'].includes(window.location.port) ? `http://${window.location.hostname}:8090` : '');
+window.API_BASE = API_BASE;
 
 async function apiFetch(path, options = {}) {
   const response = await fetch(API_BASE + path, {

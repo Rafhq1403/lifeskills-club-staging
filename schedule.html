@@ -120,7 +120,7 @@ window.PAGE_TITLES={ar:'نادي مهارات الحياة | جدول الجلس
 const L=(a,e)=>getLang()==='ar'?a:e;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const API=`http://${location.hostname}:8090`;
+const API=API_BASE;
 const SEASON1='c5000000-0000-4000-8000-000000000001';
 const DAYS=[['الأحد','Sun'],['الاثنين','Mon'],['الثلاثاء','Tue'],['الأربعاء','Wed'],['الخميس','Thu'],['الجمعة','Fri'],['السبت','Sat']];
 const STATUS={planned:['مجدوَلة','Planned','badge-neutral'],in_progress:['جارية','In progress','badge-primary'],

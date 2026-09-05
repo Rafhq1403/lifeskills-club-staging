@@ -730,7 +730,7 @@ async function loadCriteria(){
   const id=SESSION.id||SESSION_PARAM;
   if(!id||localStorage.getItem('dev_fixtures')==='1') return;
   try{                        // upgrade to real criterion ids so a level can be saved
-    const r=await fetch(`http://${location.hostname}:8090/teacher/sessions/${id}/criteria`,{credentials:'include'});
+    const r=await fetch(`${API_BASE}/teacher/sessions/${id}/criteria`,{credentials:'include'});
     if(r.ok){const c=await r.json();if(Array.isArray(c)&&c.length)setupBehaviours(c);}
   }catch(e){/* keep the baseline behaviours */}
 }
@@ -738,10 +738,10 @@ const LEVELS=[['مبتدئ','Beginning'],['متطوّر','Developing'],['مطب�
 
 async function loadRoster(){
   try{
-    const cls=await (await fetch('http://'+location.hostname+':8090/teacher/classes',{credentials:'include'})).json();
+    const cls=await (await fetch(API_BASE+'/teacher/classes',{credentials:'include'})).json();
     if(Array.isArray(cls)&&cls.length){
       CLASS_ID=cls[0].id;
-      const r=await (await fetch(`http://${location.hostname}:8090/teacher/classes/${CLASS_ID}/roster`,{credentials:'include'})).json();
+      const r=await (await fetch(`${API_BASE}/teacher/classes/${CLASS_ID}/roster`,{credentials:'include'})).json();
       // A pairing tool needs a class to pair; fall back below 4 so the
       // grouping and observation flows stay demonstrable.
       if(Array.isArray(r)&&r.length>=4){roster=r;return}
@@ -834,7 +834,7 @@ async function saveObservations(){
   if(!CLASS_ID||!pending.length)return;
   const btn=$('cmObsSave');btn.disabled=true;btn.textContent=L('يحفظ…','Saving…');
   try{
-    const res=await fetch(`http://${location.hostname}:8090/teacher/observations`,
+    const res=await fetch(`${API_BASE}/teacher/observations`,
       {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
        body:JSON.stringify({class_id:CLASS_ID,session_id:SESSION.id||SESSION_PARAM,skill_id:SKILL_ID,cohort_session_id:COHORT_ID,
          records:pending.map(o=>({student_id:o.student_id,criterion_id:o.criterion_id,level:o.level}))})});
@@ -870,7 +870,7 @@ $('cmSaveAtt').onclick=async()=>{
   const body={session_date:new Date().toISOString().slice(0,10),
     records:roster.map(p=>({student_id:p.student_id,attended:!absent.has(p.student_id)}))};
   try{
-    const res=await fetch(`http://${location.hostname}:8090/teacher/classes/${CLASS_ID}/attendance`,
+    const res=await fetch(`${API_BASE}/teacher/classes/${CLASS_ID}/attendance`,
       {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
     btn.textContent=res.ok?L('تم الحفظ ✓','Saved ✓'):L('تعذّر الحفظ','Could not save');
   }catch(e){btn.textContent=L('تعذّر الحفظ','Could not save')}
@@ -884,7 +884,7 @@ function cohortStatus(status){
   if(!COHORT_ID||localStorage.getItem('dev_fixtures')==='1')return;
   // keepalive lets the 'delivered' write survive the navigation the End button
   // starts, while still sending the auth cookie (credentials:'include').
-  fetch(`http://${location.hostname}:8090/teacher/cohort-sessions/${COHORT_ID}/status`,
+  fetch(`${API_BASE}/teacher/cohort-sessions/${COHORT_ID}/status`,
     {method:'POST',credentials:'include',headers:{'Content-Type':'application/json'},
      body:JSON.stringify({status}),keepalive:true}).catch(()=>{});
 }
@@ -900,7 +900,7 @@ async function loadSession(){
   const id=new URLSearchParams(location.search).get('session');
   if(!id||localStorage.getItem('dev_fixtures')==='1') return;
   try{
-    const res=await fetch(`http://${location.hostname}:8090/teacher/sessions/${id}`,{credentials:'include'});
+    const res=await fetch(`${API_BASE}/teacher/sessions/${id}`,{credentials:'include'});
     if(!res.ok) throw new Error('HTTP '+res.status);
     const payload=await res.json();
     SKILL_ID=payload.skill&&payload.skill.id||null;
